@@ -1,20 +1,33 @@
 :root {
-    --cor-primaria-clara: #aa3bff;
-    --cor-primaria-base: #2c3e50;
-    --cor-primaria-escura: #1a252f;
-    --cor-secundaria-clara: #f5f5f5;
-    --cor-secundaria-base: #7f8c8d;
-    --cor-secundaria-escura: #34495e;
-    --cor-terciaria-erro: #e74c3c;
-    --cor-terciaria-fundo: #ffffff;
+    /* Paleta Blue Marine */
+    --dark-charcoal: #0E1D2A;
+    --dark-navy: #0E4C71;
+    --borda-formulario-campo: #ABDCFF;
+    --fundo-formulario-campo: #E9F6FF;
+    --true-blue: #0073B9;
+    --space-cadet: #204461;
+    --pale-cerulean: #7FBDCB;
+    --columbia-blue: #98C8EB;
+    --alice-blue-light: #F6FBFF;
+    --white: #FFFFFF;
+
+    /* Mapeamento Semântico (Cinefilia style) */
+    --cor-fundo: var(--alice-blue-light);
+    --cor-texto-principal: var(--dark-charcoal);
+    --cor-texto-secundario: var(--space-cadet);
+    --cor-primaria: var(--true-blue);
+    --cor-secundaria: var(--dark-navy);
+    --cor-accent: var(--pale-cerulean);
     
-    --fonte-base: system-ui, -apple-system, sans-serif;
+    /* Tipografia */
+    --fonte-base: "Inter", sans-serif;
     
-    --tamanho-pequeno: .75rem;
+    /* Tamanhos (Baseados na Identidade Visual) */
+    --tamanho-texto: 24px;
+    --tamanho-titulo: 50px;
     --tamanho-base1: 1rem;
-    --tamanho-base2: 1.3rem;
-    --tamanho-titulo: 2rem; 
-    --tamanho-logo: 4rem;
+    --tamanho-logo-completa: 8rem;
+    --tamanho-logo: 6rem;
 }
 
 * {
@@ -26,8 +39,8 @@
 body, input, textarea, button {
     font-family: var(--fonte-base);
     font-size: var(--tamanho-base1);
-    color: var(--cor-primaria-base);
-    background-color: var(--cor-terciaria-fundo);
+    color: var(--cor-texto-principal);
+    background-color: var(--cor-fundo);
 }
 
 h1 {
