@@ -18,6 +18,7 @@
     --cor-primaria: var(--true-blue);
     --cor-secundaria: var(--dark-navy);
     --cor-accent: var(--pale-cerulean);
+    --cor-erro: #E63946;
     
     /* Tipografia */
     --fonte-base: "Inter", sans-serif;

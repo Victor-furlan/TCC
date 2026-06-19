@@ -130,3 +130,9 @@
   top: 8px;
   left: 3px;
 }
+
+.erro {
+  color: var(--cor-erro);
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
