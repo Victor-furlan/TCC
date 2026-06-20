@@ -12,8 +12,8 @@ export function Relatorios() {
 
             <section className={styles.cabecalho}>
                 <div>
-                    <h1 className={styles.titulo}>Reports & Analytics</h1>
-                    <p className={styles.subtitulo}>Insights into your spending patterns</p>
+                    <h1 className={styles.titulo}>Relatórios e Análises</h1>
+                    <p className={styles.subtitulo}>Insights sobre seus padrões de gastos</p>
                 </div>
 
                 <div className={styles.abas}>
@@ -21,19 +21,19 @@ export function Relatorios() {
                         className={abaAtiva === 'categoria' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                         onClick={() => setAbaAtiva('categoria')}
                     >
-                        By Category
+                        Por Categoria
                     </button>
                     <button
                         className={abaAtiva === 'tendencia' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                         onClick={() => setAbaAtiva('tendencia')}
                     >
-                        Trend
+                        Tendência
                     </button>
                     <button
                         className={abaAtiva === 'detalhamento' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                         onClick={() => setAbaAtiva('detalhamento')}
                     >
-                        Breakdown
+                        Detalhamento
                     </button>
                 </div>
             </section>
@@ -41,21 +41,21 @@ export function Relatorios() {
             <section className={styles.cardsMetricas}>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Monthly Total</p>
+                    <p className={styles.tituloMetrica}>Total Mensal</p>
                     <p className={styles.valorMetrica}>R$0,00</p>
-                    <p className={styles.descricaoMetrica}>Current subscriptions</p>
+                    <p className={styles.descricaoMetrica}>Assinaturas atuais</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Annual Projection</p>
+                    <p className={styles.tituloMetrica}>Projeção Anual</p>
                     <p className={styles.valorMetrica}>R$0,00</p>
-                    <p className={styles.descricaoMetrica}>Estimated yearly cost</p>
+                    <p className={styles.descricaoMetrica}>Custo anual estimado</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Average per Subscription</p>
+                    <p className={styles.tituloMetrica}>Média por Assinatura</p>
                     <p className={styles.valorMetrica}>R$0,00</p>
-                    <p className={styles.descricaoMetrica}>Mean subscription cost</p>
+                    <p className={styles.descricaoMetrica}>Custo médio de assinatura</p>
                 </div>
 
             </section>
@@ -79,7 +79,7 @@ export function Relatorios() {
 
             {abaAtiva === 'detalhamento' && (
                 <section className={styles.cardDetalhamento}>
-                    <p className={styles.tituloSecao}>Detailed Category Breakdown</p>
+                    <p className={styles.tituloSecao}>Detalhamento por Categoria</p>
                     <p className={styles.textoVazio}>Nenhuma categoria cadastrada ainda.</p>
                 </section>
             )}

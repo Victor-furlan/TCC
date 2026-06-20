@@ -2,8 +2,8 @@ import styles from './Despesas.module.css'
 import { MdAdd, MdShoppingBag } from 'react-icons/md'
 
 const meses = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
 ]
 
 export function Despesas() {
@@ -19,51 +19,51 @@ export function Despesas() {
 
             <section className={styles.cabecalho}>
                 <div>
-                    <h1 className={styles.titulo}>Variable Expenses</h1>
-                    <p className={styles.subtitulo}>Track one-time expenses and monitor your spending patterns</p>
+                    <h1 className={styles.titulo}>Gastos Variáveis</h1>
+                    <p className={styles.subtitulo}>Acompanhe despesas pontuais e monitore seus padrões de gastos</p>
                 </div>
 
                 <button className={styles.botaoAdicionar}>
                     <MdAdd size={20} />
-                    Add Expense
+                    Adicionar Despesa
                 </button>
             </section>
 
             <section className={styles.cardResumo}>
-                <p className={styles.tituloResumo}>Resume - {mesAtual} {anoAtual}</p>
+                <p className={styles.tituloResumo}>Resumo - {mesAtual} {anoAtual}</p>
 
                 <div className={styles.itensResumo}>
                     <div className={styles.itemResumo}>
-                        <p className={styles.tituloItem}>Total Expenditure</p>
-                        <p className={styles.valorItem}>R$ 0.00</p>
+                        <p className={styles.tituloItem}>Total Gasto</p>
+                        <p className={styles.valorItem}>R$ 0,00</p>
                     </div>
 
                     <div className={styles.itemResumo}>
-                        <p className={styles.tituloItem}>Amount of expenses</p>
+                        <p className={styles.tituloItem}>Quantidade de Despesas</p>
                         <p className={styles.valorItem}>0</p>
                     </div>
 
                     <div className={styles.itemResumo}>
-                        <p className={styles.tituloItem}>Average per expenditure</p>
-                        <p className={styles.valorItem}>R$ 0.00</p>
+                        <p className={styles.tituloItem}>Média por Gasto</p>
+                        <p className={styles.valorItem}>R$ 0,00</p>
                     </div>
                 </div>
             </section>
 
             <section className={styles.cardHistorico}>
                 <div className={styles.cabecalhoHistorico}>
-                    <p className={styles.tituloSecao}>Expenses history</p>
+                    <p className={styles.tituloSecao}>Histórico de Despesas</p>
                     <button className={styles.botaoAdicionarPrimeira}>
                         <MdAdd size={18} />
-                        Add first expense
+                        Adicionar primeira despesa
                     </button>
                 </div>
 
                 {despesas.length === 0 ? (
                     <div className={styles.conteudoVazio}>
                         <MdShoppingBag size={56} className={styles.iconeVazio} />
-                        <p className={styles.textoVazio}>No expenses recorded</p>
-                        <p className={styles.textoVazioSub}>Start by adding your variable expenses</p>
+                        <p className={styles.textoVazio}>Nenhum gasto registrado</p>
+                        <p className={styles.textoVazioSub}>Comece adicionando seus gastos variáveis</p>
                     </div>
                 ) : (
                     <div className={styles.listaDespesas}>

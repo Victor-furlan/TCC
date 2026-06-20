@@ -10,13 +10,13 @@ export function Assinaturas() {
 
             <section className={styles.cabecalho}>
                 <div>
-                    <h1 className={styles.titulo}>Subscriptions</h1>
-                    <p className={styles.subtitulo}>Manage your recurring expenses</p>
+                    <h1 className={styles.titulo}>Assinaturas</h1>
+                    <p className={styles.subtitulo}>Gerencie suas despesas recorrentes</p>
                 </div>
 
                 <button className={styles.botaoAdicionar}>
                     <MdAdd size={20} />
-                    Add Subscription
+                    Adicionar Assinatura
                 </button>
             </section>
 
@@ -25,37 +25,37 @@ export function Assinaturas() {
                     <MdSearch size={20} className={styles.iconeBusca} />
                     <input
                         className={styles.input}
-                        placeholder='Search subscriptions...'
+                        placeholder='Buscar assinaturas...'
                     />
                 </div>
 
                 <button className={styles.botaoFiltro}>
                     <MdFilterList size={18} />
-                    All Categories
+                    Todas as Categorias
                 </button>
             </section>
 
             <section className={styles.cardsMetricas}>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Active Subscriptions</p>
+                    <p className={styles.tituloMetrica}>Assinaturas Ativas</p>
                     <p className={styles.valorMetrica}>0</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Total Monthly Cost</p>
-                    <p className={styles.valorMetrica}>$0.00</p>
+                    <p className={styles.tituloMetrica}>Custo Mensal Total</p>
+                    <p className={styles.valorMetrica}>R$ 0,00</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
-                    <p className={styles.tituloMetrica}>Annual Cost</p>
-                    <p className={styles.valorMetrica}>$0.00</p>
+                    <p className={styles.tituloMetrica}>Custo Anual</p>
+                    <p className={styles.valorMetrica}>R$ 0,00</p>
                 </div>
 
             </section>
 
             <section className={styles.cardLista}>
-                <p className={styles.tituloSecao}>Your Subscriptions</p>
+                <p className={styles.tituloSecao}>Suas Assinaturas</p>
 
                 {assinaturas.length === 0 ? (
                     <p className={styles.textoVazio}>Nenhuma assinatura cadastrada ainda.</p>

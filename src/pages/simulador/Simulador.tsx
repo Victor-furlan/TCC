@@ -14,7 +14,7 @@ interface AssinaturaTipo {
 const RENDA_MENSAL = 5000
 
 const assinaturas: AssinaturaTipo[] = [
-    { id: '1', nome: 'Netflix', categoria: 'Entertainment', valorMensal: 15.99 },
+    { id: '1', nome: 'Netflix', categoria: 'Entretenimento', valorMensal: 15.99 },
     { id: '2', nome: 'teste', categoria: 'teste', valorMensal: 100 }
 ]
 
@@ -50,8 +50,8 @@ export function Simulador() {
         <div className={styles.conteiner}>
 
             <section className={styles.cabecalho}>
-                <h1 className={styles.titulo}>Simulator "And...if"</h1>
-                <p className={styles.subtitulo}>Simulate scenarios by canceling subscriptions and see the impact on your budget.</p>
+                <h1 className={styles.titulo}>Simulador "E... se"</h1>
+                <p className={styles.subtitulo}>Simule cenários cancelando assinaturas e veja o impacto no seu orçamento.</p>
             </section>
 
             <section className={styles.grid}>
@@ -78,7 +78,7 @@ export function Simulador() {
                                             <p className={styles.nomeAssinatura}>{assinatura.nome}</p>
                                             <span className={styles.tagCategoria}>{assinatura.categoria}</span>
                                         </div>
-                                        <p className={styles.periodicidade}>Monthly</p>
+                                        <p className={styles.periodicidade}>Mensal</p>
                                     </div>
                                     <p className={styles.valorAssinatura}>{formatarMoeda(assinatura.valorMensal)}</p>
                                 </label>
@@ -148,8 +148,8 @@ export function Simulador() {
             <section className={styles.cardGrafico}>
                 <div className={styles.cabecalhoGrafico}>
                     <div>
-                        <p className={styles.tituloGrafico}>Visual Comparison</p>
-                        <p className={styles.subtituloGrafico}>{visualizacao === 'annual' ? 'Annual' : 'Monthly'}</p>
+                        <p className={styles.tituloGrafico}>Comparação Visual</p>
+                        <p className={styles.subtituloGrafico}>{visualizacao === 'annual' ? 'Anual' : 'Mensal'}</p>
                     </div>
 
                     <button
@@ -157,7 +157,7 @@ export function Simulador() {
                         onClick={() => setVisualizacao(visualizacao === 'annual' ? 'monthly' : 'annual')}
                     >
                         <MdArrowBack size={16} />
-                        See your {visualizacao === 'annual' ? 'monthly' : 'annual'} savings
+                        Ver economia {visualizacao === 'annual' ? 'mensal' : 'anual'}
                     </button>
                 </div>
 
@@ -169,17 +169,17 @@ export function Simulador() {
 
                 <div className={styles.rodapeGrafico}>
                     <div>
-                        <p className={styles.legendaRodape}>Monthly savings</p>
+                        <p className={styles.legendaRodape}>Economia mensal</p>
                         <p className={styles.valorRodape}>{formatarMoeda(economiaSelecionadaMensal)}</p>
                     </div>
                     <div>
-                        <p className={styles.legendaRodape}>Reduced</p>
+                        <p className={styles.legendaRodape}>Redução</p>
                         <p className={styles.valorRodape}>
                             -{gastoAtualMensal > 0 ? ((economiaSelecionadaMensal / gastoAtualMensal) * 100).toFixed(1) : '0.0'}%
                         </p>
                     </div>
                     <div>
-                        <p className={styles.legendaRodape}>Annual savings</p>
+                        <p className={styles.legendaRodape}>Economia anual</p>
                         <p className={styles.valorRodape}>{formatarMoeda(economiaSelecionadaAnual)}</p>
                     </div>
                 </div>

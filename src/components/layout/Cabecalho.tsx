@@ -39,11 +39,11 @@ export function Cabecalho({ nomeUsuario }: CabecalhoProps){
 
                     {dropdownContaAberto && (
                         <div className={styles.listaDropdown}>
-                            <p className={styles.tituloDropdown}>My Account</p>
+                            <p className={styles.tituloDropdown}>Minha Conta</p>
 
                             <button className={styles.itemDropdown}>
                                 <MdPerson size={18} />
-                                Profile
+                                Perfil
                             </button>
 
                             <button
@@ -51,7 +51,7 @@ export function Cabecalho({ nomeUsuario }: CabecalhoProps){
                                 onClick={fazerLogout}
                             >
                                 <MdLogout size={18} />
-                                Log out
+                                Sair
                             </button>
                         </div>
                     )}

@@ -55,13 +55,13 @@ const financialSchema = z.object({
 })
 
 const categorias = [
-    { nome: 'Entertainment', cor: '#FFC1C1' },
+    { nome: 'Entretenimento', cor: '#FFC1C1' },
     { nome: 'Software', cor: '#FFFBC1' },
-    { nome: 'Shopping', cor: '#AEFFB3' },
-    { nome: 'Utilities', cor: '#FFD4AE' },
-    { nome: 'Food', cor: '#AED1FF' },
-    { nome: 'Health', cor: '#FFAEF4' },
-    { nome: 'Education', cor: '#D8AEFF' },
+    { nome: 'Compras', cor: '#AEFFB3' },
+    { nome: 'Utilidades', cor: '#FFD4AE' },
+    { nome: 'Alimentação', cor: '#AED1FF' },
+    { nome: 'Saúde', cor: '#FFAEF4' },
+    { nome: 'Educação', cor: '#D8AEFF' },
 ]
 
 const integrantes = [
@@ -71,14 +71,14 @@ const integrantes = [
 ]
 
 const opcoesTema = [
-    { valor: 'light' as const, rotulo: 'Light', icone: <MdLightMode size={18} /> },
-    { valor: 'dark' as const, rotulo: 'Dark', icone: <MdDarkMode size={18} /> },
-    { valor: 'system' as const, rotulo: 'System', icone: <MdSettingsBrightness size={18} /> },
+    { valor: 'light' as const, rotulo: 'Claro', icone: <MdLightMode size={18} /> },
+    { valor: 'dark' as const, rotulo: 'Escuro', icone: <MdDarkMode size={18} /> },
+    { valor: 'system' as const, rotulo: 'Sistema', icone: <MdSettingsBrightness size={18} /> },
 ]
 
 const opcoesIdioma = [
     { valor: 'pt' as const, rotulo: 'Português' },
-    { valor: 'en' as const, rotulo: 'English' },
+    { valor: 'en' as const, rotulo: 'Inglês' },
 ]
 
 export function Configuracoes() {
@@ -109,18 +109,18 @@ export function Configuracoes() {
     }
 
     const tituloAba: Record<AbaConfiguracao, string> = {
-        private: 'Profile',
-        security: 'Security',
-        preferences: 'Preferences',
-        financial: 'Financial',
-        about: 'About',
+        private: 'Perfil',
+        security: 'Segurança',
+        preferences: 'Preferências',
+        financial: 'Financeiro',
+        about: 'Sobre',
     }
 
     return(
         <div className={styles.conteiner}>
 
             <section className={styles.cabecalho}>
-                <h1 className={styles.titulo}>Settings</h1>
+                <h1 className={styles.titulo}>Configurações</h1>
                 <p className={styles.subtitulo}>{tituloAba[abaAtiva]}</p>
             </section>
 
@@ -129,31 +129,31 @@ export function Configuracoes() {
                     className={abaAtiva === 'private' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                     onClick={() => setAbaAtiva('private')}
                 >
-                    Private
+                    Pessoal
                 </button>
                 <button
                     className={abaAtiva === 'security' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                     onClick={() => setAbaAtiva('security')}
                 >
-                    Security
+                    Segurança
                 </button>
                 <button
                     className={abaAtiva === 'preferences' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                     onClick={() => setAbaAtiva('preferences')}
                 >
-                    Preferences
+                    Preferências
                 </button>
                 <button
                     className={abaAtiva === 'financial' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                     onClick={() => setAbaAtiva('financial')}
                 >
-                    Financial
+                    Financeiro
                 </button>
                 <button
                     className={abaAtiva === 'about' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                     onClick={() => setAbaAtiva('about')}
                 >
-                    About
+                    Sobre
                 </button>
             </div>
 
@@ -161,12 +161,12 @@ export function Configuracoes() {
                 <form className={styles.cardConteudo} onSubmit={formPrivate.handleSubmit(salvarPrivate)}>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Your name:</p>
+                        <p className={styles.rotuloCampo}>Seu nome:</p>
                         <input className={styles.input} placeholder='ex. teste da silva' disabled />
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>New name:</p>
+                        <p className={styles.rotuloCampo}>Novo nome:</p>
                         <input
                             {...formPrivate.register('novoNome')}
                             className={styles.input}
@@ -178,7 +178,7 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>E-Mail:</p>
+                        <p className={styles.rotuloCampo}>E-mail:</p>
                         <input
                             {...formPrivate.register('email')}
                             className={styles.input}
@@ -189,7 +189,7 @@ export function Configuracoes() {
                         )}
                     </div>
 
-                    <button type='submit' className={styles.botaoSalvar}>Save Changes</button>
+                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
 
                 </form>
             )}
@@ -198,12 +198,12 @@ export function Configuracoes() {
                 <form className={styles.cardConteudo} onSubmit={formSecurity.handleSubmit(salvarSecurity)}>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Your password:</p>
+                        <p className={styles.rotuloCampo}>Sua senha:</p>
                         <input className={styles.input} placeholder='ex. ****************' type='password' disabled />
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>New password:</p>
+                        <p className={styles.rotuloCampo}>Nova senha:</p>
                         <input
                             {...formSecurity.register('novaSenha')}
                             className={styles.input}
@@ -216,7 +216,7 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Confirm new password:</p>
+                        <p className={styles.rotuloCampo}>Confirmar nova senha:</p>
                         <input
                             {...formSecurity.register('confirmarNovaSenha')}
                             className={styles.input}
@@ -229,7 +229,7 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Recovery e-mail:</p>
+                        <p className={styles.rotuloCampo}>E-mail de recuperação:</p>
                         <input
                             {...formSecurity.register('emailRecuperacao')}
                             className={styles.input}
@@ -240,7 +240,7 @@ export function Configuracoes() {
                         )}
                     </div>
 
-                    <button type='submit' className={styles.botaoSalvar}>Save Changes</button>
+                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
 
                 </form>
             )}
@@ -250,7 +250,7 @@ export function Configuracoes() {
                     <div className={styles.gridPreferencias}>
 
                         <div className={styles.colunaCategorias}>
-                            <p className={styles.rotuloCampo}>Color class:</p>
+                            <p className={styles.rotuloCampo}>Cores das categorias:</p>
                             <div className={styles.listaCategorias}>
                                 {categorias.map((categoria) => (
                                     <div key={categoria.nome} className={styles.itemCategoria}>
@@ -265,7 +265,7 @@ export function Configuracoes() {
                         <div className={styles.colunaOpcoes}>
 
                             <div className={styles.campo}>
-                                <p className={styles.rotuloCampo}>Language:</p>
+                                <p className={styles.rotuloCampo}>Idioma:</p>
                                 <div className={styles.dropdownConteiner}>
                                     <button
                                         type='button'
@@ -312,7 +312,7 @@ export function Configuracoes() {
                             </div>
 
                             <div className={styles.campo}>
-                                <p className={styles.rotuloCampo}>Theme:</p>
+                                <p className={styles.rotuloCampo}>Tema:</p>
                                 <div className={styles.dropdownConteiner}>
                                     <button
                                         type='button'
@@ -356,7 +356,7 @@ export function Configuracoes() {
                 <form className={styles.cardConteudo} onSubmit={formFinancial.handleSubmit(salvarFinancial)}>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Monthly Income:</p>
+                        <p className={styles.rotuloCampo}>Renda Mensal:</p>
                         <input
                             {...formFinancial.register('rendaMensal')}
                             className={styles.input}
@@ -368,7 +368,7 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Work Hours per Month:</p>
+                        <p className={styles.rotuloCampo}>Horas de Trabalho por Mês:</p>
                         <input
                             {...formFinancial.register('horasTrabalhadas')}
                             className={styles.input}
@@ -380,11 +380,11 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Currency type:</p>
+                        <p className={styles.rotuloCampo}>Tipo de moeda:</p>
                         <div className={styles.selectFalso}>R$</div>
                     </div>
 
-                    <button type='submit' className={styles.botaoSalvar}>Save Changes</button>
+                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
 
                 </form>
             )}
@@ -408,7 +408,7 @@ export function Configuracoes() {
                     </div>
 
                     <div className={styles.infoVersao}>
-                        <p className={styles.rotuloVersao}>Version:</p>
+                        <p className={styles.rotuloVersao}>Versão:</p>
                         <p className={styles.valorVersao}>1.0.0</p>
                     </div>
 
