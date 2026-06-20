@@ -1,0 +1,352 @@
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titulo {
+  font-family: var(--fonte-base);
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.subtitulo {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.cardSelecao {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.tituloSecao {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin-bottom: 16px;
+}
+
+.listaAssinaturas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemAssinatura {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--white);
+  border: 1px solid var(--borda-formulario-campo);
+  border-radius: 16px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.itemSelecionado {
+  background-color: #FFE9E9;
+  border-color: #FFB3B3;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--cor-erro);
+}
+
+.infoAssinatura {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.linhaNome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nomeAssinatura {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.tagCategoria {
+  font-family: var(--fonte-base);
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--cor-texto-secundario);
+  background-color: var(--fundo-formulario-campo);
+  border-radius: 8px;
+  padding: 2px 10px;
+}
+
+.periodicidade {
+  font-family: var(--fonte-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.valorAssinatura {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.colunaCards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardEconomia {
+  background-color: #EAF9EF;
+  border: 1px solid #B7E8C5;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.tituloEconomia {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: #1E7B3E;
+  margin-bottom: 4px;
+}
+
+.descricaoEconomia {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 300;
+  color: #1E7B3E;
+  margin-bottom: 16px;
+}
+
+.valoresEconomia {
+  display: flex;
+  gap: 32px;
+}
+
+.legendaValor {
+  font-family: var(--fonte-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 300;
+  color: #1E7B3E;
+}
+
+.valorEconomia {
+  font-family: var(--fonte-base);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: #1E7B3E;
+}
+
+.cardCenario {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.cardCenarioRoxo {
+  background-color: #F1ECFB;
+  border-color: #D6C8F0;
+}
+
+.tituloCenario {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin-bottom: 16px;
+}
+
+.linhaCenario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 8px;
+}
+
+.valorCenario {
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.legendaPercentual {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.barraProgresso {
+  width: 100%;
+  height: 8px;
+  background-color: var(--columbia-blue);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preenchimentoBarra {
+  height: 100%;
+  background-color: var(--space-cadet);
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.preenchimentoRoxo {
+  background-color: #8B6FD1;
+}
+
+.percentualCenario {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-secundario);
+  margin-top: 6px;
+  text-align: right;
+}
+
+.cardGrafico {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.cabecalhoGrafico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tituloGrafico {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+}
+
+.subtituloGrafico {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  text-decoration: underline;
+}
+
+.botaoAlternar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--space-cadet);
+  border: none;
+  border-radius: 15px;
+  padding: 10px 16px;
+  color: var(--fundo-formulario-campo);
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.botaoAlternar:hover {
+  opacity: 0.85;
+}
+
+.areaGrafico {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--fundo-formulario-campo);
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.placeholderGrafico {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.rodapeGrafico {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  border-top: 1px solid var(--columbia-blue);
+  padding-top: 16px;
+}
+
+.legendaRodape {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.valorRodape {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}

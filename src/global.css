@@ -18,6 +18,9 @@
     --cor-primaria: var(--true-blue);
     --cor-secundaria: var(--dark-navy);
     --cor-accent: var(--pale-cerulean);
+    --cor-fundo-menu: #ECF7FF;
+    --cor-borda-menu: #98C8EB;
+    --cor-botoes-menu: #DFF2FF;
     --cor-erro: #E63946;
     
     /* Tipografia */

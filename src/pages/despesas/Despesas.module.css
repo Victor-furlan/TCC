@@ -1,0 +1,181 @@
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.titulo {
+  font-family: var(--fonte-base);
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.subtitulo {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  margin-top: 4px;
+  max-width: 400px;
+}
+
+.botaoAdicionar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--space-cadet);
+  border: none;
+  border-radius: 15px;
+  padding: 12px 20px;
+  color: var(--fundo-formulario-campo);
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.botaoAdicionar:hover {
+  opacity: 0.85;
+}
+
+.cardResumo {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.tituloResumo {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+  margin-bottom: 20px;
+}
+
+.itensResumo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.itemResumo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tituloItem {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.valorItem {
+  font-family: var(--fonte-base);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.cardHistorico {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.cabecalhoHistorico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.tituloSecao {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+}
+
+.botaoAdicionarPrimeira {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--space-cadet);
+  border: none;
+  border-radius: 15px;
+  padding: 10px 18px;
+  color: var(--fundo-formulario-campo);
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.botaoAdicionarPrimeira:hover {
+  opacity: 0.85;
+}
+
+.conteudoVazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 24px;
+}
+
+.iconeVazio {
+  color: var(--columbia-blue);
+  margin-bottom: 8px;
+}
+
+.textoVazio {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-secundario);
+}
+
+.textoVazioSub {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--columbia-blue);
+}
+
+.listaDespesas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemDespesa {
+  background-color: var(--fundo-formulario-campo);
+  border-radius: 16px;
+  padding: 14px 20px;
+}

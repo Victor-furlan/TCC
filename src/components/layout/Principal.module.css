@@ -1,0 +1,14 @@
+.gridConteiner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 70px 1fr;
+  min-height: 100vh;
+}
+
+.conteudo {
+  grid-row: 2;
+  grid-column: 2;
+  background-color: var(--white);
+  padding: 32px;
+  overflow-y: auto;
+}
