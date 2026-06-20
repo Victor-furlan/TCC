@@ -42,7 +42,7 @@ export function Login() {
 
   const ocultarModal = () => {
     setModalMensagemVisivel(false)
-    navegacao('/')
+    navegacao('dashBoard')
   }
 
   return (
