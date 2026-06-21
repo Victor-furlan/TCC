@@ -1,4 +1,5 @@
 import styles from './Assinaturas.module.css'
+import { Link } from 'react-router-dom'
 import { MdAdd, MdSearch, MdFilterList, MdEdit, MdDelete } from 'react-icons/md'
 
 export function Assinaturas() {
@@ -14,10 +15,10 @@ export function Assinaturas() {
                     <p className={styles.subtitulo}>Gerencie suas despesas recorrentes</p>
                 </div>
 
-                <button className={styles.botaoAdicionar}>
+                <Link className={styles.botaoAdicionar} to='/assinaturas/nova'>
                     <MdAdd size={20} />
                     Adicionar Assinatura
-                </button>
+                </Link>
             </section>
 
             <section className={styles.cardBusca}>

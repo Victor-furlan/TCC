@@ -37,7 +37,7 @@ export function DashBoard(){
                 <div className={styles.cabecalhoRenovacoes}>
                     <p className={styles.tituloSecao}>Próximas Renovações de Assinatura</p>
                     <Link className={styles.botaoAdicionar}
-                    to={''}>
+                    to={'/assinaturas/nova'}>
                         <MdAdd size={20} />
                         Adicionar Nova
                     </Link>

@@ -12,6 +12,7 @@ import {
     MdExpandMore,
     MdCheck,
 } from 'react-icons/md'
+import { ModalMensagem } from '../../components/ModalMensagem'
 
 type AbaConfiguracao = 'private' | 'security' | 'preferences' | 'financial' | 'about'
 
@@ -81,6 +82,12 @@ const opcoesIdioma = [
     { valor: 'en' as const, rotulo: 'Inglês' },
 ]
 
+const opcoesMoeda = [
+    { valor: 'BRL' as const, rotulo: 'Real (R$)', simbolo: 'R$' },
+    { valor: 'USD' as const, rotulo: 'Dólar (US$)', simbolo: 'US$' },
+    { valor: 'EUR' as const, rotulo: 'Euro (€)', simbolo: '€' },
+]
+
 export function Configuracoes() {
 
     const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('private')
@@ -92,20 +99,40 @@ export function Configuracoes() {
     const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('en')
     const [dropdownIdiomaAberto, setDropdownIdiomaAberto] = useState(false)
 
+    const [moedaSelecionada, setMoedaSelecionada] = useState<'BRL' | 'USD' | 'EUR'>('BRL')
+    const [dropdownMoedaAberto, setDropdownMoedaAberto] = useState(false)
+
+    const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
+    const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
+    const [modalMensagemTexto, setModalMensagemTexto] = useState('')
+
     const formPrivate = useForm<PrivateFormValues>({ resolver: zodResolver(privateSchema) })
     const formSecurity = useForm<SecurityFormValues>({ resolver: zodResolver(securitySchema) })
     const formFinancial = useForm<FinancialFormValues>({ resolver: zodResolver(financialSchema) })
 
+    const exibirModal = (titulo: string) => {
+        setModalMensagemTitulo(titulo)
+        setModalMensagemTexto('Alterações salvas com sucesso!')
+        setModalMensagemVisivel(true)
+    }
+
+    const ocultarModal = () => {
+        setModalMensagemVisivel(false)
+    }
+
     const salvarPrivate = (data: PrivateFormValues) => {
         console.log(data)
+        exibirModal('Perfil')
     }
 
     const salvarSecurity = (data: SecurityFormValues) => {
         console.log(data)
+        exibirModal('Segurança')
     }
 
     const salvarFinancial = (data: FinancialFormValues) => {
         console.log(data)
+        exibirModal('Financeiro')
     }
 
     const tituloAba: Record<AbaConfiguracao, string> = {
@@ -118,302 +145,340 @@ export function Configuracoes() {
 
     return(
         <div className={styles.conteiner}>
+            <div className={styles.areaConteudo}>
 
-            <section className={styles.cabecalho}>
-                <h1 className={styles.titulo}>Configurações</h1>
-                <p className={styles.subtitulo}>{tituloAba[abaAtiva]}</p>
-            </section>
+                <section className={styles.cabecalho}>
+                    <h1 className={styles.titulo}>Configurações</h1>
+                    <p className={styles.subtitulo}>{tituloAba[abaAtiva]}</p>
+                </section>
 
-            <div className={styles.abas}>
-                <button
-                    className={abaAtiva === 'private' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                    onClick={() => setAbaAtiva('private')}
-                >
-                    Pessoal
-                </button>
-                <button
-                    className={abaAtiva === 'security' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                    onClick={() => setAbaAtiva('security')}
-                >
-                    Segurança
-                </button>
-                <button
-                    className={abaAtiva === 'preferences' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                    onClick={() => setAbaAtiva('preferences')}
-                >
-                    Preferências
-                </button>
-                <button
-                    className={abaAtiva === 'financial' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                    onClick={() => setAbaAtiva('financial')}
-                >
-                    Financeiro
-                </button>
-                <button
-                    className={abaAtiva === 'about' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                    onClick={() => setAbaAtiva('about')}
-                >
-                    Sobre
-                </button>
-            </div>
+                <div className={styles.abas}>
+                    <button
+                        className={abaAtiva === 'private' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('private')}
+                    >
+                        Pessoal
+                    </button>
+                    <button
+                        className={abaAtiva === 'security' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('security')}
+                    >
+                        Segurança
+                    </button>
+                    <button
+                        className={abaAtiva === 'preferences' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('preferences')}
+                    >
+                        Preferências
+                    </button>
+                    <button
+                        className={abaAtiva === 'financial' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('financial')}
+                    >
+                        Financeiro
+                    </button>
+                    <button
+                        className={abaAtiva === 'about' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('about')}
+                    >
+                        Sobre
+                    </button>
+                </div>
 
-            {abaAtiva === 'private' && (
-                <form className={styles.cardConteudo} onSubmit={formPrivate.handleSubmit(salvarPrivate)}>
+                {abaAtiva === 'private' && (
+                    <form className={styles.cardConteudo} onSubmit={formPrivate.handleSubmit(salvarPrivate)}>
 
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Seu nome:</p>
-                        <input className={styles.input} placeholder='ex. teste da silva' disabled />
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Novo nome:</p>
-                        <input
-                            {...formPrivate.register('novoNome')}
-                            className={styles.input}
-                            placeholder='ex. teste123'
-                        />
-                        {formPrivate.formState.errors.novoNome && (
-                            <p className={styles.erro}>{formPrivate.formState.errors.novoNome.message}</p>
-                        )}
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>E-mail:</p>
-                        <input
-                            {...formPrivate.register('email')}
-                            className={styles.input}
-                            placeholder='ex. teste@gmail.com'
-                        />
-                        {formPrivate.formState.errors.email && (
-                            <p className={styles.erro}>{formPrivate.formState.errors.email.message}</p>
-                        )}
-                    </div>
-
-                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
-                </form>
-            )}
-
-            {abaAtiva === 'security' && (
-                <form className={styles.cardConteudo} onSubmit={formSecurity.handleSubmit(salvarSecurity)}>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Sua senha:</p>
-                        <input className={styles.input} placeholder='ex. ****************' type='password' disabled />
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Nova senha:</p>
-                        <input
-                            {...formSecurity.register('novaSenha')}
-                            className={styles.input}
-                            placeholder='ex. **************'
-                            type='password'
-                        />
-                        {formSecurity.formState.errors.novaSenha && (
-                            <p className={styles.erro}>{formSecurity.formState.errors.novaSenha.message}</p>
-                        )}
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Confirmar nova senha:</p>
-                        <input
-                            {...formSecurity.register('confirmarNovaSenha')}
-                            className={styles.input}
-                            placeholder='ex. **************'
-                            type='password'
-                        />
-                        {formSecurity.formState.errors.confirmarNovaSenha && (
-                            <p className={styles.erro}>{formSecurity.formState.errors.confirmarNovaSenha.message}</p>
-                        )}
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>E-mail de recuperação:</p>
-                        <input
-                            {...formSecurity.register('emailRecuperacao')}
-                            className={styles.input}
-                            placeholder='ex. teste@gmail.com'
-                        />
-                        {formSecurity.formState.errors.emailRecuperacao && (
-                            <p className={styles.erro}>{formSecurity.formState.errors.emailRecuperacao.message}</p>
-                        )}
-                    </div>
-
-                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
-                </form>
-            )}
-
-            {abaAtiva === 'preferences' && (
-                <div className={styles.cardConteudo}>
-                    <div className={styles.gridPreferencias}>
-
-                        <div className={styles.colunaCategorias}>
-                            <p className={styles.rotuloCampo}>Cores das categorias:</p>
-                            <div className={styles.listaCategorias}>
-                                {categorias.map((categoria) => (
-                                    <div key={categoria.nome} className={styles.itemCategoria}>
-                                        <span className={styles.amostraCor} style={{ backgroundColor: categoria.cor }} />
-                                        <p className={styles.nomeCategoria}>{categoria.nome}</p>
-                                        <p className={styles.hexCategoria}>{categoria.cor}</p>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Seu nome:</p>
+                            <input className={styles.input} placeholder='ex. teste da silva' disabled />
                         </div>
 
-                        <div className={styles.colunaOpcoes}>
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Novo nome:</p>
+                            <input
+                                {...formPrivate.register('novoNome')}
+                                className={styles.input}
+                                placeholder='ex. teste123'
+                            />
+                            {formPrivate.formState.errors.novoNome && (
+                                <p className={styles.erro}>{formPrivate.formState.errors.novoNome.message}</p>
+                            )}
+                        </div>
 
-                            <div className={styles.campo}>
-                                <p className={styles.rotuloCampo}>Idioma:</p>
-                                <div className={styles.dropdownConteiner}>
-                                    <button
-                                        type='button'
-                                        className={styles.selectFalso}
-                                        onClick={() => setDropdownIdiomaAberto(!dropdownIdiomaAberto)}
-                                    >
-                                        <MdLanguage size={18} />
-                                        {opcoesIdioma.find((opcao) => opcao.valor === idiomaSelecionado)?.rotulo}
-                                        <MdExpandMore size={18} className={styles.iconeExpandir} />
-                                    </button>
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>E-mail:</p>
+                            <input
+                                {...formPrivate.register('email')}
+                                className={styles.input}
+                                placeholder='ex. teste@gmail.com'
+                            />
+                            {formPrivate.formState.errors.email && (
+                                <p className={styles.erro}>{formPrivate.formState.errors.email.message}</p>
+                            )}
+                        </div>
 
-                                    {dropdownIdiomaAberto && (
-                                        <div className={styles.listaDropdown}>
-                                            {opcoesIdioma.map((opcao) => (
-                                                <button
-                                                    key={opcao.valor}
-                                                    type='button'
-                                                    className={styles.itemDropdown}
-                                                    onClick={() => {
-                                                        setIdiomaSelecionado(opcao.valor)
-                                                        setDropdownIdiomaAberto(false)
-                                                    }}
-                                                >
-                                                    {opcao.rotulo}
-                                                    {idiomaSelecionado === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
-                                                </button>
-                                            ))}
+                        <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
+
+                    </form>
+                )}
+
+                {abaAtiva === 'security' && (
+                    <form className={styles.cardConteudo} onSubmit={formSecurity.handleSubmit(salvarSecurity)}>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Sua senha:</p>
+                            <input className={styles.input} placeholder='ex. ****************' type='password' disabled />
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Nova senha:</p>
+                            <input
+                                {...formSecurity.register('novaSenha')}
+                                className={styles.input}
+                                placeholder='ex. **************'
+                                type='password'
+                            />
+                            {formSecurity.formState.errors.novaSenha && (
+                                <p className={styles.erro}>{formSecurity.formState.errors.novaSenha.message}</p>
+                            )}
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Confirmar nova senha:</p>
+                            <input
+                                {...formSecurity.register('confirmarNovaSenha')}
+                                className={styles.input}
+                                placeholder='ex. **************'
+                                type='password'
+                            />
+                            {formSecurity.formState.errors.confirmarNovaSenha && (
+                                <p className={styles.erro}>{formSecurity.formState.errors.confirmarNovaSenha.message}</p>
+                            )}
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>E-mail de recuperação:</p>
+                            <input
+                                {...formSecurity.register('emailRecuperacao')}
+                                className={styles.input}
+                                placeholder='ex. teste@gmail.com'
+                            />
+                            {formSecurity.formState.errors.emailRecuperacao && (
+                                <p className={styles.erro}>{formSecurity.formState.errors.emailRecuperacao.message}</p>
+                            )}
+                        </div>
+
+                        <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
+
+                    </form>
+                )}
+
+                {abaAtiva === 'preferences' && (
+                    <div className={styles.cardConteudo}>
+                        <div className={styles.gridPreferencias}>
+
+                            <div className={styles.colunaCategorias}>
+                                <p className={styles.rotuloCampo}>Cores das categorias:</p>
+                                <div className={styles.listaCategorias}>
+                                    {categorias.map((categoria) => (
+                                        <div key={categoria.nome} className={styles.itemCategoria}>
+                                            <span className={styles.amostraCor} style={{ backgroundColor: categoria.cor }} />
+                                            <p className={styles.nomeCategoria}>{categoria.nome}</p>
+                                            <p className={styles.hexCategoria}>{categoria.cor}</p>
                                         </div>
-                                    )}
+                                    ))}
                                 </div>
                             </div>
 
-                            <div className={styles.campo}>
-                                <p className={styles.rotuloCampo}>VLibras:</p>
+                            <div className={styles.colunaOpcoes}>
+
+                                <div className={styles.campo}>
+                                    <p className={styles.rotuloCampo}>Idioma:</p>
+                                    <div className={styles.dropdownConteiner}>
+                                        <button
+                                            type='button'
+                                            className={styles.selectFalso}
+                                            onClick={() => setDropdownIdiomaAberto(!dropdownIdiomaAberto)}
+                                        >
+                                            <MdLanguage size={18} />
+                                            {opcoesIdioma.find((opcao) => opcao.valor === idiomaSelecionado)?.rotulo}
+                                            <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                        </button>
+
+                                        {dropdownIdiomaAberto && (
+                                            <div className={styles.listaDropdown}>
+                                                {opcoesIdioma.map((opcao) => (
+                                                    <button
+                                                        key={opcao.valor}
+                                                        type='button'
+                                                        className={styles.itemDropdown}
+                                                        onClick={() => {
+                                                            setIdiomaSelecionado(opcao.valor)
+                                                            setDropdownIdiomaAberto(false)
+                                                        }}
+                                                    >
+                                                        {opcao.rotulo}
+                                                        {idiomaSelecionado === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className={styles.campo}>
+                                    <p className={styles.rotuloCampo}>VLibras:</p>
+                                    <button
+                                        type='button'
+                                        className={vlibrasAtivo ? `${styles.toggle} ${styles.toggleAtivo}` : styles.toggle}
+                                        onClick={() => setVlibrasAtivo(!vlibrasAtivo)}
+                                    >
+                                        <MdAccessibility size={16} />
+                                        {vlibrasAtivo ? 'Ativado' : 'Desativado'}
+                                        <span className={styles.bolinhaToggle} />
+                                    </button>
+                                </div>
+
+                                <div className={styles.campo}>
+                                    <p className={styles.rotuloCampo}>Tema:</p>
+                                    <div className={styles.dropdownConteiner}>
+                                        <button
+                                            type='button'
+                                            className={styles.selectFalso}
+                                            onClick={() => setDropdownTemaAberto(!dropdownTemaAberto)}
+                                        >
+                                            {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.icone}
+                                            {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.rotulo}
+                                            <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                        </button>
+
+                                        {dropdownTemaAberto && (
+                                            <div className={styles.listaDropdown}>
+                                                {opcoesTema.map((opcao) => (
+                                                    <button
+                                                        key={opcao.valor}
+                                                        type='button'
+                                                        className={styles.itemDropdown}
+                                                        onClick={() => {
+                                                            setTemaSelecionado(opcao.valor)
+                                                            setDropdownTemaAberto(false)
+                                                        }}
+                                                    >
+                                                        {opcao.icone}
+                                                        {opcao.rotulo}
+                                                        {temaSelecionado === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                )}
+
+                {abaAtiva === 'financial' && (
+                    <form className={styles.cardConteudo} onSubmit={formFinancial.handleSubmit(salvarFinancial)}>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Renda Mensal:</p>
+                            <input
+                                {...formFinancial.register('rendaMensal')}
+                                className={styles.input}
+                                placeholder='ex. R$ 4200,17'
+                            />
+                            {formFinancial.formState.errors.rendaMensal && (
+                                <p className={styles.erro}>{formFinancial.formState.errors.rendaMensal.message}</p>
+                            )}
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Horas de Trabalho por Mês:</p>
+                            <input
+                                {...formFinancial.register('horasTrabalhadas')}
+                                className={styles.input}
+                                placeholder='ex. 160'
+                            />
+                            {formFinancial.formState.errors.horasTrabalhadas && (
+                                <p className={styles.erro}>{formFinancial.formState.errors.horasTrabalhadas.message}</p>
+                            )}
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Tipo de moeda:</p>
+                            <div className={styles.dropdownConteiner}>
                                 <button
                                     type='button'
-                                    className={vlibrasAtivo ? `${styles.toggle} ${styles.toggleAtivo}` : styles.toggle}
-                                    onClick={() => setVlibrasAtivo(!vlibrasAtivo)}
+                                    className={styles.selectFalso}
+                                    onClick={() => setDropdownMoedaAberto(!dropdownMoedaAberto)}
                                 >
-                                    <MdAccessibility size={16} />
-                                    {vlibrasAtivo ? 'Ativado' : 'Desativado'}
-                                    <span className={styles.bolinhaToggle} />
+                                    {opcoesMoeda.find((opcao) => opcao.valor === moedaSelecionada)?.rotulo}
+                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
+
+                                {dropdownMoedaAberto && (
+                                    <div className={styles.listaDropdown}>
+                                        {opcoesMoeda.map((opcao) => (
+                                            <button
+                                                key={opcao.valor}
+                                                type='button'
+                                                className={styles.itemDropdown}
+                                                onClick={() => {
+                                                    setMoedaSelecionada(opcao.valor)
+                                                    setDropdownMoedaAberto(false)
+                                                }}
+                                            >
+                                                {opcao.rotulo}
+                                                {moedaSelecionada === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
+                        </div>
 
-                            <div className={styles.campo}>
-                                <p className={styles.rotuloCampo}>Tema:</p>
-                                <div className={styles.dropdownConteiner}>
-                                    <button
-                                        type='button'
-                                        className={styles.selectFalso}
-                                        onClick={() => setDropdownTemaAberto(!dropdownTemaAberto)}
-                                    >
-                                        {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.icone}
-                                        {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.rotulo}
-                                        <MdExpandMore size={18} className={styles.iconeExpandir} />
-                                    </button>
+                        <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
 
-                                    {dropdownTemaAberto && (
-                                        <div className={styles.listaDropdown}>
-                                            {opcoesTema.map((opcao) => (
-                                                <button
-                                                    key={opcao.valor}
-                                                    type='button'
-                                                    className={styles.itemDropdown}
-                                                    onClick={() => {
-                                                        setTemaSelecionado(opcao.valor)
-                                                        setDropdownTemaAberto(false)
-                                                    }}
-                                                >
-                                                    {opcao.icone}
-                                                    {opcao.rotulo}
-                                                    {temaSelecionado === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
+                    </form>
+                )}
+
+                {abaAtiva === 'about' && (
+                    <div className={styles.cardConteudo}>
+
+                        <p className={styles.descricaoSobre}>
+                            MindCash é um aplicativo de controle financeiro pessoal que integra análise emocional
+                            e a percepção do dinheiro como tempo de vida, desenvolvido como Trabalho de Conclusão
+                            de Curso (TCC) do Técnico em Desenvolvimento de Sistemas da Etec de Hortolândia.
+                        </p>
+
+                        <div className={styles.listaIntegrantes}>
+                            {integrantes.map((integrante) => (
+                                <div key={integrante.nome} className={styles.itemIntegrante}>
+                                    <div className={styles.avatarPlaceholder} />
+                                    <p className={styles.nomeIntegrante}>{integrante.nome}</p>
                                 </div>
-                            </div>
+                            ))}
+                        </div>
 
+                        <div className={styles.infoVersao}>
+                            <p className={styles.rotuloVersao}>Versão:</p>
+                            <p className={styles.valorVersao}>1.0.0</p>
                         </div>
 
                     </div>
-                </div>
-            )}
+                )}
 
-            {abaAtiva === 'financial' && (
-                <form className={styles.cardConteudo} onSubmit={formFinancial.handleSubmit(salvarFinancial)}>
+            </div>
 
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Renda Mensal:</p>
-                        <input
-                            {...formFinancial.register('rendaMensal')}
-                            className={styles.input}
-                            placeholder='ex. R$ 4200,17'
-                        />
-                        {formFinancial.formState.errors.rendaMensal && (
-                            <p className={styles.erro}>{formFinancial.formState.errors.rendaMensal.message}</p>
-                        )}
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Horas de Trabalho por Mês:</p>
-                        <input
-                            {...formFinancial.register('horasTrabalhadas')}
-                            className={styles.input}
-                            placeholder='ex. 160'
-                        />
-                        {formFinancial.formState.errors.horasTrabalhadas && (
-                            <p className={styles.erro}>{formFinancial.formState.errors.horasTrabalhadas.message}</p>
-                        )}
-                    </div>
-
-                    <div className={styles.campo}>
-                        <p className={styles.rotuloCampo}>Tipo de moeda:</p>
-                        <div className={styles.selectFalso}>R$</div>
-                    </div>
-
-                    <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
-                </form>
-            )}
-
-            {abaAtiva === 'about' && (
-                <div className={styles.cardConteudo}>
-
-                    <p className={styles.descricaoSobre}>
-                        MindCash é um aplicativo de controle financeiro pessoal que integra análise emocional
-                        e a percepção do dinheiro como tempo de vida, desenvolvido como Trabalho de Conclusão
-                        de Curso (TCC) do Técnico em Desenvolvimento de Sistemas da Etec de Hortolândia.
-                    </p>
-
-                    <div className={styles.listaIntegrantes}>
-                        {integrantes.map((integrante) => (
-                            <div key={integrante.nome} className={styles.itemIntegrante}>
-                                <div className={styles.avatarPlaceholder} />
-                                <p className={styles.nomeIntegrante}>{integrante.nome}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className={styles.infoVersao}>
-                        <p className={styles.rotuloVersao}>Versão:</p>
-                        <p className={styles.valorVersao}>1.0.0</p>
-                    </div>
-
-                </div>
-            )}
+            <ModalMensagem 
+                exibir={modalMensagemVisivel}
+                ocultar={() => ocultarModal()}
+                titulo={modalMensagemTitulo}
+                texto={modalMensagemTexto}
+            />
 
         </div>
     )

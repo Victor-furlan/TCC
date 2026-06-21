@@ -1,4 +1,5 @@
 import styles from './Despesas.module.css'
+import { Link } from 'react-router-dom'
 import { MdAdd, MdShoppingBag } from 'react-icons/md'
 
 const meses = [
@@ -23,10 +24,10 @@ export function Despesas() {
                     <p className={styles.subtitulo}>Acompanhe despesas pontuais e monitore seus padrões de gastos</p>
                 </div>
 
-                <button className={styles.botaoAdicionar}>
+                <Link className={styles.botaoAdicionar} to='/despesas/nova'>
                     <MdAdd size={20} />
                     Adicionar Despesa
-                </button>
+                </Link>
             </section>
 
             <section className={styles.cardResumo}>
@@ -53,10 +54,10 @@ export function Despesas() {
             <section className={styles.cardHistorico}>
                 <div className={styles.cabecalhoHistorico}>
                     <p className={styles.tituloSecao}>Histórico de Despesas</p>
-                    <button className={styles.botaoAdicionarPrimeira}>
+                    <Link className={styles.botaoAdicionarPrimeira} to='/despesas/nova'>
                         <MdAdd size={18} />
                         Adicionar primeira despesa
-                    </button>
+                    </Link>
                 </div>
 
                 {despesas.length === 0 ? (

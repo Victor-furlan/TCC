@@ -7,12 +7,13 @@
   align-items: center;
   padding: 32px 16px;
   gap: 40px;
-  border-right: 1px solid ;
+  border-right: 1px solid;
   border-color: var(--cor-borda-menu);
 
   position: sticky;
   top: 0;
   align-self: start;
+  min-height: 100vh;
 }
 .logo {
   height: 3.8rem;

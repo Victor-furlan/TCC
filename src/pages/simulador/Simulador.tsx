@@ -15,7 +15,11 @@ const RENDA_MENSAL = 5000
 
 const assinaturas: AssinaturaTipo[] = [
     { id: '1', nome: 'Netflix', categoria: 'Entretenimento', valorMensal: 15.99 },
-    { id: '2', nome: 'teste', categoria: 'teste', valorMensal: 100 }
+    { id: '2', nome: 'teste1', categoria: 'teste', valorMensal: 1000 },
+    { id: '3', nome: 'teste2', categoria: 'teste', valorMensal: 1000 },
+    { id: '4', nome: 'teste3', categoria: 'teste', valorMensal: 1000 },
+    { id: '5', nome: 'teste4', categoria: 'teste', valorMensal: 1000 },
+    { id: '6', nome: 'teste5', categoria: 'teste', valorMensal: 1000 },
 ]
 
 export function Simulador() {

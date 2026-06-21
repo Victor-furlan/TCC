@@ -33,13 +33,14 @@
   gap: 6px;
   background-color: var(--space-cadet);
   border: none;
-  border-radius: 15px;
+  border-radius: 20px;
   padding: 12px 20px;
   color: var(--fundo-formulario-campo);
   font-family: var(--fonte-base);
   font-size: 0.9rem;
   font-style: italic;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
   transition: opacity 0.2s;
 }
