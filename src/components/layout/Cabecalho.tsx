@@ -2,7 +2,7 @@ import styles from './Cabecalho.module.css'
 import { MdAccountCircle, MdPerson, MdLogout } from 'react-icons/md'
 import { IoMdNotifications } from "react-icons/io"
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface CabecalhoProps {
     nomeUsuario: string
@@ -41,10 +41,14 @@ export function Cabecalho({ nomeUsuario }: CabecalhoProps){
                         <div className={styles.listaDropdown}>
                             <p className={styles.tituloDropdown}>Minha Conta</p>
 
-                            <button className={styles.itemDropdown}>
+                            <Link
+                                className={styles.itemDropdown}
+                                to='/perfil'
+                                onClick={() => setDropdownContaAberto(false)}
+                            >
                                 <MdPerson size={18} />
                                 Perfil
-                            </button>
+                            </Link>
 
                             <button
                                 className={styles.itemDropdown}

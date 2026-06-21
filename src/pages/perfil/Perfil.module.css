@@ -1,0 +1,183 @@
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+.areaConteudo {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.botaoVoltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--fundo-formulario-campo);
+  color: var(--cor-texto-secundario);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.botaoVoltar:hover {
+  opacity: 0.7;
+}
+
+.titulo {
+  font-family: var(--fonte-base);
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.subtitulo {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.cardPerfil {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tituloSecao {
+  font-family: var(--fonte-base);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.linhaAvatar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--fundo-formulario-campo);
+  border: 1px solid var(--columbia-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-base);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cor-primaria);
+}
+
+.nomeUsuario {
+  font-family: var(--fonte-base);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.emailUsuario {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.divisoria {
+  height: 1px;
+  background-color: var(--columbia-blue);
+}
+
+.infoCampo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rotuloInfo {
+  font-family: var(--fonte-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cor-texto-secundario);
+}
+
+.valorInfo {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+}
+
+.botaoEditar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--fundo-formulario-campo);
+  border: 1px solid var(--borda-formulario-campo);
+  border-radius: 16px;
+  padding: 14px;
+  color: var(--cor-texto-principal);
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.botaoEditar:hover {
+  opacity: 0.8;
+}
+
+.botaoSair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--cor-erro);
+  border: none;
+  border-radius: 16px;
+  padding: 14px;
+  color: var(--white);
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.botaoSair:hover {
+  opacity: 0.85;
+}
