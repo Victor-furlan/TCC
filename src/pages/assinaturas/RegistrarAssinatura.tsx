@@ -1,11 +1,12 @@
 import styles from './RegistrarAssinatura.module.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
+import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -40,6 +41,8 @@ const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
 
 export function RegistrarAssinatura() {
 
+    const { adicionarAssinatura } = useContext(AssinaturasContexto)
+
     const navegacao = useNavigate()
 
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>(null)
@@ -72,6 +75,17 @@ export function RegistrarAssinatura() {
     }
 
     const registrarAssinatura = (data: FormValues) => {
+        adicionarAssinatura({
+            nome: data.nomeAssinatura,
+            valor: data.valor,
+            periodicidade: data.periodicidade,
+            categoria: data.categoria,
+            proximaCobranca: data.proximaCobranca,
+            motivo: data.motivo,
+            humor: humorSelecionado || undefined,
+            nivelArrependimento: nivelArrependimento || undefined,
+        })
+
         setModalMensagemTexto(`Assinatura "${data.nomeAssinatura}" adicionada com sucesso!`)
         exibirModal()
     }

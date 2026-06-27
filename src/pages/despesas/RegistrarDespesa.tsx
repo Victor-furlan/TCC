@@ -1,11 +1,12 @@
 import styles from './RegistrarDespesa.module.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
+import { DespesasContexto } from '../../contexts/DespesasContexto'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -47,6 +48,8 @@ export function RegistrarDespesa() {
 
     const navegacao = useNavigate()
 
+    const { adicionarDespesa } = useContext(DespesasContexto)
+
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>(null)
     const [nivelArrependimento, setNivelArrependimento] = useState(0)
 
@@ -71,6 +74,16 @@ export function RegistrarDespesa() {
     }
 
     const registrarDespesa = (data: FormValues) => {
+        adicionarDespesa({
+            nome: data.nome,
+            data: data.data,
+            valor: data.valor,
+            categoria: data.categoria,
+            motivo: data.motivo,
+            humor: humorSelecionado || undefined,
+            nivelArrependimento: nivelArrependimento || undefined,
+        })
+
         setModalMensagemTexto(`Despesa "${data.nome}" registrada com sucesso!`)
         exibirModal()
     }
