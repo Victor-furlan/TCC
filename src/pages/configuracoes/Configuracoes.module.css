@@ -315,6 +315,7 @@
 
 .listaIntegrantes {
   display: flex;
+  justify-content: center;
   gap: 24px;
   flex-wrap: wrap;
 }
@@ -326,12 +327,12 @@
   gap: 8px;
 }
 
-.avatarPlaceholder {
-  width: 64px;
-  height: 64px;
+.avatarFoto {
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
-  background-color: var(--fundo-formulario-campo);
-  border: 1px solid var(--columbia-blue);
+  object-fit: cover;
+  border: 1.5px solid var(--columbia-blue);
 }
 
 .nomeIntegrante {

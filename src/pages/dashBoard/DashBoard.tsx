@@ -1,10 +1,52 @@
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 import styles from './DashBoard.module.css'
 import { MdCalendarToday, MdAdd, MdEdit, MdDelete } from 'react-icons/md'
+import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+
+const coresCategorias: Record<string, string> = {
+    'Entretenimento': '#FFC1C1',
+    'Software': '#FFFBC1',
+    'Compras': '#AEFFB3',
+    'Utilidades': '#FFD4AE',
+    'Alimentação': '#AED1FF',
+    'Saúde': '#FFAEF4',
+    'Educação': '#D8AEFF',
+}
+
+const corPadrao = '#E9F6FF'
 
 export function DashBoard(){
 
-    const assinaturas: any[] = []
+    const { assinaturas, removerAssinatura } = useContext(AssinaturasContexto)
+
+    const formatarMoeda = (valor: number) =>
+        valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    const formatarData = (data: string) => {
+        if (!data) return ''
+        const [ano, mes, dia] = data.split('-')
+        return `${dia}/${mes}/${ano}`
+    }
+
+    const diasAteRenovacao = (data: string) => {
+        const hoje = new Date()
+        hoje.setHours(0, 0, 0, 0)
+
+        const [ano, mes, dia] = data.split('-').map(Number)
+        const dataRenovacao = new Date(ano, mes - 1, dia)
+        dataRenovacao.setHours(0, 0, 0, 0)
+
+        const diferencaMs = dataRenovacao.getTime() - hoje.getTime()
+        return Math.round(diferencaMs / (1000 * 60 * 60 * 24))
+    }
+
+    const proximasRenovacoes = assinaturas
+        .filter((assinatura) => {
+            const dias = diasAteRenovacao(assinatura.proximaCobranca)
+            return dias >= 0 && dias <= 7
+        })
+        .sort((a, b) => diasAteRenovacao(a.proximaCobranca) - diasAteRenovacao(b.proximaCobranca))
 
     return(
         <div className={styles.conteiner}>
@@ -28,7 +70,7 @@ export function DashBoard(){
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Próximas Renovações</p>
-                    <p className={styles.valorMetrica}>0</p>
+                    <p className={styles.valorMetrica}>{proximasRenovacoes.length}</p>
                 </div>
 
             </section>
@@ -43,10 +85,36 @@ export function DashBoard(){
                     </Link>
                 </div>
 
-                <div className={styles.conteudoVazio}>
-                    <MdCalendarToday size={48} className={styles.iconeVazio} />
-                    <p className={styles.textoVazio}>Nenhuma renovação nos próximos 7 dias</p>
-                </div>
+                {proximasRenovacoes.length === 0 ? (
+                    <div className={styles.conteudoVazio}>
+                        <MdCalendarToday size={48} className={styles.iconeVazio} />
+                        <p className={styles.textoVazio}>Nenhuma renovação nos próximos 7 dias</p>
+                    </div>
+                ) : (
+                    <div className={styles.listaAssinaturas}>
+                        {proximasRenovacoes.map((assinatura) => (
+                            <div key={assinatura.id} className={styles.itemAssinatura}>
+
+                                <div
+                                    className={styles.iconeInicial}
+                                    style={{ backgroundColor: coresCategorias[assinatura.categoria] || corPadrao }}
+                                >
+                                    {assinatura.nome.charAt(0).toUpperCase()}
+                                </div>
+
+                                <div className={styles.infoItem}>
+                                    <p className={styles.nomeItem}>{assinatura.nome}</p>
+                                    <p className={styles.dataItem}>
+                                        Renovação em {formatarData(assinatura.proximaCobranca)}
+                                    </p>
+                                </div>
+
+                                <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+
+                            </div>
+                        ))}
+                    </div>
+                )}
             </section>
 
             <section className={styles.cardAssinaturas}>
@@ -58,12 +126,29 @@ export function DashBoard(){
                     <div className={styles.listaAssinaturas}>
                         {assinaturas.map((assinatura) => (
                             <div key={assinatura.id} className={styles.itemAssinatura}>
-                                <p>{assinatura.nome}</p>
+
+                                <div
+                                    className={styles.iconeInicial}
+                                    style={{ backgroundColor: coresCategorias[assinatura.categoria] || corPadrao }}
+                                >
+                                    {assinatura.nome.charAt(0).toUpperCase()}
+                                </div>
+
+                                <div className={styles.infoItem}>
+                                    <p className={styles.nomeItem}>{assinatura.nome}</p>
+                                    <p className={styles.dataItem}>{assinatura.categoria}</p>
+                                </div>
+
+                                <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+
                                 <div className={styles.acoesAssinatura}>
-                                    <button className={styles.botaoIcone}>
+                                    <Link className={styles.botaoIcone} to={`/assinaturas/editar/${assinatura.id}`}>
                                         <MdEdit size={18} />
-                                    </button>
-                                    <button className={styles.botaoIcone}>
+                                    </Link>
+                                    <button
+                                        className={styles.botaoIcone}
+                                        onClick={() => removerAssinatura(assinatura.id)}
+                                    >
                                         <MdDelete size={18} />
                                     </button>
                                 </div>

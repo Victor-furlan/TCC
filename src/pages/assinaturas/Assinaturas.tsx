@@ -1,10 +1,47 @@
 import styles from './Assinaturas.module.css'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 import { MdAdd, MdSearch, MdFilterList, MdEdit, MdDelete } from 'react-icons/md'
+import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+
+const coresCategorias: Record<string, string> = {
+    'Entretenimento': '#FFC1C1',
+    'Software': '#FFFBC1',
+    'Compras': '#AEFFB3',
+    'Utilidades': '#FFD4AE',
+    'Alimentação': '#AED1FF',
+    'Saúde': '#FFAEF4',
+    'Educação': '#D8AEFF',
+}
+
+const corPadrao = '#E9F6FF'
 
 export function Assinaturas() {
 
-    const assinaturas: any[] = []
+    const { assinaturas, removerAssinatura } = useContext(AssinaturasContexto)
+
+    const assinaturasAtivas = assinaturas.length
+
+    const custoMensalTotal = assinaturas.reduce((soma, assinatura) => {
+        if (assinatura.periodicidade === 'Anual') {
+            return soma + (assinatura.valor / 12)
+        }
+        if (assinatura.periodicidade === 'Semanal') {
+            return soma + (assinatura.valor * 4)
+        }
+        return soma + assinatura.valor
+    }, 0)
+
+    const custoAnual = custoMensalTotal * 12
+
+    const formatarMoeda = (valor: number) =>
+        valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    const formatarData = (data: string) => {
+        if (!data) return ''
+        const [ano, mes, dia] = data.split('-')
+        return `${dia}/${mes}/${ano}`
+    }
 
     return(
         <div className={styles.conteiner}>
@@ -40,17 +77,17 @@ export function Assinaturas() {
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Assinaturas Ativas</p>
-                    <p className={styles.valorMetrica}>0</p>
+                    <p className={styles.valorMetrica}>{assinaturasAtivas}</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Custo Mensal Total</p>
-                    <p className={styles.valorMetrica}>R$ 0,00</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(custoMensalTotal)}</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Custo Anual</p>
-                    <p className={styles.valorMetrica}>R$ 0,00</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(custoAnual)}</p>
                 </div>
 
             </section>
@@ -64,15 +101,41 @@ export function Assinaturas() {
                     <div className={styles.listaAssinaturas}>
                         {assinaturas.map((assinatura) => (
                             <div key={assinatura.id} className={styles.itemAssinatura}>
-                                <p>{assinatura.nome}</p>
+
+                                <div
+                                    className={styles.iconeInicial}
+                                    style={{ backgroundColor: coresCategorias[assinatura.categoria] || corPadrao }}
+                                >
+                                    {assinatura.nome.charAt(0).toUpperCase()}
+                                </div>
+
+                                <div className={styles.infoAssinatura}>
+                                    <div className={styles.linhaNomeCategoria}>
+                                        <p className={styles.nomeAssinatura}>{assinatura.nome}</p>
+                                        <span className={styles.tagCategoria}>{assinatura.categoria}</span>
+                                    </div>
+                                    <p className={styles.proximaCobranca}>
+                                        Próxima cobrança: {formatarData(assinatura.proximaCobranca)}
+                                    </p>
+                                </div>
+
+                                <div className={styles.valorPeriodicidade}>
+                                    <p className={styles.valorAssinatura}>{formatarMoeda(assinatura.valor)}</p>
+                                    <p className={styles.periodicidadeAssinatura}>{assinatura.periodicidade}</p>
+                                </div>
+
                                 <div className={styles.acoesAssinatura}>
-                                    <button className={styles.botaoIcone}>
+                                    <Link className={styles.botaoIcone} to={`/assinaturas/editar/${assinatura.id}`}>
                                         <MdEdit size={18} />
-                                    </button>
-                                    <button className={styles.botaoIcone}>
+                                    </Link>
+                                    <button
+                                        className={styles.botaoIcone}
+                                        onClick={() => removerAssinatura(assinatura.id)}
+                                    >
                                         <MdDelete size={18} />
                                     </button>
                                 </div>
+
                             </div>
                         ))}
                     </div>

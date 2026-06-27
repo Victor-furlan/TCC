@@ -1,4 +1,7 @@
 import styles from './Configuracoes.module.css'
+import fotoVictor from '../../assets/imagens/victor.jpeg'
+import fotoPerola from '../../assets/imagens/perola.jpeg'
+import fotoKlayton from '../../assets/imagens/klayton.jpeg'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -66,9 +69,9 @@ const categorias = [
 ]
 
 const integrantes = [
-    { nome: 'Victor Canissaris Furlan' },
-    { nome: 'Pérola Evellyn Daltro Figueiredo' },
-    { nome: 'Klayton Harlen Mendes Souza' },
+    { nome: 'Victor Canissaris Furlan', foto: fotoVictor },
+    { nome: 'Pérola Evellyn Daltro Figueiredo', foto: fotoPerola },
+    { nome: 'Klayton Harlen Mendes Souza', foto: fotoKlayton },
 ]
 
 const opcoesTema = [
@@ -457,7 +460,12 @@ export function Configuracoes() {
                         <div className={styles.listaIntegrantes}>
                             {integrantes.map((integrante) => (
                                 <div key={integrante.nome} className={styles.itemIntegrante}>
-                                    <div className={styles.avatarPlaceholder} />
+                                    <img
+                                        src={integrante.foto}
+                                        className={styles.avatarFoto}
+                                        style={integrante.nome.includes('Victor') ? { objectPosition: 'center 30%' } : undefined}
+                                        alt={integrante.nome}
+                                    />
                                     <p className={styles.nomeIntegrante}>{integrante.nome}</p>
                                 </div>
                             ))}
