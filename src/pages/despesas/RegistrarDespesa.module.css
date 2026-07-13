@@ -194,7 +194,7 @@
 }
 
 .estrelaPreenchida {
-  color: #FBBF24;
+  color: var(--cor-estrelas);
 }
 
 .botaoLimpar {
@@ -277,7 +277,7 @@
 }
 
 .iconeDica {
-  color: #FBBF24;
+  color: var(--cor-estrelas);
 }
 
 .textoDica {

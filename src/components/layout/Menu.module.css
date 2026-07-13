@@ -40,11 +40,11 @@
   text-decoration: none;
   transition: background-color 0.2s, color 0.2s;
   background-color: var(--cor-botoes-menu);
-  border: 1px solid #BAE0FF;
+  border: 1px solid var(--cor-borda-menu);
 }
 
 .item:hover {
-  background-color: #c3e7ff;
+  background-color: var(--cor-fundo-botao-menu);
 }
 
 .rotulo {

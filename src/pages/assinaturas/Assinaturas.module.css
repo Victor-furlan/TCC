@@ -283,8 +283,81 @@
   color: var(--cor-texto-secundario);
 }
 
+.horasDeVida {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fonte-base);
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-primaria);
+  margin-top: 2px;
+}
+
 .acoesAssinatura {
   display: flex;
   gap: 8px;
   flex-shrink: 0;
+}
+
+.dropdownFiltroConteiner {
+  position: relative;
+}
+
+.botaoFiltroAtivo {
+  border-color: var(--true-blue);
+  color: var(--true-blue);
+}
+
+.listaDropdownFiltro {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(14, 29, 42, 0.12);
+}
+
+.tituloDropdownFiltro {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  padding: 4px 8px 12px 8px;
+  border-bottom: 1px solid var(--borda-formulario-campo);
+  margin-bottom: 8px;
+}
+
+.itemDropdownFiltro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 10px 8px;
+  border-radius: 8px;
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.2s;
+}
+
+.itemDropdownFiltro:hover {
+  opacity: 0.7;
+}
+
+.iconeCheck {
+  color: var(--cor-primaria);
 }

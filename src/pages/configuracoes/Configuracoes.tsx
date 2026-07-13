@@ -2,16 +2,17 @@ import styles from './Configuracoes.module.css'
 import fotoVictor from '../../assets/imagens/victor.jpeg'
 import fotoPerola from '../../assets/imagens/perola.jpeg'
 import fotoKlayton from '../../assets/imagens/klayton.jpeg'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { TemaContexto } from '../../contexts/TemaContexto'
+import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
 import {
     MdLanguage,
     MdAccessibility,
     MdLightMode,
     MdDarkMode,
-    MdSettingsBrightness,
     MdExpandMore,
     MdCheck,
 } from 'react-icons/md'
@@ -59,13 +60,13 @@ const financialSchema = z.object({
 })
 
 const categorias = [
-    { nome: 'Entretenimento', cor: '#FFC1C1' },
-    { nome: 'Software', cor: '#FFFBC1' },
-    { nome: 'Compras', cor: '#AEFFB3' },
-    { nome: 'Utilidades', cor: '#FFD4AE' },
-    { nome: 'Alimentação', cor: '#AED1FF' },
-    { nome: 'Saúde', cor: '#FFAEF4' },
-    { nome: 'Educação', cor: '#D8AEFF' },
+    { nome: 'Entretenimento', cor: 'var(--categoria-entretenimento)' },
+    { nome: 'Software', cor: 'var(--categoria-software)' },
+    { nome: 'Compras', cor: 'var(--categoria-compras)' },
+    { nome: 'Utilidades', cor: 'var(--categoria-utilidades)' },
+    { nome: 'Alimentação', cor: 'var(--categoria-alimentacao)' },
+    { nome: 'Saúde', cor: 'var(--categoria-saude)' },
+    { nome: 'Educação', cor: 'var(--categoria-educacao)' },
 ]
 
 const integrantes = [
@@ -75,9 +76,8 @@ const integrantes = [
 ]
 
 const opcoesTema = [
-    { valor: 'light' as const, rotulo: 'Claro', icone: <MdLightMode size={18} /> },
-    { valor: 'dark' as const, rotulo: 'Escuro', icone: <MdDarkMode size={18} /> },
-    { valor: 'system' as const, rotulo: 'Sistema', icone: <MdSettingsBrightness size={18} /> },
+    { valor: 'claro' as const, rotulo: 'Claro', icone: <MdLightMode size={18} /> },
+    { valor: 'escuro' as const, rotulo: 'Escuro', icone: <MdDarkMode size={18} /> },
 ]
 
 const opcoesIdioma = [
@@ -93,10 +93,13 @@ const opcoesMoeda = [
 
 export function Configuracoes() {
 
+    const {tema, alterarTema} = useContext(TemaContexto)
+    const { rendaMensalContexto, cargaHorariaContexto, setRendaMensalContexto, setCargaHorariaContexto } = useContext(BaseFinanceiraContexto)
+
     const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('private')
     const [vlibrasAtivo, setVlibrasAtivo] = useState(false)
 
-    const [temaSelecionado, setTemaSelecionado] = useState<'light' | 'dark' | 'system'>('light')
+    const [temaSelecionado, setTemaSelecionado] = useState(tema)
     const [dropdownTemaAberto, setDropdownTemaAberto] = useState(false)
 
     const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('en')
@@ -111,7 +114,13 @@ export function Configuracoes() {
 
     const formPrivate = useForm<PrivateFormValues>({ resolver: zodResolver(privateSchema) })
     const formSecurity = useForm<SecurityFormValues>({ resolver: zodResolver(securitySchema) })
-    const formFinancial = useForm<FinancialFormValues>({ resolver: zodResolver(financialSchema) })
+    const formFinancial = useForm<FinancialFormValues>({
+        resolver: zodResolver(financialSchema),
+        defaultValues: {
+            rendaMensal: rendaMensalContexto > 0 ? String(rendaMensalContexto) : '',
+            horasTrabalhadas: cargaHorariaContexto > 0 ? String(cargaHorariaContexto) : '',
+        },
+    })
 
     const exibirModal = (titulo: string) => {
         setModalMensagemTitulo(titulo)
@@ -134,7 +143,8 @@ export function Configuracoes() {
     }
 
     const salvarFinancial = (data: FinancialFormValues) => {
-        console.log(data)
+        setRendaMensalContexto(Number(data.rendaMensal))
+        setCargaHorariaContexto(Number(data.horasTrabalhadas))
         exibirModal('Financeiro')
     }
 
@@ -287,7 +297,6 @@ export function Configuracoes() {
                                         <div key={categoria.nome} className={styles.itemCategoria}>
                                             <span className={styles.amostraCor} style={{ backgroundColor: categoria.cor }} />
                                             <p className={styles.nomeCategoria}>{categoria.nome}</p>
-                                            <p className={styles.hexCategoria}>{categoria.cor}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -365,6 +374,9 @@ export function Configuracoes() {
                                                         onClick={() => {
                                                             setTemaSelecionado(opcao.valor)
                                                             setDropdownTemaAberto(false)
+                                                            if(opcao.valor !== tema) {
+                                                                alterarTema()
+                                                            }
                                                         }}
                                                     >
                                                         {opcao.icone}

@@ -251,13 +251,31 @@
   color: var(--cor-texto-secundario);
 }
 
+.colunaValor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
 .valorDespesa {
   font-family: var(--fonte-base);
   font-size: 1rem;
   font-style: italic;
   font-weight: 700;
   color: var(--cor-texto-principal);
-  flex-shrink: 0;
+}
+
+.horasDeVida {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fonte-base);
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-primaria);
 }
 
 .acoesDespesa {

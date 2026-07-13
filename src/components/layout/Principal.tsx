@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 export function Principal(){
     return(
         <div className={styles.gridConteiner}>
-            <Cabecalho nomeUsuario={'teste'}/>
+            <Cabecalho />
             <Menu />
             <div className={styles.conteudo}>
                 <Outlet />

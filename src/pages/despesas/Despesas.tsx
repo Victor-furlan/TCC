@@ -1,8 +1,10 @@
 import styles from './Despesas.module.css'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import { MdAdd, MdShoppingBag, MdEdit, MdDelete } from 'react-icons/md'
+import { MdAdd, MdShoppingBag, MdEdit, MdDelete, MdSchedule } from 'react-icons/md'
 import { DespesasContexto } from '../../contexts/DespesasContexto'
+import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
+import { calcularHorasDeVida } from '../../utils/CalcularHorasDeVida'
 
 const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -10,13 +12,13 @@ const meses = [
 ]
 
 const coresCategorias: Record<string, string> = {
-    'Entretenimento': '#FFC1C1',
-    'Software': '#FFFBC1',
-    'Compras': '#AEFFB3',
-    'Utilidades': '#FFD4AE',
-    'Alimentação': '#AED1FF',
-    'Saúde': '#FFAEF4',
-    'Educação': '#D8AEFF',
+    'Entretenimento': 'var(--categoria-entretenimento)',
+    'Software': 'var(--categoria-software)',
+    'Compras': 'var(--categoria-compras)',
+    'Utilidades': 'var(--categoria-utilidades)',
+    'Alimentação': 'var(--categoria-alimentacao)',
+    'Saúde': 'var(--categoria-saude)',
+    'Educação': 'var(--categoria-educacao)',
 }
 
 const corPadrao = '#E9F6FF'
@@ -24,6 +26,9 @@ const corPadrao = '#E9F6FF'
 export function Despesas() {
 
     const { despesas, removerDespesa } = useContext(DespesasContexto)
+    const { rendaMensalContexto, cargaHorariaContexto } = useContext(BaseFinanceiraContexto)
+
+    const baseFinanceiraPreenchida = rendaMensalContexto > 0 && cargaHorariaContexto > 0
 
     const dataAtual = new Date()
     const mesAtual = meses[dataAtual.getMonth()]
@@ -35,6 +40,11 @@ export function Despesas() {
 
     const formatarMoeda = (valor: number) =>
         valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    const formatarHoras = (horas: number) => {
+        if (horas < 1) return `≈ ${Math.round(horas * 60)} min`
+        return `≈ ${horas.toFixed(1)}h`
+    }
 
     const formatarData = (data: string) => {
         if (!data) return ''
@@ -115,7 +125,15 @@ export function Despesas() {
                                     <p className={styles.dataDespesa}>{formatarData(despesa.data)}</p>
                                 </div>
 
-                                <p className={styles.valorDespesa}>{formatarMoeda(despesa.valor)}</p>
+                                <div className={styles.colunaValor}>
+                                    <p className={styles.valorDespesa}>{formatarMoeda(despesa.valor)}</p>
+                                    {baseFinanceiraPreenchida && (
+                                        <p className={styles.horasDeVida}>
+                                            <MdSchedule size={13} />
+                                            {formatarHoras(calcularHorasDeVida(despesa.valor, rendaMensalContexto, cargaHorariaContexto))}
+                                        </p>
+                                    )}
+                                </div>
 
                                 <div className={styles.acoesDespesa}>
                                     <Link className={styles.botaoIcone} to={`/despesas/editar/${despesa.id}`}>

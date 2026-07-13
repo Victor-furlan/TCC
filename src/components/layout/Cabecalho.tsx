@@ -1,16 +1,16 @@
 import styles from './Cabecalho.module.css'
 import { MdAccountCircle, MdPerson, MdLogout } from 'react-icons/md'
 import { IoMdNotifications } from "react-icons/io"
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { UsuarioContexto } from '../../contexts/UsuarioContexto'
 
-interface CabecalhoProps {
-    nomeUsuario: string
-}
-
-export function Cabecalho({ nomeUsuario }: CabecalhoProps){
+export function Cabecalho(){
 
     const [dropdownContaAberto, setDropdownContaAberto] = useState(false)
+
+    const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
+    const usuarioExibicao = nomeUsuarioContexto || emailUsuarioContexto
 
     const navegacao = useNavigate()
 
@@ -22,7 +22,7 @@ export function Cabecalho({ nomeUsuario }: CabecalhoProps){
     return(
         <div className={styles.gridConteiner}>
 
-            <p className={styles.nomeUsuario}>Olá, {nomeUsuario}</p>
+            <p className={styles.nomeUsuario}>Olá, {usuarioExibicao}</p>
 
             <div className={styles.acoes}>
                 <button className={styles.botaoIcone}>

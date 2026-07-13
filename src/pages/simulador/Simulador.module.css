@@ -68,8 +68,8 @@
 }
 
 .itemSelecionado {
-  background-color: #FFE9E9;
-  border-color: #FFB3B3;
+  background-color: var(--simulador-item-fundo);
+  border-color: var(--simulador-item-borda);
 }
 
 .checkbox {
@@ -134,8 +134,8 @@
 }
 
 .cardEconomia {
-  background-color: #EAF9EF;
-  border: 1px solid #B7E8C5;
+  background-color: var(--simulador-card-verde-fundo);
+  border: 1px solid var(--simulador-card-verde-borda);
   border-radius: 20px;
   padding: 20px;
 }
@@ -145,7 +145,7 @@
   font-size: 1rem;
   font-style: italic;
   font-weight: 700;
-  color: #1E7B3E;
+  color: var(--simulador-card-verde-texto);
   margin-bottom: 4px;
 }
 
@@ -154,7 +154,7 @@
   font-size: 0.8rem;
   font-style: italic;
   font-weight: 300;
-  color: #1E7B3E;
+  color: var(--simulador-card-verde-texto);
   margin-bottom: 16px;
 }
 
@@ -168,7 +168,7 @@
   font-size: 0.75rem;
   font-style: italic;
   font-weight: 300;
-  color: #1E7B3E;
+  color: var(--simulador-card-verde-texto);
 }
 
 .valorEconomia {
@@ -176,7 +176,7 @@
   font-size: 1.1rem;
   font-style: italic;
   font-weight: 700;
-  color: #1E7B3E;
+  color: var(--simulador-card-verde-texto);
 }
 
 .cardCenario {
@@ -187,8 +187,8 @@
 }
 
 .cardCenarioRoxo {
-  background-color: #F1ECFB;
-  border-color: #D6C8F0;
+  background-color: var(--simulador-card-roxo-fundo);
+  border-color: var(--simulador-card-roxo-borda);
 }
 
 .tituloCenario {
@@ -243,7 +243,7 @@
 }
 
 .preenchimentoRoxo {
-  background-color: #8B6FD1;
+  background-color: var(--simulador-card-roxo-preenchimento);
 }
 
 .percentualCenario {

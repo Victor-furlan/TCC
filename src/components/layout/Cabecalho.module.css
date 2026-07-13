@@ -1,7 +1,7 @@
 .gridConteiner {
   grid-row: 1;
   grid-column: 2;
-  background-color: var(--cor-fundo);
+  background-color: var(--cor-fundo-menu);
   border-bottom: 1px solid var(--columbia-blue);
   display: flex;
   align-items: center;
