@@ -1,55 +1,141 @@
 .container {
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.painelMarca {
+  background: linear-gradient(160deg, var(--painel-login-inicio) 0%, var(--painel-login-fim) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 72px;
+  position: relative;
+  overflow: hidden;
+}
+
+.marcadores {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  opacity: 0.5;
+}
+
+.tituloMarca {
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--painel-login-texto);
+  line-height: 1.2;
+  max-width: 380px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+
+.fraseDestaqueAccent {
+  color: var(--pale-cerulean);
+}
+
+.legendaMarca {
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 360px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 36px;
+}
+
+.listaBeneficios {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+}
+
+.itemBeneficio {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 14px 18px;
+  backdrop-filter: blur(4px);
+}
+
+.iconeBeneficio {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--alice-blue-light);
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--pale-cerulean);
+  flex-shrink: 0;
+}
+
+.textoBeneficio {
+  font-size: 0.88rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--painel-login-texto);
+  line-height: 1.3;
+}
+
+.painelFormulario {
+  background-color: var(--cor-fundo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
 }
 
 .formConteiner {
-  background-color: var(--white);
-  border: 1px solid var(--columbia-blue);
-  border-radius: 50px;
-  padding: 48px 64px;
   width: 100%;
-  max-width: 650px;
+  max-width: 460px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  position: relative;
+  align-items: flex-start;
+  gap: 6px;
 }
+
 .logo {
-  position: absolute;
-  top: 32px;
-  left: 48px;
-  height: var(--tamanho-logo);
+  height: 3.4rem;
   object-fit: contain;
+  margin-bottom: 24px;
+  align-self: center;
 }
 
 .titulo {
-  font-size: var(--tamanho-titulo);
+  font-size: 2.6rem;
   font-style: italic;
-  font-weight: 400;
-  color: var(--true-blue);
-  opacity: 0.5;
-  line-height: 1;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
 
 .subtitulo {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--dark-navy);
-  margin-bottom: 16px;
-  text-align: center;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 28px;
 }
 
 .formulario {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .conteinerCampo {
@@ -60,28 +146,49 @@
 }
 
 .tituloCampo {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--dark-navy);
+  color: var(--cor-texto-secundario);
+}
+
+.campoComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.iconeCampo {
+  position: absolute;
+  left: 20px;
+  color: var(--columbia-blue);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.campoComIcone:focus-within .iconeCampo {
+  color: var(--cor-primaria);
 }
 
 .campo {
   background-color: var(--fundo-formulario-campo);
-  border: 1px solid var(--borda-formulario-campo);
-  border-radius: 20px;
-  padding: 18px 24px;
-  font-size: 1rem;
+  border: 1.5px solid var(--columbia-blue);
+  border-radius: 16px;
+  padding: 15px 20px 15px 50px;
+  font-size: 0.9rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--dark-navy);
+  color: var(--cor-texto-principal);
   width: 100%;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .campo:focus {
-  border-color: var(--true-blue);
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 4px rgba(0, 115, 185, 0.1);
 }
 
 .campo::placeholder {
@@ -92,47 +199,74 @@
   margin-top: 8px;
   width: 100%;
   background-color: var(--space-cadet);
-  border: 1px solid var(--dark-charcoal);
-  border-radius: 20px;
-  padding: 20px;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
   color: var(--fundo-formulario-campo);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-style: italic;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .Criar:hover {
-  opacity: 0.85;
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -8px rgba(14, 29, 42, 0.3);
+}
+
+.Criar:active {
+  transform: translateY(0);
 }
 
 .conteinerLogin {
   display: flex;
   flex-direction: row;
+  margin-top: 6px;
+  align-self: center;
 }
 
 .comConta {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--dark-navy);
+  color: var(--cor-texto-secundario);
   margin-top: 8px;
 }
 
 .logar {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--dark-navy);
+  color: var(--cor-primaria);
   text-decoration: underline;
   position: relative;
   top: 8px;
   left: 3px;
+  transition: opacity 0.2s;
+}
+
+.logar:hover {
+  opacity: 0.7;
 }
 
 .erro {
   color: var(--cor-erro);
   font-size: 0.75rem;
   margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .painelMarca {
+    display: none;
+  }
+
+  .painelFormulario {
+    padding: 40px 24px;
+  }
 }

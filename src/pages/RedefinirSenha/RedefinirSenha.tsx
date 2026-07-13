@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { MdEmail } from 'react-icons/md';
 import { ModalMensagem } from '../../components/ModalMensagem';
 
 type FormValues = {
@@ -54,11 +55,14 @@ export function RedefinirSenha() {
 
           <div className={styles.conteinerCampo}>
             <p className={styles.tituloCampo}>E-mail</p>
-            <input
-              {...register('email')}
-              className={styles.campo}
-              placeholder='E-mail'
-            />
+            <div className={styles.campoComIcone}>
+              <MdEmail size={17} className={styles.iconeCampo} />
+              <input
+                {...register('email')}
+                className={styles.campo}
+                placeholder='E-mail'
+              />
+            </div>
             {errors.email && <p className={styles.erro}>{errors.email.message}</p>}
           </div>
 
