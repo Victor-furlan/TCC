@@ -207,3 +207,21 @@
   font-weight: 700;
   color: var(--cor-texto-principal);
 }
+
+.colunaValor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.horasDeVida {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fonte-base);
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-primaria);
+}

@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import styles from './DashBoard.module.css'
-import { MdCalendarToday, MdAdd, MdEdit, MdDelete } from 'react-icons/md'
+import { MdCalendarToday, MdAdd, MdEdit, MdDelete, MdSchedule } from 'react-icons/md'
 import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
+import { calcularHorasDeVida } from '../../utils/CalcularHorasDeVida'
 
 const coresCategorias: Record<string, string> = {
-    'Entretenimento': '#FFC1C1',
-    'Software': '#FFFBC1',
-    'Compras': '#AEFFB3',
-    'Utilidades': '#FFD4AE',
-    'Alimentação': '#AED1FF',
-    'Saúde': '#FFAEF4',
-    'Educação': '#D8AEFF',
+    'Entretenimento': 'var(--categoria-entretenimento)',
+    'Software': 'var(--categoria-software)',
+    'Compras': 'var(--categoria-compras)',
+    'Utilidades': 'var(--categoria-utilidades)',
+    'Alimentação': 'var(--categoria-alimentacao)',
+    'Saúde': 'var(--categoria-saude)',
+    'Educação': 'var(--categoria-educacao)',
 }
 
 const corPadrao = '#E9F6FF'
@@ -19,9 +21,17 @@ const corPadrao = '#E9F6FF'
 export function DashBoard(){
 
     const { assinaturas, removerAssinatura } = useContext(AssinaturasContexto)
+    const { rendaMensalContexto, cargaHorariaContexto } = useContext(BaseFinanceiraContexto)
+
+    const baseFinanceiraPreenchida = rendaMensalContexto > 0 && cargaHorariaContexto > 0
 
     const formatarMoeda = (valor: number) =>
         valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    const formatarHoras = (horas: number) => {
+        if (horas < 1) return `≈ ${Math.round(horas * 60)} min`
+        return `≈ ${horas.toFixed(1)}h`
+    }
 
     const formatarData = (data: string) => {
         if (!data) return ''
@@ -48,6 +58,16 @@ export function DashBoard(){
         })
         .sort((a, b) => diasAteRenovacao(a.proximaCobranca) - diasAteRenovacao(b.proximaCobranca))
 
+    const totalDespesasMensais = assinaturas.reduce((soma, assinatura) => {
+        if (assinatura.periodicidade === 'Anual') return soma + (assinatura.valor / 12)
+        if (assinatura.periodicidade === 'Semanal') return soma + (assinatura.valor * 4)
+        return soma + assinatura.valor
+    }, 0)
+
+    const rendaComprometida = rendaMensalContexto > 0
+        ? (totalDespesasMensais / rendaMensalContexto) * 100
+        : 0
+
     return(
         <div className={styles.conteiner}>
 
@@ -55,17 +75,17 @@ export function DashBoard(){
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Total de Despesas Mensais</p>
-                    <p className={styles.valorMetrica}>R$ 0,00</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(totalDespesasMensais)}</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Renda Comprometida</p>
-                    <p className={styles.valorMetrica}>0%</p>
+                    <p className={styles.valorMetrica}>{rendaComprometida.toFixed(0)}%</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Renda Mensal</p>
-                    <p className={styles.valorMetrica}>R$ 0,00</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(rendaMensalContexto)}</p>
                 </div>
 
                 <div className={styles.cardMetrica}>
@@ -109,7 +129,15 @@ export function DashBoard(){
                                     </p>
                                 </div>
 
-                                <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+                                <div className={styles.colunaValor}>
+                                    <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+                                    {baseFinanceiraPreenchida && (
+                                        <p className={styles.horasDeVida}>
+                                            <MdSchedule size={13} />
+                                            {formatarHoras(calcularHorasDeVida(assinatura.valor, rendaMensalContexto, cargaHorariaContexto))}
+                                        </p>
+                                    )}
+                                </div>
 
                             </div>
                         ))}
@@ -139,7 +167,15 @@ export function DashBoard(){
                                     <p className={styles.dataItem}>{assinatura.categoria}</p>
                                 </div>
 
-                                <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+                                <div className={styles.colunaValor}>
+                                    <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
+                                    {baseFinanceiraPreenchida && (
+                                        <p className={styles.horasDeVida}>
+                                            <MdSchedule size={13} />
+                                            {formatarHoras(calcularHorasDeVida(assinatura.valor, rendaMensalContexto, cargaHorariaContexto))}
+                                        </p>
+                                    )}
+                                </div>
 
                                 <div className={styles.acoesAssinatura}>
                                     <Link className={styles.botaoIcone} to={`/assinaturas/editar/${assinatura.id}`}>
