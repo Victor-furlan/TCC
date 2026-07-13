@@ -11,7 +11,7 @@
     --alice-blue-light: #F6FBFF;
     --white: #FFFFFF;
 
-    /* Mapeamento Semântico (Cinefilia style) */
+    /* Mapeamento Semântico */
     --cor-fundo: var(--alice-blue-light);
     --cor-texto-principal: var(--dark-charcoal);
     --cor-texto-secundario: var(--space-cadet);
@@ -21,12 +21,36 @@
     --cor-fundo-menu: #ECF7FF;
     --cor-borda-menu: #98C8EB;
     --cor-botoes-menu: #DFF2FF;
+    --cor-fundo-botao-menu: #c3e7ff;
     --cor-erro: #E63946;
+
+    --painel-login-inicio: var(--space-cadet);
+    --painel-login-fim: var(--true-blue);
+    --painel-login-texto: var(--white);
+
+    --simulador-item-fundo: #FFE9E9;
+    --simulador-item-borda: #FFB3B3;
+    --simulador-card-verde-fundo: #EAF9EF;
+    --simulador-card-verde-borda: #B7E8C5;
+    --simulador-card-verde-texto: #1E7B3E;
+    --simulador-card-roxo-fundo: #F1ECFB;
+    --simulador-card-roxo-borda: #D6C8F0;
+    --simulador-card-roxo-preenchimento: #8B6FD1;
+
+    --categoria-entretenimento: #FFC1C1;
+    --categoria-software: #FFFBC1;
+    --categoria-compras: #AEFFB3;
+    --categoria-utilidades: #FFD4AE;
+    --categoria-alimentacao: #AED1FF;
+    --categoria-saude: #FFAEF4;
+    --categoria-educacao: #D8AEFF;
+ 
+    --cor-estrelas: #FBBF24;
     
     /* Tipografia */
     --fonte-base: "Inter", sans-serif;
     
-    /* Tamanhos (Baseados na Identidade Visual) */
+    /* Tamanhos */
     --tamanho-texto: 24px;
     --tamanho-titulo: 50px;
     --tamanho-base1: 1rem;
@@ -34,6 +58,52 @@
     --tamanho-logo: 6rem;
 }
 
+[data-tema="escuro"] {
+    --cor-fundo: #0a1521;
+    --cor-texto-principal: #F0F6FC;
+    --cor-texto-secundario: #94A7C4;
+    --cor-primaria: #2E9EFF;
+    --cor-secundaria: #12212F;
+    --cor-accent: #86D3E3;
+    --cor-fundo-menu: #142534;
+    --cor-borda-menu: #2b4a67;
+    --cor-botoes-menu: #111f2b;
+    --cor-fundo-botao-menu: #13293a;
+    --cor-erro: #FF6B6B;
+
+    --painel-login-inicio: #050B12;
+    --painel-login-fim: #0B3A57;
+    --painel-login-texto: #F0F6FC;
+    
+    --cor-estrela: #FBBF24; 
+
+    --simulador-item-fundo: #3B1C21;
+    --simulador-item-borda: #742A33;
+    --simulador-card-verde-fundo: #0B1F16;
+    --simulador-card-verde-borda: #1B432D;
+    --simulador-card-verde-texto: #4ADE80;
+    --simulador-card-roxo-fundo: #141125;
+    --simulador-card-roxo-borda: #2D224E;
+    --simulador-card-roxo-preenchimento: #8B6FD1;
+
+    --categoria-entretenimento: #FF6B6B;
+    --categoria-software: #FFD93D;
+    --categoria-compras: #6BCB77;
+    --categoria-utilidades: #FFA94D;
+    --categoria-alimentacao: #4D96FF;
+    --categoria-saude: #FF6FD8;
+    --categoria-educacao: #A66CFF;
+    
+    /* Variáveis de paleta usadas diretamente nos componentes */
+    --white: #101E2C;
+    --columbia-blue: #35618A;
+    --space-cadet: #1E88E5;
+    --alice-blue-light: #111c29;
+    
+    --fundo-formulario-campo: #1c2934;
+    --borda-formulario-campo: #21364A;
+
+}
 * {
     margin: 0px;
     padding: 0px;
@@ -50,4 +120,14 @@ body, input, textarea, button {
 h1 {
     font-family: var(--fonte-base);
     font-size: var(--tamanho-titulo);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--fundo-formulario-campo) inset !important;
+    -webkit-text-fill-color: var(--cor-texto-principal) !important;
+    caret-color: var(--cor-texto-principal);
+    transition: background-color 5000s ease-in-out 0s;
 }
