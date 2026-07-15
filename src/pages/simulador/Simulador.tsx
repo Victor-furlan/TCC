@@ -1,31 +1,24 @@
 import styles from './Simulador.module.css'
-import { useState } from 'react'
-import { MdArrowBack } from 'react-icons/md'
+import { useContext, useState } from 'react'
+import { MdArrowBack, MdVisibility, MdAutoAwesome } from 'react-icons/md'
+import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
 
 type VisualizacaoGrafico = 'annual' | 'monthly'
 
-interface AssinaturaTipo {
-    id: string
-    nome: string
-    categoria: string
-    valorMensal: number
-}
-
-const RENDA_MENSAL = 5000
-
-const assinaturas: AssinaturaTipo[] = [
-    { id: '1', nome: 'Netflix', categoria: 'Entretenimento', valorMensal: 15.99 },
-    { id: '2', nome: 'teste1', categoria: 'teste', valorMensal: 1000 },
-    { id: '3', nome: 'teste2', categoria: 'teste', valorMensal: 1000 },
-    { id: '4', nome: 'teste3', categoria: 'teste', valorMensal: 1000 },
-    { id: '5', nome: 'teste4', categoria: 'teste', valorMensal: 1000 },
-    { id: '6', nome: 'teste5', categoria: 'teste', valorMensal: 1000 },
-]
-
 export function Simulador() {
 
-    const [idsSelecionados, setIdsSelecionados] = useState<string[]>(['1'])
+    const { assinaturas } = useContext(AssinaturasContexto)
+    const { rendaMensalContexto } = useContext(BaseFinanceiraContexto)
+
+    const [idsSelecionados, setIdsSelecionados] = useState<string[]>([])
     const [visualizacao, setVisualizacao] = useState<VisualizacaoGrafico>('annual')
+
+    const valorMensalizado = (valor: number, periodicidade: string) => {
+        if (periodicidade === 'Anual') return valor / 12
+        if (periodicidade === 'Semanal') return valor * 4
+        return valor
+    }
 
     const alternarSelecao = (id: string) => {
         setIdsSelecionados((atual) =>
@@ -33,19 +26,22 @@ export function Simulador() {
         )
     }
 
-    const gastoAtualMensal = assinaturas.reduce((soma, assinatura) => soma + assinatura.valorMensal, 0)
+    const gastoAtualMensal = assinaturas.reduce(
+        (soma, assinatura) => soma + valorMensalizado(assinatura.valor, assinatura.periodicidade),
+        0
+    )
     const gastoAtualAnual = gastoAtualMensal * 12
 
     const economiaSelecionadaMensal = assinaturas
         .filter((assinatura) => idsSelecionados.includes(assinatura.id))
-        .reduce((soma, assinatura) => soma + assinatura.valorMensal, 0)
+        .reduce((soma, assinatura) => soma + valorMensalizado(assinatura.valor, assinatura.periodicidade), 0)
     const economiaSelecionadaAnual = economiaSelecionadaMensal * 12
 
     const gastoSimuladoMensal = gastoAtualMensal - economiaSelecionadaMensal
     const gastoSimuladoAnual = gastoSimuladoMensal * 12
 
-    const percentualAtual = (gastoAtualMensal / RENDA_MENSAL) * 100
-    const percentualSimulado = (gastoSimuladoMensal / RENDA_MENSAL) * 100
+    const percentualAtual = rendaMensalContexto > 0 ? (gastoAtualMensal / rendaMensalContexto) * 100 : 0
+    const percentualSimulado = rendaMensalContexto > 0 ? (gastoSimuladoMensal / rendaMensalContexto) * 100 : 0
 
     const formatarMoeda = (valor: number) =>
         valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -63,32 +59,36 @@ export function Simulador() {
                 <div className={styles.cardSelecao}>
                     <p className={styles.tituloSecao}>Selecione assinaturas para cancelar</p>
 
-                    <div className={styles.listaAssinaturas}>
-                        {assinaturas.map((assinatura) => {
-                            const selecionada = idsSelecionados.includes(assinatura.id)
-                            return (
-                                <label
-                                    key={assinatura.id}
-                                    className={selecionada ? `${styles.itemAssinatura} ${styles.itemSelecionado}` : styles.itemAssinatura}
-                                >
-                                    <input
-                                        type='checkbox'
-                                        checked={selecionada}
-                                        onChange={() => alternarSelecao(assinatura.id)}
-                                        className={styles.checkbox}
-                                    />
-                                    <div className={styles.infoAssinatura}>
-                                        <div className={styles.linhaNome}>
-                                            <p className={styles.nomeAssinatura}>{assinatura.nome}</p>
-                                            <span className={styles.tagCategoria}>{assinatura.categoria}</span>
+                    {assinaturas.length === 0 ? (
+                        <p className={styles.periodicidade}>Nenhuma assinatura cadastrada ainda.</p>
+                    ) : (
+                        <div className={styles.listaAssinaturas}>
+                            {assinaturas.map((assinatura) => {
+                                const selecionada = idsSelecionados.includes(assinatura.id)
+                                return (
+                                    <label
+                                        key={assinatura.id}
+                                        className={selecionada ? `${styles.itemAssinatura} ${styles.itemSelecionado}` : styles.itemAssinatura}
+                                    >
+                                        <input
+                                            type='checkbox'
+                                            checked={selecionada}
+                                            onChange={() => alternarSelecao(assinatura.id)}
+                                            className={styles.checkbox}
+                                        />
+                                        <div className={styles.infoAssinatura}>
+                                            <div className={styles.linhaNome}>
+                                                <p className={styles.nomeAssinatura}>{assinatura.nome}</p>
+                                                <span className={styles.tagCategoria}>{assinatura.categoria}</span>
+                                            </div>
+                                            <p className={styles.periodicidade}>{assinatura.periodicidade}</p>
                                         </div>
-                                        <p className={styles.periodicidade}>Mensal</p>
-                                    </div>
-                                    <p className={styles.valorAssinatura}>{formatarMoeda(assinatura.valorMensal)}</p>
-                                </label>
-                            )
-                        })}
-                    </div>
+                                        <p className={styles.valorAssinatura}>{formatarMoeda(assinatura.valor)}</p>
+                                    </label>
+                                )
+                            })}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.colunaCards}>
@@ -112,7 +112,13 @@ export function Simulador() {
                     </div>
 
                     <div className={styles.cardCenario}>
-                        <p className={styles.tituloCenario}>Cenário Atual</p>
+                        <div className={styles.cabecalhoCenario}>
+                            <MdVisibility size={18} className={styles.iconeCenario} />
+                            <div>
+                                <p className={styles.tituloCenario}>Cenário Atual</p>
+                                <p className={styles.subtituloCenario}>Seus gastos hoje, sem alterações</p>
+                            </div>
+                        </div>
                         <div className={styles.linhaCenario}>
                             <p>Saldo Mensal</p>
                             <p className={styles.valorCenario}>{formatarMoeda(gastoAtualMensal)}</p>
@@ -123,13 +129,19 @@ export function Simulador() {
                         </div>
                         <p className={styles.legendaPercentual}>% da Renda Comprometida</p>
                         <div className={styles.barraProgresso}>
-                            <div className={styles.preenchimentoBarra} style={{ width: `${percentualAtual}%` }} />
+                            <div className={styles.preenchimentoBarra} style={{ width: `${Math.min(percentualAtual, 100)}%` }} />
                         </div>
                         <p className={styles.percentualCenario}>{percentualAtual.toFixed(1)}%</p>
                     </div>
 
                     <div className={`${styles.cardCenario} ${styles.cardCenarioRoxo}`}>
-                        <p className={styles.tituloCenario}>Cenário Simulado</p>
+                        <div className={styles.cabecalhoCenario}>
+                            <MdAutoAwesome size={18} className={styles.iconeCenarioRoxo} />
+                            <div>
+                                <p className={styles.tituloCenario}>Cenário Simulado</p>
+                                <p className={styles.subtituloCenario}>Se você cancelar os itens selecionados</p>
+                            </div>
+                        </div>
                         <div className={styles.linhaCenario}>
                             <p>Saldo Mensal</p>
                             <p className={styles.valorCenario}>{formatarMoeda(gastoSimuladoMensal)}</p>
@@ -140,7 +152,7 @@ export function Simulador() {
                         </div>
                         <p className={styles.legendaPercentual}>% da Renda Comprometida</p>
                         <div className={styles.barraProgresso}>
-                            <div className={`${styles.preenchimentoBarra} ${styles.preenchimentoRoxo}`} style={{ width: `${percentualSimulado}%` }} />
+                            <div className={`${styles.preenchimentoBarra} ${styles.preenchimentoRoxo}`} style={{ width: `${Math.min(percentualSimulado, 100)}%` }} />
                         </div>
                         <p className={styles.percentualCenario}>{percentualSimulado.toFixed(1)}%</p>
                     </div>

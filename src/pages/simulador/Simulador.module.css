@@ -191,13 +191,40 @@
   border-color: var(--simulador-card-roxo-borda);
 }
 
+.cabecalhoCenario {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.iconeCenario {
+  color: var(--cor-texto-secundario);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.iconeCenarioRoxo {
+  color: var(--simulador-card-roxo-preenchimento);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
 .tituloCenario {
   font-family: var(--fonte-base);
   font-size: 0.95rem;
   font-style: italic;
   font-weight: 700;
   color: var(--cor-texto-principal);
-  margin-bottom: 16px;
+}
+
+.subtituloCenario {
+  font-family: var(--fonte-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  margin-top: 2px;
 }
 
 .linhaCenario {

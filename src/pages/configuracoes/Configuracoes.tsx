@@ -25,6 +25,9 @@ type PrivateFormValues = {
     email: string
 }
 
+//pega a versão do projeto pelo package.json
+const versao = import.meta.env.PACKAGE_VERSION;
+
 const privateSchema = z.object({
     novoNome: z.string()
         .min(1, { message: 'Informe o novo nome.' })
@@ -485,7 +488,7 @@ export function Configuracoes() {
 
                         <div className={styles.infoVersao}>
                             <p className={styles.rotuloVersao}>Versão:</p>
-                            <p className={styles.valorVersao}>1.0.0</p>
+                            <p className={styles.valorVersao}>{versao}</p>
                         </div>
 
                     </div>
