@@ -18,44 +18,14 @@ import {
 } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
 
-type AbaConfiguracao = 'private' | 'security' | 'preferences' | 'financial' | 'about'
-
-type PrivateFormValues = {
-    novoNome: string
-    email: string
-}
-
-//pega a versão do projeto pelo package.json
-const versao = import.meta.env.PACKAGE_VERSION;
-
-const privateSchema = z.object({
-    novoNome: z.string()
-        .min(1, { message: 'Informe o novo nome.' })
-        .refine((valor) => valor.trim().split(/\s+/).length >= 2, {
-            message: 'Informe nome e sobrenome.',
-        }),
-    email: z.string().email({ message: 'Informe um e-mail válido.' }),
-})
-
-type SecurityFormValues = {
-    novaSenha: string
-    confirmarNovaSenha: string
-    emailRecuperacao: string
-}
-
-const securitySchema = z.object({
-    novaSenha: z.string().min(6, { message: 'A senha deve ter no mínimo 6 caracteres.' }),
-    confirmarNovaSenha: z.string().min(6, { message: 'Confirme sua nova senha.' }),
-    emailRecuperacao: z.string().email({ message: 'Informe um e-mail válido.' }),
-}).refine((data) => data.novaSenha === data.confirmarNovaSenha, {
-    message: 'As senhas não coincidem.',
-    path: ['confirmarNovaSenha'],
-})
+type AbaConfiguracao = 'preferences' | 'financial' | 'about'
 
 type FinancialFormValues = {
     rendaMensal: string
     horasTrabalhadas: string
 }
+
+const versao = import.meta.env.PACKAGE_VERSION
 
 const financialSchema = z.object({
     rendaMensal: z.string().min(1, { message: 'Informe sua renda mensal.' }),
@@ -88,18 +58,12 @@ const opcoesIdioma = [
     { valor: 'en' as const, rotulo: 'Inglês' },
 ]
 
-const opcoesMoeda = [
-    { valor: 'BRL' as const, rotulo: 'Real (R$)', simbolo: 'R$' },
-    { valor: 'USD' as const, rotulo: 'Dólar (US$)', simbolo: 'US$' },
-    { valor: 'EUR' as const, rotulo: 'Euro (€)', simbolo: '€' },
-]
-
 export function Configuracoes() {
 
-    const {tema, alterarTema} = useContext(TemaContexto)
+    const { tema, alterarTema } = useContext(TemaContexto)
     const { rendaMensalContexto, cargaHorariaContexto, setRendaMensalContexto, setCargaHorariaContexto } = useContext(BaseFinanceiraContexto)
 
-    const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('private')
+    const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('financial')
     const [vlibrasAtivo, setVlibrasAtivo] = useState(false)
 
     const [temaSelecionado, setTemaSelecionado] = useState(tema)
@@ -108,15 +72,10 @@ export function Configuracoes() {
     const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('en')
     const [dropdownIdiomaAberto, setDropdownIdiomaAberto] = useState(false)
 
-    const [moedaSelecionada, setMoedaSelecionada] = useState<'BRL' | 'USD' | 'EUR'>('BRL')
-    const [dropdownMoedaAberto, setDropdownMoedaAberto] = useState(false)
-
     const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
     const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
     const [modalMensagemTexto, setModalMensagemTexto] = useState('')
 
-    const formPrivate = useForm<PrivateFormValues>({ resolver: zodResolver(privateSchema) })
-    const formSecurity = useForm<SecurityFormValues>({ resolver: zodResolver(securitySchema) })
     const formFinancial = useForm<FinancialFormValues>({
         resolver: zodResolver(financialSchema),
         defaultValues: {
@@ -135,16 +94,6 @@ export function Configuracoes() {
         setModalMensagemVisivel(false)
     }
 
-    const salvarPrivate = (data: PrivateFormValues) => {
-        console.log(data)
-        exibirModal('Perfil')
-    }
-
-    const salvarSecurity = (data: SecurityFormValues) => {
-        console.log(data)
-        exibirModal('Segurança')
-    }
-
     const salvarFinancial = (data: FinancialFormValues) => {
         setRendaMensalContexto(Number(data.rendaMensal))
         setCargaHorariaContexto(Number(data.horasTrabalhadas))
@@ -152,8 +101,6 @@ export function Configuracoes() {
     }
 
     const tituloAba: Record<AbaConfiguracao, string> = {
-        private: 'Perfil',
-        security: 'Segurança',
         preferences: 'Preferências',
         financial: 'Financeiro',
         about: 'Sobre',
@@ -170,16 +117,10 @@ export function Configuracoes() {
 
                 <div className={styles.abas}>
                     <button
-                        className={abaAtiva === 'private' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                        onClick={() => setAbaAtiva('private')}
+                        className={abaAtiva === 'financial' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
+                        onClick={() => setAbaAtiva('financial')}
                     >
-                        Pessoal
-                    </button>
-                    <button
-                        className={abaAtiva === 'security' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                        onClick={() => setAbaAtiva('security')}
-                    >
-                        Segurança
+                        Financeiro
                     </button>
                     <button
                         className={abaAtiva === 'preferences' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
@@ -188,106 +129,12 @@ export function Configuracoes() {
                         Preferências
                     </button>
                     <button
-                        className={abaAtiva === 'financial' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
-                        onClick={() => setAbaAtiva('financial')}
-                    >
-                        Financeiro
-                    </button>
-                    <button
                         className={abaAtiva === 'about' ? `${styles.aba} ${styles.abaAtiva}` : styles.aba}
                         onClick={() => setAbaAtiva('about')}
                     >
                         Sobre
                     </button>
                 </div>
-
-                {abaAtiva === 'private' && (
-                    <form className={styles.cardConteudo} onSubmit={formPrivate.handleSubmit(salvarPrivate)}>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Seu nome:</p>
-                            <input className={styles.input} placeholder='ex. teste da silva' disabled />
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Novo nome:</p>
-                            <input
-                                {...formPrivate.register('novoNome')}
-                                className={styles.input}
-                                placeholder='ex. teste123'
-                            />
-                            {formPrivate.formState.errors.novoNome && (
-                                <p className={styles.erro}>{formPrivate.formState.errors.novoNome.message}</p>
-                            )}
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>E-mail:</p>
-                            <input
-                                {...formPrivate.register('email')}
-                                className={styles.input}
-                                placeholder='ex. teste@gmail.com'
-                            />
-                            {formPrivate.formState.errors.email && (
-                                <p className={styles.erro}>{formPrivate.formState.errors.email.message}</p>
-                            )}
-                        </div>
-
-                        <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
-                    </form>
-                )}
-
-                {abaAtiva === 'security' && (
-                    <form className={styles.cardConteudo} onSubmit={formSecurity.handleSubmit(salvarSecurity)}>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Sua senha:</p>
-                            <input className={styles.input} placeholder='ex. ****************' type='password' disabled />
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Nova senha:</p>
-                            <input
-                                {...formSecurity.register('novaSenha')}
-                                className={styles.input}
-                                placeholder='ex. **************'
-                                type='password'
-                            />
-                            {formSecurity.formState.errors.novaSenha && (
-                                <p className={styles.erro}>{formSecurity.formState.errors.novaSenha.message}</p>
-                            )}
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Confirmar nova senha:</p>
-                            <input
-                                {...formSecurity.register('confirmarNovaSenha')}
-                                className={styles.input}
-                                placeholder='ex. **************'
-                                type='password'
-                            />
-                            {formSecurity.formState.errors.confirmarNovaSenha && (
-                                <p className={styles.erro}>{formSecurity.formState.errors.confirmarNovaSenha.message}</p>
-                            )}
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>E-mail de recuperação:</p>
-                            <input
-                                {...formSecurity.register('emailRecuperacao')}
-                                className={styles.input}
-                                placeholder='ex. teste@gmail.com'
-                            />
-                            {formSecurity.formState.errors.emailRecuperacao && (
-                                <p className={styles.erro}>{formSecurity.formState.errors.emailRecuperacao.message}</p>
-                            )}
-                        </div>
-
-                        <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
-                    </form>
-                )}
 
                 {abaAtiva === 'preferences' && (
                     <div className={styles.cardConteudo}>
@@ -377,7 +224,7 @@ export function Configuracoes() {
                                                         onClick={() => {
                                                             setTemaSelecionado(opcao.valor)
                                                             setDropdownTemaAberto(false)
-                                                            if(opcao.valor !== tema) {
+                                                            if (opcao.valor !== tema) {
                                                                 alterarTema()
                                                             }
                                                         }}
@@ -425,39 +272,6 @@ export function Configuracoes() {
                             )}
                         </div>
 
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Tipo de moeda:</p>
-                            <div className={styles.dropdownConteiner}>
-                                <button
-                                    type='button'
-                                    className={styles.selectFalso}
-                                    onClick={() => setDropdownMoedaAberto(!dropdownMoedaAberto)}
-                                >
-                                    {opcoesMoeda.find((opcao) => opcao.valor === moedaSelecionada)?.rotulo}
-                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
-                                </button>
-
-                                {dropdownMoedaAberto && (
-                                    <div className={styles.listaDropdown}>
-                                        {opcoesMoeda.map((opcao) => (
-                                            <button
-                                                key={opcao.valor}
-                                                type='button'
-                                                className={styles.itemDropdown}
-                                                onClick={() => {
-                                                    setMoedaSelecionada(opcao.valor)
-                                                    setDropdownMoedaAberto(false)
-                                                }}
-                                            >
-                                                {opcao.rotulo}
-                                                {moedaSelecionada === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
                         <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
 
                     </form>
@@ -496,7 +310,7 @@ export function Configuracoes() {
 
             </div>
 
-            <ModalMensagem 
+            <ModalMensagem
                 exibir={modalMensagemVisivel}
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}

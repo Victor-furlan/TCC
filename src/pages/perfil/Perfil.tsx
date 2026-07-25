@@ -1,10 +1,17 @@
 import styles from './Perfil.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdArrowBack, MdEdit, MdLogout } from 'react-icons/md'
+import { useContext } from 'react'
+import { UsuarioContexto } from '../../contexts/UsuarioContexto'
 
 export function Perfil() {
 
     const navegacao = useNavigate()
+    const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
+
+    const nomeExibido = nomeUsuarioContexto || emailUsuarioContexto || 'Usuário'
+    const emailExibido = emailUsuarioContexto || 'usuario@email.com'
+    const inicial = nomeExibido.charAt(0).toUpperCase()
 
     const fazerLogout = () => {
         navegacao('/')
@@ -29,10 +36,10 @@ export function Perfil() {
                     <p className={styles.tituloSecao}>Dados pessoais</p>
 
                     <div className={styles.linhaAvatar}>
-                        <div className={styles.avatar}>U</div>
+                        <div className={styles.avatar}>{inicial}</div>
                         <div>
-                            <p className={styles.nomeUsuario}>Usuário</p>
-                            <p className={styles.emailUsuario}>usuario@email.com</p>
+                            <p className={styles.nomeUsuario}>{nomeExibido}</p>
+                            <p className={styles.emailUsuario}>{emailExibido}</p>
                         </div>
                     </div>
 
@@ -40,15 +47,15 @@ export function Perfil() {
 
                     <div className={styles.infoCampo}>
                         <p className={styles.rotuloInfo}>Nome</p>
-                        <p className={styles.valorInfo}>Usuário</p>
+                        <p className={styles.valorInfo}>{nomeExibido}</p>
                     </div>
 
                     <div className={styles.infoCampo}>
                         <p className={styles.rotuloInfo}>E-mail</p>
-                        <p className={styles.valorInfo}>usuario@email.com</p>
+                        <p className={styles.valorInfo}>{emailExibido}</p>
                     </div>
 
-                    <Link className={styles.botaoEditar} to='/configuracoes'>
+                    <Link className={styles.botaoEditar} to='/perfil/editar'>
                         <MdEdit size={18} />
                         Editar perfil
                     </Link>

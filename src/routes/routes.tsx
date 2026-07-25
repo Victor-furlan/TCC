@@ -16,6 +16,7 @@ import { Relatorios } from '../pages/relatorios/Relatorios';
 import { Simulador } from '../pages/simulador/Simulador';
 import { Configuracoes } from '../pages/configuracoes/Configuracoes';
 import { Perfil } from '../pages/perfil/Perfil';
+import { EditarPerfil } from '../pages/perfil/EditarPerfil';
 import { TemaProvider } from '../contexts/TemaContexto';
 import { UsuarioProvider } from '../contexts/UsuarioContexto';
 import { BaseFinanceiraProvider } from '../contexts/BaseFinanceiraContexto';
@@ -45,6 +46,7 @@ export function AppRoutes() {
                     <Route path="simulador" element={<Simulador/>}/>
                     <Route path="configuracoes" element={<Configuracoes/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
+                    <Route path='/perfil/editar' element={<EditarPerfil />} />
                   </Route>
                 </Routes>
               </BrowserRouter>
