@@ -1,0 +1,59 @@
+.conteiner {
+  width: 100%;
+}
+
+.tooltip {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tooltipHumor {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.tooltipValor {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-primaria);
+}
+
+.tooltipQuantidade {
+  font-family: var(--fonte-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+}
+
+.conteudoVazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+}
+
+.iconeVazio {
+  color: var(--columbia-blue);
+}
+
+.textoVazio {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+}

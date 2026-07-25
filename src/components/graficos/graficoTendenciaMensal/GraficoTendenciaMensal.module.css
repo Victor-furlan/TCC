@@ -1,0 +1,74 @@
+.conteiner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo {
+  font-family: var(--fonte-base);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+}
+
+.seletorPeriodo {
+  display: flex;
+  background-color: var(--fundo-formulario-campo);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.botaoPeriodo {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.botaoPeriodoAtivo {
+  background-color: var(--white);
+  color: var(--cor-texto-principal);
+  font-weight: 700;
+}
+
+.tooltip {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tooltipMes {
+  font-family: var(--fonte-base);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+}
+
+.tooltipValor {
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-primaria);
+}
