@@ -6,7 +6,7 @@
 
 .cardsMetricas {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
 }
 
@@ -34,6 +34,56 @@
   font-style: italic;
   font-weight: 700;
   color: var(--cor-primaria);
+}
+
+.painelComportamental {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .painelComportamental {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cardGrafico,
+.cardInsights {
+  background-color: var(--white);
+  border: 1px solid var(--columbia-blue);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.listaInsights {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemInsight {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: var(--fundo-formulario-campo);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.iconeInsight {
+  color: var(--cor-primaria);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.textoInsight {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-principal);
+  line-height: 1.4;
 }
 
 .cardRenovacoes,

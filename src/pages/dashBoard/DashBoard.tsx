@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import styles from './DashBoard.module.css'
-import { MdCalendarToday, MdAdd, MdEdit, MdDelete, MdSchedule } from 'react-icons/md'
+import { MdCalendarToday, MdAdd, MdSchedule, MdLightbulb } from 'react-icons/md'
 import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+import { DespesasContexto } from '../../contexts/DespesasContexto'
 import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
 import { calcularHorasDeVida } from '../../utils/CalcularHorasDeVida'
+import { gerarInsights } from '../../utils/GerarInsights'
+import { agregarDadosPorHumor } from '../../utils/AgregarDadosGrafico'
+import { GraficoHumorGastos } from '../../components/graficos/graficoHumorGastos/GraficoHumorGastos'
 
 const coresCategorias: Record<string, string> = {
     'Entretenimento': 'var(--categoria-entretenimento)',
@@ -20,10 +24,14 @@ const corPadrao = '#E9F6FF'
 
 export function DashBoard(){
 
-    const { assinaturas, removerAssinatura } = useContext(AssinaturasContexto)
+    const { assinaturas } = useContext(AssinaturasContexto)
+    const { despesas } = useContext(DespesasContexto)
     const { rendaMensalContexto, cargaHorariaContexto } = useContext(BaseFinanceiraContexto)
 
     const baseFinanceiraPreenchida = rendaMensalContexto > 0 && cargaHorariaContexto > 0
+
+    const topInsights = gerarInsights(despesas).slice(0, 3)
+    const dadosGraficoHumor = agregarDadosPorHumor(despesas)
 
     const formatarMoeda = (valor: number) =>
         valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -58,14 +66,27 @@ export function DashBoard(){
         })
         .sort((a, b) => diasAteRenovacao(a.proximaCobranca) - diasAteRenovacao(b.proximaCobranca))
 
-    const totalDespesasMensais = assinaturas.reduce((soma, assinatura) => {
+    const totalAssinaturasMensalizado = assinaturas.reduce((soma, assinatura) => {
         if (assinatura.periodicidade === 'Anual') return soma + (assinatura.valor / 12)
         if (assinatura.periodicidade === 'Semanal') return soma + (assinatura.valor * 4)
         return soma + assinatura.valor
     }, 0)
 
+    const dataAtual = new Date()
+    const despesasDoMes = despesas.filter((despesa) => {
+        const [ano, mes] = despesa.data.split('-').map(Number)
+        return ano === dataAtual.getFullYear() && mes === dataAtual.getMonth() + 1
+    })
+    const totalDespesasDoMes = despesasDoMes.reduce((soma, despesa) => soma + despesa.valor, 0)
+
+    const totalDespesasMensais = totalAssinaturasMensalizado + totalDespesasDoMes
+
     const rendaComprometida = rendaMensalContexto > 0
         ? (totalDespesasMensais / rendaMensalContexto) * 100
+        : 0
+
+    const totalHorasDeVida = baseFinanceiraPreenchida
+        ? calcularHorasDeVida(totalDespesasMensais, rendaMensalContexto, cargaHorariaContexto)
         : 0
 
     return(
@@ -77,6 +98,13 @@ export function DashBoard(){
                     <p className={styles.tituloMetrica}>Total de Despesas Mensais</p>
                     <p className={styles.valorMetrica}>{formatarMoeda(totalDespesasMensais)}</p>
                 </div>
+
+                {baseFinanceiraPreenchida && (
+                    <div className={styles.cardMetrica}>
+                        <p className={styles.tituloMetrica}>Total em Horas de Vida</p>
+                        <p className={styles.valorMetrica}>{formatarHoras(totalHorasDeVida)}</p>
+                    </div>
+                )}
 
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Renda Comprometida</p>
@@ -91,6 +119,35 @@ export function DashBoard(){
                 <div className={styles.cardMetrica}>
                     <p className={styles.tituloMetrica}>Próximas Renovações</p>
                     <p className={styles.valorMetrica}>{proximasRenovacoes.length}</p>
+                </div>
+
+            </section>
+
+            <section className={styles.painelComportamental}>
+
+                <div className={styles.cardGrafico}>
+                    <p className={styles.tituloSecao}>Humor vs Gastos</p>
+                    <GraficoHumorGastos dados={dadosGraficoHumor} />
+                </div>
+
+                <div className={styles.cardInsights}>
+                    <p className={styles.tituloSecao}>Top 3 Insights Automáticos</p>
+
+                    {topInsights.length === 0 ? (
+                        <div className={styles.conteudoVazio}>
+                            <MdLightbulb size={48} className={styles.iconeVazio} />
+                            <p className={styles.textoVazio}>Continue registrando gastos para desbloquear insights</p>
+                        </div>
+                    ) : (
+                        <div className={styles.listaInsights}>
+                            {topInsights.map((insight) => (
+                                <div key={insight.id} className={styles.itemInsight}>
+                                    <MdLightbulb size={18} className={styles.iconeInsight} />
+                                    <p className={styles.textoInsight}>{insight.texto}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
             </section>
@@ -147,51 +204,6 @@ export function DashBoard(){
 
             <section className={styles.cardAssinaturas}>
                 <p className={styles.tituloSecao}>Todas as Assinaturas</p>
-
-                {assinaturas.length === 0 ? (
-                    <p className={styles.textoVazio}>Nenhuma assinatura cadastrada ainda.</p>
-                ) : (
-                    <div className={styles.listaAssinaturas}>
-                        {assinaturas.map((assinatura) => (
-                            <div key={assinatura.id} className={styles.itemAssinatura}>
-
-                                <div
-                                    className={styles.iconeInicial}
-                                    style={{ backgroundColor: coresCategorias[assinatura.categoria] || corPadrao }}
-                                >
-                                    {assinatura.nome.charAt(0).toUpperCase()}
-                                </div>
-
-                                <div className={styles.infoItem}>
-                                    <p className={styles.nomeItem}>{assinatura.nome}</p>
-                                    <p className={styles.dataItem}>{assinatura.categoria}</p>
-                                </div>
-
-                                <div className={styles.colunaValor}>
-                                    <p className={styles.valorItem}>{formatarMoeda(assinatura.valor)}</p>
-                                    {baseFinanceiraPreenchida && (
-                                        <p className={styles.horasDeVida}>
-                                            <MdSchedule size={13} />
-                                            {formatarHoras(calcularHorasDeVida(assinatura.valor, rendaMensalContexto, cargaHorariaContexto))}
-                                        </p>
-                                    )}
-                                </div>
-
-                                <div className={styles.acoesAssinatura}>
-                                    <Link className={styles.botaoIcone} to={`/assinaturas/editar/${assinatura.id}`}>
-                                        <MdEdit size={18} />
-                                    </Link>
-                                    <button
-                                        className={styles.botaoIcone}
-                                        onClick={() => removerAssinatura(assinatura.id)}
-                                    >
-                                        <MdDelete size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
 
                 <Link className={styles.botaoVerTodas}
                 to={'/assinaturas'}>

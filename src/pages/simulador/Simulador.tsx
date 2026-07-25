@@ -3,8 +3,33 @@ import { useContext, useState } from 'react'
 import { MdArrowBack, MdVisibility, MdAutoAwesome } from 'react-icons/md'
 import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
 import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts'
+import type { LabelProps } from 'recharts'
 
 type VisualizacaoGrafico = 'annual' | 'monthly'
+
+    /*Essas 2 funções tem que ficar fora do export senão o typescript fica reclamando */
+    //formata o tipo de moeda para usar no grafico
+    const formatarMoeda = (valor: number) =>
+        valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    // label customizado em cima de cada barra
+    const LabelBarra = ({ x, y, width, value }: LabelProps) => {
+        if (value === 0) return null
+        return (
+            <text
+                x={(x as number) + (width as number) / 2}
+                y={(y as number) - 8}
+                textAnchor="middle"
+                fill="var(--cor-texto-secundario)"
+                fontSize={12}
+                fontStyle="italic"
+                fontFamily="var(--fonte-base)"
+            >
+                {formatarMoeda(value as number)}
+            </text>
+        )
+    }
 
 export function Simulador() {
 
@@ -43,8 +68,21 @@ export function Simulador() {
     const percentualAtual = rendaMensalContexto > 0 ? (gastoAtualMensal / rendaMensalContexto) * 100 : 0
     const percentualSimulado = rendaMensalContexto > 0 ? (gastoSimuladoMensal / rendaMensalContexto) * 100 : 0
 
-    const formatarMoeda = (valor: number) =>
-        valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+
+    // dados do gráfico — muda conforme visualização mensal/anual
+    const dadosGrafico = [
+        {
+            cenario: 'Atual',
+            valor: visualizacao === 'annual' ? gastoAtualAnual : gastoAtualMensal,
+        },
+        {
+            cenario: 'Simulado',
+            valor: visualizacao === 'annual' ? gastoSimuladoAnual : gastoSimuladoMensal,
+        },
+    ]
+
+
 
     return(
         <div className={styles.conteiner}>
@@ -165,7 +203,9 @@ export function Simulador() {
                 <div className={styles.cabecalhoGrafico}>
                     <div>
                         <p className={styles.tituloGrafico}>Comparação Visual</p>
-                        <p className={styles.subtituloGrafico}>{visualizacao === 'annual' ? 'Anual' : 'Mensal'}</p>
+                        <p className={styles.subtituloGrafico}>
+                            {visualizacao === 'annual' ? 'Gasto anual atual vs. simulado' : 'Gasto mensal atual vs. simulado'}
+                        </p>
                     </div>
 
                     <button
@@ -177,10 +217,54 @@ export function Simulador() {
                     </button>
                 </div>
 
+                <div className={styles.legendaGrafico}>
+                    <span className={styles.itemLegenda}>
+                        <span className={styles.bolinhaLegenda} style={{ backgroundColor: 'var(--cor-primaria)' }} />
+                        Cenário Atual
+                    </span>
+                    <span className={styles.itemLegenda}>
+                        <span className={styles.bolinhaLegenda} style={{ backgroundColor: 'var(--simulador-card-roxo-preenchimento)' }} />
+                        Cenário Simulado
+                    </span>
+                    {economiaSelecionadaMensal > 0 && (
+                        <span className={styles.badgeEconomia}>
+                            💰 Economia de {formatarMoeda(visualizacao === 'annual' ? economiaSelecionadaAnual : economiaSelecionadaMensal)}
+                        </span>
+                    )}
+                </div>
+
+                {/* gráfico de barras — atual vs simulado */}
                 <div className={styles.areaGrafico}>
-                    <p className={styles.placeholderGrafico}>
-                        {visualizacao === 'annual' ? 'Gráfico de Barras Anual' : 'Gráfico de Barras Mensal'}
-                    </p>
+                    <ResponsiveContainer width="100%" height={260}>
+                        <BarChart data={dadosGrafico} margin={{ top: 32, right: 16, left: 8, bottom: 8 }} barCategoryGap="25%">
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--columbia-blue)" vertical={false} />
+                            <XAxis
+                                dataKey="cenario"
+                                tick={{ fill: 'var(--cor-texto-secundario)', fontSize: 13, fontStyle: 'italic' }}
+                                axisLine={{ stroke: 'var(--columbia-blue)' }}
+                                tickLine={false}
+                            />
+                            <YAxis
+                                tick={{ fill: 'var(--cor-texto-secundario)', fontSize: 12, fontStyle: 'italic' }}
+                                axisLine={false}
+                                tickLine={false}
+                                tickFormatter={(valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
+                            />
+                            <Tooltip
+                                formatter={(valor) => [formatarMoeda(valor as number), 'Total']}
+                                contentStyle={{
+                                    backgroundColor: 'var(--white)',
+                                    border: '1px solid var(--columbia-blue)',
+                                    borderRadius: '12px',
+                                    fontStyle: 'italic',
+                                }}
+                            />
+                            <Bar dataKey="valor" radius={[8, 8, 0, 0]} minPointSize={6} label={<LabelBarra />}>
+                                <Cell key="atual" fill="var(--cor-primaria)" />
+                                <Cell key="simulado" fill="var(--simulador-card-roxo-preenchimento)" />
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
                 </div>
 
                 <div className={styles.rodapeGrafico}>

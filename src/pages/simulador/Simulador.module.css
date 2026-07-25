@@ -294,7 +294,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .tituloGrafico {
@@ -311,7 +311,47 @@
   font-style: italic;
   font-weight: 300;
   color: var(--cor-texto-secundario);
-  text-decoration: underline;
+}
+
+.legendaGrafico {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.itemLegenda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--cor-texto-secundario);
+}
+
+.bolinhaLegenda {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badgeEconomia {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--simulador-card-verde-fundo);
+  border: 1px solid var(--simulador-card-verde-borda);
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--simulador-card-verde-texto);
 }
 
 .botaoAlternar {
@@ -338,20 +378,8 @@
 
 .areaGrafico {
   min-height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--fundo-formulario-campo);
   border-radius: 16px;
   margin-bottom: 16px;
-}
-
-.placeholderGrafico {
-  font-family: var(--fonte-base);
-  font-size: 1rem;
-  font-style: italic;
-  font-weight: 300;
-  color: var(--cor-texto-secundario);
 }
 
 .rodapeGrafico {
