@@ -20,6 +20,7 @@ import { EditarPerfil } from '../pages/perfil/EditarPerfil';
 import { TemaProvider } from '../contexts/TemaContexto';
 import { UsuarioProvider } from '../contexts/UsuarioContexto';
 import { BaseFinanceiraProvider } from '../contexts/BaseFinanceiraContexto';
+import { RotaProtegida } from './rotaProtegida';
 
 export function AppRoutes() {
   return (
@@ -34,19 +35,21 @@ export function AppRoutes() {
                   <Route path="criarConta" element={<CriarConta/>}/>
                   <Route path="redefinirSenha" element={<RedefinirSenha/>}/>
 
-                  <Route element={<Principal />}>
-                    <Route path="dashboard" element={<DashBoard/>}/>
-                    <Route path="assinaturas" element={<Assinaturas/>}/>
-                    <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}></Route>
-                    <Route path='assinaturas/editar/:id' element={<EditarAssinatura />} />
-                    <Route path="despesas" element={<Despesas/>}/>
-                    <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
-                    <Route path="despesas/editar/:id" element={<EditarDespesa/>}/>
-                    <Route path="relatorios" element={<Relatorios/>}/>
-                    <Route path="simulador" element={<Simulador/>}/>
-                    <Route path="configuracoes" element={<Configuracoes/>}/>
-                    <Route path='perfil' element={<Perfil/>}/>
-                    <Route path='/perfil/editar' element={<EditarPerfil />} />
+                  <Route element={<RotaProtegida />}>
+                    <Route element={<Principal />}>
+                      <Route path="dashboard" element={<DashBoard/>}/>
+                      <Route path="assinaturas" element={<Assinaturas/>}/>
+                      <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}></Route>
+                      <Route path='assinaturas/editar/:id' element={<EditarAssinatura />} />
+                      <Route path="despesas" element={<Despesas/>}/>
+                      <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
+                      <Route path="despesas/editar/:id" element={<EditarDespesa/>}/>
+                      <Route path="relatorios" element={<Relatorios/>}/>
+                      <Route path="simulador" element={<Simulador/>}/>
+                      <Route path="configuracoes" element={<Configuracoes/>}/>
+                      <Route path='perfil' element={<Perfil/>}/>
+                      <Route path='/perfil/editar' element={<EditarPerfil />} />
+                    </Route>
                   </Route>
                 </Routes>
               </BrowserRouter>

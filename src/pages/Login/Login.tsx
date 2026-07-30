@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { MdEmail, MdLock } from 'react-icons/md';
 import { ModalMensagem } from '../../components/ModalMensagem';
-import { UsuarioContexto } from '../../contexts/UsuarioContexto';
+import { useAuth } from '../../hooks/useAuth';
 
 
 type FormValues = {
@@ -26,7 +26,7 @@ export function Login() {
   const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
   const [modalMensagemTexto, setModalMensagemTexto] = useState('')
 
-  const { setEmailUsuarioContexto } = useContext(UsuarioContexto)
+  const {loginAuthUsuario} = useAuth()
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
@@ -34,20 +34,28 @@ export function Login() {
 
   const navegacao = useNavigate();
 
-  const autenticarUsuario = (data: FormValues) => {
-    setEmailUsuarioContexto(data.email)
-    setModalMensagemTexto('Seja bem vindo ao MindCash!')
-    exibirModal()
+  const autenticarUsuario = async (data: FormValues) => {
+    const resultado = await loginAuthUsuario(data.email, data.senha)
+
+    if (resultado !== 'sucesso') {
+      setModalMensagemTitulo('Erro')
+      setModalMensagemTexto(resultado)
+      exibirModal()
+      return
+    }
+
+    setModalMensagemTitulo('Login')
+    setModalMensagemTexto('Seja bem-vindo ao MindCash!')
+    setModalMensagemVisivel(true)
   }
 
   const exibirModal = () => {
-    setModalMensagemTitulo('Login')
     setModalMensagemVisivel(true)
   }
 
   const ocultarModal = () => {
     setModalMensagemVisivel(false)
-    navegacao('dashBoard')
+    return navegacao('/dashboard')
   }
 
   return (

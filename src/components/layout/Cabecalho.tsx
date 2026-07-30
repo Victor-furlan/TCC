@@ -4,6 +4,7 @@ import { IoMdNotifications } from "react-icons/io"
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UsuarioContexto } from '../../contexts/UsuarioContexto'
+import { useAuth } from '../../hooks/useAuth'
 
 export function Cabecalho(){
 
@@ -12,10 +13,13 @@ export function Cabecalho(){
     const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
     const usuarioExibicao = nomeUsuarioContexto || emailUsuarioContexto
 
+    const {logOutAuth} = useAuth()
+
     const navegacao = useNavigate()
 
     const fazerLogout = () => {
         setDropdownContaAberto(false)
+        logOutAuth()
         navegacao('/')
     }
 

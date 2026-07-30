@@ -4,10 +4,10 @@ import logo from "../../assets/imagens/logo.png";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext, useState } from 'react';
+import {  useState } from 'react';
 import { ModalMensagem } from '../../components/ModalMensagem';
-import { UsuarioContexto } from '../../contexts/UsuarioContexto';
 import { MdPerson, MdEmail, MdLock, MdSchedule, MdMood, MdBarChart } from 'react-icons/md';
+import { useAuth } from '../../hooks/useAuth';
 
 type FormValues = {
   nomeCompleto: string;
@@ -42,23 +42,31 @@ export function CriarConta() {
   const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
   const [modalMensagemTexto, setModalMensagemTexto] = useState('')
 
-  const { setNomeUsuarioContexto, setEmailUsuarioContexto } = useContext(UsuarioContexto)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(criarContaSchema),
   });
 
+  const {criarAuthUsuario} = useAuth()
+
   const navegacao = useNavigate();
 
-  const criarUsuario = (data: FormValues) => {
-    setNomeUsuarioContexto(data.nomeCompleto)
-    setEmailUsuarioContexto(data.email)
+  const criarUsuario = async (data: FormValues) => {
+    const resultado = await criarAuthUsuario(data.nomeCompleto, data.email, data.senha)
+
+    if (resultado !== 'sucesso') {
+      setModalMensagemTitulo('Erro')
+      setModalMensagemTexto(resultado)
+      exibirModal()
+      return
+    }
+
     setModalMensagemTexto(`Conta criada com sucesso, ${data.nomeCompleto}!`)
+    setModalMensagemTitulo('Criar Conta')
     exibirModal()
   };
 
   const exibirModal = () => {
-    setModalMensagemTitulo('Criar Conta')
     setModalMensagemVisivel(true)
   }
 

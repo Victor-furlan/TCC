@@ -1,0 +1,64 @@
+import { supabase } from "../services/supabase";
+
+
+export function useAuth() {
+
+    const criarAuthUsuario = async (nome:string, email:string, password:string): Promise<string> => {
+        let retorno = 'sucesso'
+
+        try {
+            const {data: authData, error} = await supabase.auth.signUp({
+                email,
+                password: password,
+                options: {
+                    data: {nome}
+                }
+            })
+
+            if (error) return error.message
+
+            await supabase.from('usuarios').insert({
+                id: authData.user?.id,
+                nome,
+                email,
+            })
+        } catch (error) {
+            retorno = `${error}`
+        }
+
+        return retorno
+    }
+
+    const loginAuthUsuario = async (email: string, password: string): Promise<string> => {
+        let retorno = 'sucesso'
+
+        try {
+            const {error} = await supabase.auth.signInWithPassword({
+                email,
+                password: password,
+            })
+
+            if (error) return error.message
+        } catch (error) {
+            retorno = `${error}`
+        }
+
+        return retorno
+    }
+
+    const logOutAuth = async (): Promise<string> => {
+        let retorno = 'sucesso'
+
+        try {
+            const {error} = await supabase.auth.signOut()
+
+            if (error) return error.message
+        } catch (error) {
+            retorno = `${error}`
+        }
+
+        return retorno
+    }
+
+    return {criarAuthUsuario, loginAuthUsuario, logOutAuth}
+}
