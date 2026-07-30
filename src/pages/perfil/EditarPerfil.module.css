@@ -163,3 +163,11 @@
 .botaoSalvar:hover {
   opacity: 0.85;
 }
+
+.nomeAtual {
+  font-family: var(--fonte-base);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--cor-texto-principal);
+}

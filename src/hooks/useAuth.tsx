@@ -60,5 +60,38 @@ export function useAuth() {
         return retorno
     }
 
-    return {criarAuthUsuario, loginAuthUsuario, logOutAuth}
+    const atualizarPerfilAuth = async (nome:string,  email:string): Promise<string> => {
+        let retorno = 'sucesso'
+
+        try {
+            const {data: {user}} = await supabase.auth.getUser()
+            if(!user) return 'Usuário não encontrado'
+
+            const {error} = await supabase
+            .from('usuarios')
+            .update({nome, email})
+            .eq('id', user.id)
+
+            if(error) return error.message
+        } catch (error) {
+            retorno = `${error}`
+        }
+
+        return retorno
+    }
+
+    const atualizarSenhaAuth = async (newPassword:string): Promise<string> => {
+        let retorno = 'sucesso'
+
+        try {
+            const {error} = await supabase.auth.updateUser({password: newPassword})
+            if(error) return error.message
+        } catch (error) {
+            retorno = `${error}`
+        }
+
+        return retorno
+    }
+
+    return {criarAuthUsuario, loginAuthUsuario, logOutAuth, atualizarPerfilAuth, atualizarSenhaAuth}
 }

@@ -3,17 +3,21 @@ import { Link, useNavigate } from 'react-router-dom'
 import { MdArrowBack, MdEdit, MdLogout } from 'react-icons/md'
 import { useContext } from 'react'
 import { UsuarioContexto } from '../../contexts/UsuarioContexto'
+import { useAuth } from '../../hooks/useAuth'
 
 export function Perfil() {
 
     const navegacao = useNavigate()
     const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
 
+    const {logOutAuth} = useAuth()
+
     const nomeExibido = nomeUsuarioContexto || emailUsuarioContexto || 'Usuário'
     const emailExibido = emailUsuarioContexto || 'usuario@email.com'
     const inicial = nomeExibido.charAt(0).toUpperCase()
 
     const fazerLogout = () => {
+        logOutAuth()
         navegacao('/')
     }
 

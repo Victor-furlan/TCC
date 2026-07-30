@@ -1,11 +1,13 @@
 import styles from './EditarPerfil.module.css'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MdArrowBack } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
+import { UsuarioContexto } from '../../contexts/UsuarioContexto'
+import { useAuth } from '../../hooks/useAuth'
 
 type AbaEditar = 'pessoal' | 'seguranca'
 
@@ -17,7 +19,6 @@ type PessoalFormValues = {
 type SegurancaFormValues = {
     novaSenha: string
     confirmarNovaSenha: string
-    emailRecuperacao: string
 }
 
 const pessoalSchema = z.object({
@@ -32,7 +33,6 @@ const pessoalSchema = z.object({
 const segurancaSchema = z.object({
     novaSenha: z.string().min(6, { message: 'A senha deve ter no mínimo 6 caracteres.' }),
     confirmarNovaSenha: z.string().min(6, { message: 'Confirme sua nova senha.' }),
-    emailRecuperacao: z.string().email({ message: 'Informe um e-mail válido.' }),
 }).refine((data) => data.novaSenha === data.confirmarNovaSenha, {
     message: 'As senhas não coincidem.',
     path: ['confirmarNovaSenha'],
@@ -44,6 +44,11 @@ export function EditarPerfil() {
     const [modalVisivel, setModalVisivel] = useState(false)
     const [modalTitulo, setModalTitulo] = useState('')
 
+    const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
+    const nomeAtual = nomeUsuarioContexto
+
+    const {atualizarPerfilAuth, atualizarSenhaAuth} = useAuth()
+
     const formPessoal = useForm<PessoalFormValues>({ resolver: zodResolver(pessoalSchema) })
     const formSeguranca = useForm<SegurancaFormValues>({ resolver: zodResolver(segurancaSchema) })
 
@@ -52,13 +57,25 @@ export function EditarPerfil() {
         setModalVisivel(true)
     }
 
-    const salvarPessoal = (data: PessoalFormValues) => {
-        console.log(data)
+    const salvarPessoal = async (data: PessoalFormValues) => {
+        const resultado = await atualizarPerfilAuth(data.novoNome, data.email)
+
+        if (resultado !== 'sucesso') {
+            exibirModal('Erro')
+            return
+        }
+
         exibirModal('Dados Pessoais')
     }
 
-    const salvarSeguranca = (data: SegurancaFormValues) => {
-        console.log(data)
+    const salvarSeguranca = async (data: SegurancaFormValues) => {
+        const resultado = await atualizarSenhaAuth(data.novaSenha)
+
+        if (resultado !== 'sucesso') {
+            exibirModal('Erro')
+            return
+        }
+
         exibirModal('Segurança')
     }
 
@@ -96,7 +113,12 @@ export function EditarPerfil() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Seu nome atual:</p>
-                            <input className={styles.input} placeholder='ex. Usuário' disabled />
+                            <p className={styles.nomeAtual}>{nomeAtual}</p>
+                        </div>
+
+                        <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Seu e-mail atual:</p>
+                            <p className={styles.nomeAtual}>{emailUsuarioContexto}</p>
                         </div>
 
                         <div className={styles.campo}>
@@ -132,11 +154,6 @@ export function EditarPerfil() {
                     <form className={styles.cardConteudo} onSubmit={formSeguranca.handleSubmit(salvarSeguranca)}>
 
                         <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>Senha atual:</p>
-                            <input className={styles.input} placeholder='ex. ****************' type='password' disabled />
-                        </div>
-
-                        <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Nova senha:</p>
                             <input
                                 {...formSeguranca.register('novaSenha')}
@@ -159,18 +176,6 @@ export function EditarPerfil() {
                             />
                             {formSeguranca.formState.errors.confirmarNovaSenha && (
                                 <p className={styles.erro}>{formSeguranca.formState.errors.confirmarNovaSenha.message}</p>
-                            )}
-                        </div>
-
-                        <div className={styles.campo}>
-                            <p className={styles.rotuloCampo}>E-mail de recuperação:</p>
-                            <input
-                                {...formSeguranca.register('emailRecuperacao')}
-                                className={styles.input}
-                                placeholder='ex. joao@email.com'
-                            />
-                            {formSeguranca.formState.errors.emailRecuperacao && (
-                                <p className={styles.erro}>{formSeguranca.formState.errors.emailRecuperacao.message}</p>
                             )}
                         </div>
 
