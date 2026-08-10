@@ -1,14 +1,15 @@
 import styles from './Login.module.css';
-import logo from "../../assets/imagens/logo_completa_mindcash.png";
+import logoClara from "../../assets/imagens/logo_completa_mindcash.svg";
+import logoEscura from "../../assets/imagens/logo_completa_dark_mode.svg";
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { MdEmail, MdLock } from 'react-icons/md';
 import { ModalMensagem } from '../../components/ModalMensagem';
 import { useAuth } from '../../hooks/useAuth';
-
+import { TemaContexto } from '../../contexts/TemaContexto';
 
 type FormValues = {
   email: string;
@@ -21,6 +22,8 @@ const loginSchema = z.object({
 })
 
 export function Login() {
+
+  const { tema } = useContext(TemaContexto)
 
   const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
   const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
@@ -81,7 +84,7 @@ export function Login() {
 
         <div className={styles.painelFormulario}>
           <div className={styles.formConteiner}>
-            <img src={logo} className={styles.logo} />
+            <img src={tema === 'escuro' ? logoEscura : logoClara} className={styles.logo} />
 
             <h1 className={styles.titulo}>Bem vindo</h1>
             <p className={styles.subtitulo}>Faça login para gerenciar suas despesas</p>
@@ -101,42 +104,35 @@ export function Login() {
                 {errors.email && <p className={styles.erro}>{errors.email.message}</p>}
               </div>
 
-
-            <div className={styles.conteinerCampo}>
-              <Link
-                className={styles.esqueceuSenha}
-                to={"redefinirSenha"}
-              >
-                Esqueceu a senha?
-              </Link>
-              
-              <p className={styles.tituloCampo}>Senha</p>
-              <div className={styles.campoComIcone}>
-                <MdLock size={17} className={styles.iconeCampo} />
-                <input
-                  {...register('senha')}
-                  className={styles.campo}
-                  placeholder='Senha'
-                  type='password'
-                />
+              <div className={styles.conteinerCampo}>
+                <Link className={styles.esqueceuSenha} to={"redefinirSenha"}>
+                  Esqueceu a senha?
+                </Link>
+                
+                <p className={styles.tituloCampo}>Senha</p>
+                <div className={styles.campoComIcone}>
+                  <MdLock size={17} className={styles.iconeCampo} />
+                  <input
+                    {...register('senha')}
+                    className={styles.campo}
+                    placeholder='Senha'
+                    type='password'
+                  />
+                </div>
+                {errors.senha && <p className={styles.erro}>{errors.senha.message}</p>}         
               </div>
-              {errors.senha && <p className={styles.erro}>{errors.senha.message}</p>}         
-            </div>
 
               <button className={styles.login} type='submit'>
                 Login
               </button>
             </form>
 
-              <div className={styles.conteinerCriarConta}>
-                <p className={styles.semConta}>Não tem uma conta?</p>
-                <Link
-                  className={styles.criarConta}
-                  to={'criarConta'}
-                >
-                  Crie uma aqui
-                </Link>
-              </div>
+            <div className={styles.conteinerCriarConta}>
+              <p className={styles.semConta}>Não tem uma conta?</p>
+              <Link className={styles.criarConta} to={'criarConta'}>
+                Crie uma aqui
+              </Link>
+            </div>
           </div>
         </div>
 

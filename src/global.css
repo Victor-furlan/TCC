@@ -65,7 +65,7 @@
     --cor-primaria: #2E9EFF;
     --cor-secundaria: #12212F;
     --cor-accent: #86D3E3;
-    --cor-fundo-menu: #142534;
+    --cor-fundo-menu: #0B1220;
     --cor-borda-menu: #2b4a67;
     --cor-botoes-menu: #111f2b;
     --cor-fundo-botao-menu: #13293a;
@@ -95,7 +95,7 @@
     --categoria-educacao: #A66CFF;
     
     /* Variáveis de paleta usadas diretamente nos componentes */
-    --white: #101E2C;
+    --white: #070C18;
     --columbia-blue: #35618A;
     --space-cadet: #1E88E5;
     --alice-blue-light: #111c29;

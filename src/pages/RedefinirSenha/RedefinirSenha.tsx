@@ -1,12 +1,14 @@
 import styles from './RedefinirSenha.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from "../../assets/imagens/logo.png";
+import logoClara from "../../assets/imagens/logo.svg";
+import logoEscura from "../../assets/imagens/logo_dark_mode.svg";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { ModalMensagem } from '../../components/ModalMensagem';
+import { TemaContexto } from '../../contexts/TemaContexto';
 
 type FormValues = {
   email: string;
@@ -17,6 +19,8 @@ const redefinirSenhaSchema = z.object({
 });
 
 export function RedefinirSenha() {
+
+  const { tema } = useContext(TemaContexto)
 
   const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
   const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
@@ -47,7 +51,7 @@ export function RedefinirSenha() {
     <div className={styles.container}>
       <div className={styles.formConteiner}>
 
-        <img src={logo} className={styles.logo} />
+        <img src={tema === 'escuro' ? logoEscura : logoClara} className={styles.logo} />
         <h1 className={styles.titulo}>Esqueceu sua senha?</h1>
         <p className={styles.subtitulo}>Digite seu e-mail e enviaremos um link para redefinir sua senha</p>
 
@@ -73,10 +77,7 @@ export function RedefinirSenha() {
         </form>
 
         <div className={styles.conteinerVoltar}>
-          <Link
-            className={styles.logar}
-            to={'/'}
-          >
+          <Link className={styles.logar} to={'/'}>
             Voltar para o login
           </Link>
         </div>

@@ -1,13 +1,15 @@
 import styles from './CriarConta.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from "../../assets/imagens/logo.png";
+import logoClara from "../../assets/imagens/logo.svg";
+import logoEscura from "../../assets/imagens/logo_dark_mode.svg";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {  useState } from 'react';
+import { useState, useContext } from 'react';
 import { ModalMensagem } from '../../components/ModalMensagem';
 import { MdPerson, MdEmail, MdLock, MdSchedule, MdMood, MdBarChart } from 'react-icons/md';
 import { useAuth } from '../../hooks/useAuth';
+import { TemaContexto } from '../../contexts/TemaContexto';
 
 type FormValues = {
   nomeCompleto: string;
@@ -38,17 +40,17 @@ const beneficios = [
 
 export function CriarConta() {
 
+  const { tema } = useContext(TemaContexto)
+
   const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
   const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
   const [modalMensagemTexto, setModalMensagemTexto] = useState('')
-
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(criarContaSchema),
   });
 
-  const {criarAuthUsuario} = useAuth()
-
+  const { criarAuthUsuario } = useAuth()
   const navegacao = useNavigate();
 
   const criarUsuario = async (data: FormValues) => {
@@ -104,7 +106,7 @@ export function CriarConta() {
       <div className={styles.painelFormulario}>
         <div className={styles.formConteiner}>
 
-          <img src={logo} className={styles.logo} />
+          <img src={tema === 'escuro' ? logoEscura : logoClara} className={styles.logo} />
           <h1 className={styles.titulo}>Comece sua jornada</h1>
           <p className={styles.subtitulo}>Crie sua conta e assuma o controle das suas finanças</p>
 
@@ -172,10 +174,7 @@ export function CriarConta() {
 
           <div className={styles.conteinerLogin}>
             <p className={styles.comConta}>Já tem uma conta?</p>
-            <Link
-              className={styles.logar}
-              to={'/'}
-            >
+            <Link className={styles.logar} to={'/'}>
               Logue aqui
             </Link>
           </div>

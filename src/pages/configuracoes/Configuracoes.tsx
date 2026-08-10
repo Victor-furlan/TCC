@@ -69,12 +69,13 @@ export function Configuracoes() {
     const [temaSelecionado, setTemaSelecionado] = useState(tema)
     const [dropdownTemaAberto, setDropdownTemaAberto] = useState(false)
 
-    const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('en')
+    const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('pt')
     const [dropdownIdiomaAberto, setDropdownIdiomaAberto] = useState(false)
 
     const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
     const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
     const [modalMensagemTexto, setModalMensagemTexto] = useState('')
+    const [modalMensagemTipo, setModalMensagemTipo] = useState<'sucesso' | 'erro'>('sucesso')
 
     const formFinancial = useForm<FinancialFormValues>({
         resolver: zodResolver(financialSchema),
@@ -84,20 +85,22 @@ export function Configuracoes() {
         },
     })
 
-    const exibirModal = (titulo: string) => {
-        setModalMensagemTitulo(titulo)
-        setModalMensagemTexto('Alterações salvas com sucesso!')
-        setModalMensagemVisivel(true)
-    }
-
     const ocultarModal = () => {
         setModalMensagemVisivel(false)
     }
 
-    const salvarFinancial = (data: FinancialFormValues) => {
-        setRendaMensalContexto(Number(data.rendaMensal))
-        setCargaHorariaContexto(Number(data.horasTrabalhadas))
-        exibirModal('Financeiro')
+    const salvarFinancial = async (data: FinancialFormValues) => {
+        try {
+            await setRendaMensalContexto(Number(data.rendaMensal))
+            await setCargaHorariaContexto(Number(data.horasTrabalhadas))
+            setModalMensagemTipo('sucesso')
+            setModalMensagemTexto('Alterações salvas com sucesso!')
+        }catch {
+            setModalMensagemTipo('erro')
+            setModalMensagemTexto('Erro ao salvar. Tente novamente.')
+        }
+        setModalMensagemTitulo('Financeiro')
+        setModalMensagemVisivel(true)
     }
 
     const tituloAba: Record<AbaConfiguracao, string> = {
@@ -315,6 +318,7 @@ export function Configuracoes() {
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}
                 texto={modalMensagemTexto}
+                tipo={modalMensagemTipo}
             />
 
         </div>

@@ -1,6 +1,9 @@
 import estilos from './ModalMensagem.module.css'
-import logo from "../assets/imagens/logo.png";
+import logoClara from "../assets/imagens/logo.svg"
+import logoEscura from "../assets/imagens/logo_dark_mode.svg"
 import { MdCheck, MdInfo, MdErrorOutline } from 'react-icons/md'
+import { useContext } from 'react'
+import { TemaContexto } from '../contexts/TemaContexto'
 
 type TipoModal = 'sucesso' | 'info' | 'erro'
 
@@ -19,6 +22,9 @@ const iconesPorTipo: Record<TipoModal, { icone: React.ReactNode, classe: string 
 }
 
 export function ModalMensagem({exibir, ocultar, titulo, texto, tipo = 'sucesso'}: ModalMensagemProps) {
+
+    const { tema } = useContext(TemaContexto)
+
     if (exibir) {
 
         const { icone, classe } = iconesPorTipo[tipo]
@@ -28,7 +34,7 @@ export function ModalMensagem({exibir, ocultar, titulo, texto, tipo = 'sucesso'}
 
                 <div className={estilos.conteinerMensagem}>
 
-                    <img src={logo} className={estilos.logo} />
+                    <img src={tema === 'escuro' ? logoEscura : logoClara} className={estilos.logo} />
 
                     <div className={`${estilos.iconeStatus} ${classe}`}>
                         {icone}

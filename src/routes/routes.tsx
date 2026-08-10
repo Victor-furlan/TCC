@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from '../pages/login/Login';
 import { CriarConta } from '../pages/criarConta/CriarConta';
 import { RedefinirSenha } from '../pages/redefinirSenha/RedefinirSenha';
+import { Onboarding } from '../pages/onboarding/Onboarding';
 import { Principal } from '../components/layout/Principal';
 import { DashBoard } from '../pages/dashBoard/DashBoard';
 import { Assinaturas } from '../pages/assinaturas/Assinaturas';
@@ -20,7 +21,7 @@ import { EditarPerfil } from '../pages/perfil/EditarPerfil';
 import { TemaProvider } from '../contexts/TemaContexto';
 import { UsuarioProvider } from '../contexts/UsuarioContexto';
 import { BaseFinanceiraProvider } from '../contexts/BaseFinanceiraContexto';
-import { RotaProtegida } from './rotaProtegida';
+import { RotaProtegida } from './RotaProtegida';
 
 export function AppRoutes() {
   return (
@@ -36,10 +37,11 @@ export function AppRoutes() {
                   <Route path="redefinirSenha" element={<RedefinirSenha/>}/>
 
                   <Route element={<RotaProtegida />}>
+                    <Route path="onboarding" element={<Onboarding />}/>
                     <Route element={<Principal />}>
                       <Route path="dashboard" element={<DashBoard/>}/>
                       <Route path="assinaturas" element={<Assinaturas/>}/>
-                      <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}></Route>
+                      <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}/>
                       <Route path='assinaturas/editar/:id' element={<EditarAssinatura />} />
                       <Route path="despesas" element={<Despesas/>}/>
                       <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
