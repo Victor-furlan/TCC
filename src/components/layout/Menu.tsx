@@ -21,7 +21,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/dashboard' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/dashboard' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/dashboard'
                 >
                     <MdDashboard size={28} />
@@ -30,7 +30,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/assinaturas' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/assinaturas' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/assinaturas'
                 >
                     <MdCreditCard size={28} />
@@ -39,7 +39,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/despesas' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/despesas' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/despesas'
                 >
                     <MdShoppingCart size={28} />
@@ -48,7 +48,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/relatorios' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/relatorios' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/relatorios'
                 >
                     <MdBarChart size={28} />
@@ -57,7 +57,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/simulador' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/simulador' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/simulador'
                 >
                     <IoMdCalculator size={28} />
@@ -66,7 +66,7 @@ export function Menu(){
 
                 <Link
                     className={estilos.item}
-                    style={{ color: location.pathname === '/configuracoes' ? 'var(--cor-primaria)' : 'var(--cor-texto-secundario)' }}
+                    style={{ color: location.pathname === '/configuracoes' ? 'var(--cor-texto-botao-menu)' : 'var(--cor-texto-secundario)' }}
                     to='/configuracoes'
                 >
                     <MdSettings size={28} />

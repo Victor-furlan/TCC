@@ -11,7 +11,7 @@
 }
 
 .cardMetrica {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 20px;
@@ -50,7 +50,7 @@
 
 .cardGrafico,
 .cardInsights {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;
@@ -88,7 +88,7 @@
 
 .cardRenovacoes,
 .cardAssinaturas {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;
@@ -118,7 +118,7 @@
   border: none;
   border-radius: 10px;
   padding: 10px 18px;
-  color: var(--fundo-formulario-campo);
+  color: #FFFFFF;
   font-family: var(--fonte-base);
   font-size: 0.85rem;
   font-style: italic;
@@ -197,7 +197,7 @@
   border: none;
   border-radius: 15px;
   padding: 16px;
-  color: var(--fundo-formulario-campo);
+  color: #FFFFFF;
   font-family: var(--fonte-base);
   font-size: 1rem;
   font-style: italic;

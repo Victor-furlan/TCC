@@ -53,7 +53,7 @@
 }
 
 .cardPerfil {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 32px;
@@ -169,7 +169,7 @@
   border: none;
   border-radius: 16px;
   padding: 14px;
-  color: var(--white);
+  color: #FFFFFF;
   font-family: var(--fonte-base);
   font-size: 0.9rem;
   font-style: italic;

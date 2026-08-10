@@ -11,6 +11,10 @@
     --alice-blue-light: #F6FBFF;
     --white: #FFFFFF;
 
+    --cor-borda-card: var(--columbia-blue);
+    --cor-fundo-card: var(--white);
+    --cor-texto-botao: #FFFFFF;
+
     /* Mapeamento Semântico */
     --cor-fundo: var(--alice-blue-light);
     --cor-texto-principal: var(--dark-charcoal);
@@ -21,6 +25,7 @@
     --cor-fundo-menu: #ECF7FF;
     --cor-borda-menu: #98C8EB;
     --cor-botoes-menu: #DFF2FF;
+    --cor-texto-botao-menu: var(--true-blue);
     --cor-fundo-botao-menu: #c3e7ff;
     --cor-erro: #E63946;
 
@@ -59,50 +64,76 @@
 }
 
 [data-tema="escuro"] {
-    --cor-fundo: #0a1521;
-    --cor-texto-principal: #F0F6FC;
-    --cor-texto-secundario: #94A7C4;
-    --cor-primaria: #2E9EFF;
-    --cor-secundaria: #12212F;
-    --cor-accent: #86D3E3;
-    --cor-fundo-menu: #0B1220;
-    --cor-borda-menu: #2b4a67;
-    --cor-botoes-menu: #111f2b;
-    --cor-fundo-botao-menu: #13293a;
-    --cor-erro: #FF6B6B;
-
-    --painel-login-inicio: #050B12;
-    --painel-login-fim: #0B3A57;
-    --painel-login-texto: #F0F6FC;
+    /* Cores de Base (Paleta Dark Mode) */
+    --fundo-base: #0B0F19;
+    --fundo-surface: #111827;
+    --borda-divider: #1F2937;
     
-    --cor-estrela: #FBBF24; 
-
-    --simulador-item-fundo: #3B1C21;
-    --simulador-item-borda: #742A33;
-    --simulador-card-verde-fundo: #0B1F16;
-    --simulador-card-verde-borda: #1B432D;
-    --simulador-card-verde-texto: #4ADE80;
-    --simulador-card-roxo-fundo: #141125;
-    --simulador-card-roxo-borda: #2D224E;
-    --simulador-card-roxo-preenchimento: #8B6FD1;
-
-    --categoria-entretenimento: #FF6B6B;
-    --categoria-software: #FFD93D;
-    --categoria-compras: #6BCB77;
-    --categoria-utilidades: #FFA94D;
-    --categoria-alimentacao: #4D96FF;
-    --categoria-saude: #FF6FD8;
-    --categoria-educacao: #A66CFF;
+    --cor-primary-action: #2563EB;
+    --cor-accent-highlight: #3B82F6;
+    --cor-success-positive: #10B981;
     
-    /* Variáveis de paleta usadas diretamente nos componentes */
-    --white: #070C18;
-    --columbia-blue: #35618A;
-    --space-cadet: #1E88E5;
-    --alice-blue-light: #111c29;
-    
-    --fundo-formulario-campo: #1c2934;
-    --borda-formulario-campo: #21364A;
+    --texto-primary: #FFFFFF;
+    --texto-secondary: #9CA3AF;
 
+    /* Mapeamento Semântico para o Dark Mode */
+    --cor-borda-card: var(--borda-divider);
+    --cor-fundo-card: var(--fundo-surface);
+    --cor-fundo: var(--fundo-base);
+    --cor-texto-principal: var(--texto-primary);
+    --cor-texto-secundario: var(--texto-secondary);
+    --cor-primaria: var(--cor-primary-action);
+    --cor-secundaria: var(--fundo-base);
+    --cor-accent: var(--cor-accent-highlight);
+    --cor-texto-botao: #FFFFFF;
+    
+    /* Componentes: Formulários */
+    --fundo-formulario-campo: #1F2937;
+    --borda-formulario-campo: #374151;
+
+    /* Componentes: Menu e Navegação */
+    --cor-fundo-menu: var(--fundo-surface);
+    --cor-borda-menu: var(--borda-divider);
+    --cor-botoes-menu: #1F2937;
+    --cor-fundo-botao-menu: #1b3675;
+    --cor-icone-menu: #FFFFFF;
+    --cor-texto-botao-menu: #649bf4;
+    
+    /* Feedbacks e Status */
+    --cor-erro: #EF4444;
+    --cor-estrelas: #F59E0B;
+    --cor-estrela: #F59E0B; 
+
+    /* Telas específicas: Login/Cadastro */
+    --painel-login-inicio: #070A13;
+    --painel-login-fim: #0B1930;
+    --painel-login-texto: var(--texto-primary);
+
+    /* Telas específicas: Simulador */
+    --simulador-item-fundo: #31181C;
+    --simulador-item-borda: #4B1A20;
+    --simulador-card-verde-fundo: #06231A;
+    --simulador-card-verde-borda: #0D3E2F;
+    --simulador-card-verde-texto: var(--cor-success-positive);
+    --simulador-card-roxo-fundo: #1E1B4B;
+    --simulador-card-roxo-borda: #312E81;
+    --simulador-card-roxo-preenchimento: #6366F1;
+
+    /* Categorias */
+    --categoria-entretenimento: #F87171;
+    --categoria-software: #FBBF24;
+    --categoria-compras: #34D399;
+    --categoria-utilidades: #FB923C;
+    --categoria-alimentacao: #60A5FA;
+    --categoria-saude: #F472B6;
+    --categoria-educacao: #C084FC;
+
+    /* Mapeamento de variáveis antigas / legadas para evitar quebras nos componentes */
+    --white: var(--fundo-surface);
+    --columbia-blue: var(--borda-divider);
+    --space-cadet: var(--cor-primary-action);
+    --alice-blue-light: var(--fundo-base);
+    --fundo-formulario-campo: #1F2937;
 }
 * {
     margin: 0px;
@@ -130,4 +161,8 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: var(--cor-texto-principal) !important;
     caret-color: var(--cor-texto-principal);
     transition: background-color 5000s ease-in-out 0s;
+}
+
+[vw] {
+    display: none;
 }

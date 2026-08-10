@@ -55,7 +55,7 @@
 }
 
 .abaAtiva {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   color: var(--cor-texto-principal);
   font-weight: 700;
 }
@@ -67,7 +67,7 @@
 }
 
 .cardMetrica {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 20px;
@@ -114,7 +114,7 @@
 
 .cardGrafico,
 .cardGraficoUnico {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;
@@ -136,11 +136,11 @@
 }
 
 .iconePlaceholder {
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
 }
 
 .cardListaInsights {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;
@@ -187,7 +187,7 @@
 }
 
 .cardDetalhamento {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;

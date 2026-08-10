@@ -3,7 +3,7 @@
 }
 
 .tooltip {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 12px;
   padding: 10px 14px;

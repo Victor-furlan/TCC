@@ -81,13 +81,13 @@
 }
 
 .abaAtiva {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   color: var(--cor-texto-principal);
   font-weight: 700;
 }
 
 .cardConteudo {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 32px;
@@ -130,7 +130,7 @@
 }
 
 .input::placeholder {
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
 }
 
 .input:disabled {
@@ -150,7 +150,7 @@
   border: none;
   border-radius: 20px;
   padding: 14px 28px;
-  color: var(--fundo-formulario-campo);
+  color: var(--cor-texto-botao);
   font-family: var(--fonte-base);
   font-size: 0.9rem;
   font-style: italic;

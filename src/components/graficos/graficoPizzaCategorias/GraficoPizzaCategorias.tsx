@@ -79,7 +79,7 @@ export function GraficoPizzaCategorias({ dados, textoVazio, rendaMensal = 0, car
                             <Cell
                                 key={entrada.categoria}
                                 fill={coresCategorias[entrada.categoria] || '#E9F6FF'}
-                                stroke="var(--white)"
+                                stroke="var(--cor-fundo-card)"
                                 strokeWidth={2}
                             />
                         ))}

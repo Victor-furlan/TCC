@@ -18,7 +18,7 @@
   font-size: 1rem;
   font-style: italic;
   font-weight: 600;
-  color: var(--cor-texto-secundario);
+  color: var(--cor-texto-principal);
 }
 
 .acoes {
@@ -50,7 +50,7 @@
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 16px;
   padding: 8px;

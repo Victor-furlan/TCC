@@ -83,8 +83,8 @@ export function GraficoTendenciaMensal({ despesas, assinaturas }: GraficoTendenc
                         dataKey="total"
                         stroke="var(--cor-primaria)"
                         strokeWidth={2.5}
-                        dot={<Dot r={4} fill="var(--cor-primaria)" stroke="var(--white)" strokeWidth={2} />}
-                        activeDot={{ r: 6, fill: 'var(--cor-primaria)', stroke: 'var(--white)', strokeWidth: 2 }}
+                        dot={<Dot r={4} fill="var(--cor-primaria)" stroke="var(--cor-fundo-card)" strokeWidth={2} />}
+                        activeDot={{ r: 6, fill: 'var(--cor-primaria)', stroke: 'var(--cor-fundo-card)', strokeWidth: 2 }}
                     />
                 </LineChart>
             </ResponsiveContainer>

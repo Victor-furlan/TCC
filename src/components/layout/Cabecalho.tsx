@@ -1,6 +1,5 @@
 import styles from './Cabecalho.module.css'
 import { MdAccountCircle, MdPerson, MdLogout } from 'react-icons/md'
-import { IoMdNotifications } from "react-icons/io"
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UsuarioContexto } from '../../contexts/UsuarioContexto'
@@ -29,9 +28,6 @@ export function Cabecalho(){
             <p className={styles.nomeUsuario}>Olá, {usuarioExibicao}</p>
 
             <div className={styles.acoes}>
-                <button className={styles.botaoIcone}>
-                    <IoMdNotifications size={30} />
-                </button>
 
                 <div className={styles.dropdownConteiner}>
                     <button

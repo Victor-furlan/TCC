@@ -2,7 +2,7 @@ import styles from './Configuracoes.module.css'
 import fotoVictor from '../../assets/imagens/victor.jpeg'
 import fotoPerola from '../../assets/imagens/perola.jpeg'
 import fotoKlayton from '../../assets/imagens/klayton.jpeg'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,6 +17,14 @@ import {
     MdCheck,
 } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
+
+declare global {
+    interface Window {
+        VLibras: {
+            Widget: new (url: string) => void
+        }
+    }
+}
 
 type AbaConfiguracao = 'preferences' | 'financial' | 'about'
 
@@ -64,7 +72,9 @@ export function Configuracoes() {
     const { rendaMensalContexto, cargaHorariaContexto, setRendaMensalContexto, setCargaHorariaContexto } = useContext(BaseFinanceiraContexto)
 
     const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('financial')
-    const [vlibrasAtivo, setVlibrasAtivo] = useState(false)
+    const [vlibrasAtivo, setVlibrasAtivo] = useState(() => {
+        return localStorage.getItem('vlibras') === 'true'
+    })
 
     const [temaSelecionado, setTemaSelecionado] = useState(tema)
     const [dropdownTemaAberto, setDropdownTemaAberto] = useState(false)
@@ -76,6 +86,14 @@ export function Configuracoes() {
     const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
     const [modalMensagemTexto, setModalMensagemTexto] = useState('')
     const [modalMensagemTipo, setModalMensagemTipo] = useState<'sucesso' | 'erro'>('sucesso')
+
+useEffect(() => {
+    localStorage.setItem('vlibras', String(vlibrasAtivo))
+    const widget = document.getElementById('vlibras-widget')
+    if (widget) {
+        widget.style.display = vlibrasAtivo ? 'block' : 'none'
+    }
+}, [vlibrasAtivo])
 
     const formFinancial = useForm<FinancialFormValues>({
         resolver: zodResolver(financialSchema),

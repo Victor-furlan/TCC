@@ -120,7 +120,7 @@
 .iconeCampo {
   position: absolute;
   left: 20px;
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -133,7 +133,7 @@
 
 .campo {
   background-color: var(--fundo-formulario-campo);
-  border: 1.5px solid var(--columbia-blue);
+  border: 1.5px solid var(--cor-borda-card);
   border-radius: 16px;
   padding: 17px 20px 17px 50px;
   font-size: 1rem;
@@ -151,7 +151,7 @@
 }
 
 .campo::placeholder {
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
 }
 
 .esqueceuSenha {
@@ -179,7 +179,7 @@
   border: none;
   border-radius: 16px;
   padding: 17px;
-  color: var(--fundo-formulario-campo);
+  color: var(--cor-texto-botao);
   font-size: 0.95rem;
   font-style: italic;
   font-weight: 700;

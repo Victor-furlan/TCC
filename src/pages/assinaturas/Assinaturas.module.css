@@ -35,7 +35,7 @@
   border: none;
   border-radius: 20px;
   padding: 12px 20px;
-  color: var(--fundo-formulario-campo);
+  color: var(--cor-texto-botao);
   font-family: var(--fonte-base);
   font-size: 0.9rem;
   font-style: italic;
@@ -50,7 +50,7 @@
 }
 
 .cardBusca {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 16px 24px;
@@ -87,7 +87,7 @@
 }
 
 .input::placeholder {
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
 }
 
 .botaoFiltro {
@@ -119,7 +119,7 @@
 }
 
 .cardMetrica {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 20px;
@@ -145,7 +145,7 @@
 }
 
 .cardLista {
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 20px;
   padding: 24px;
@@ -246,7 +246,7 @@
   font-style: normal;
   font-weight: 400;
   color: var(--cor-texto-secundario);
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border-radius: 8px;
   padding: 2px 10px;
   white-space: nowrap;
@@ -315,7 +315,7 @@
   top: calc(100% + 8px);
   right: 0;
   min-width: 200px;
-  background-color: var(--white);
+  background-color: var(--cor-fundo-card);
   border: 1px solid var(--columbia-blue);
   border-radius: 16px;
   padding: 12px;
