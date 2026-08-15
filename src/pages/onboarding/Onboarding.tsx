@@ -1,7 +1,6 @@
 import styles from './Onboarding.module.css'
 import logoClara from '../../assets/imagens/logo_completa_mindcash.svg'
 import logoEscura from '../../assets/imagens/logo_completa_dark_mode.svg'
-import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,7 +24,6 @@ export function Onboarding() {
 
     const { setRendaMensalContexto, setCargaHorariaContexto } = useContext(BaseFinanceiraContexto)
     const { tema } = useContext(TemaContexto)
-    const navegacao = useNavigate()
 
     const [modalVisivel, setModalVisivel] = useState(false)
     const [modalTitulo, setModalTitulo] = useState('')
@@ -54,7 +52,9 @@ export function Onboarding() {
 
     const fecharModal = () => {
         setModalVisivel(false)
-        if (modalTipo === 'sucesso') navegacao('/dashboard')
+        if (modalTipo === 'sucesso') {
+            window.location.href = '/dashboard'
+        }
     }
 
     return (

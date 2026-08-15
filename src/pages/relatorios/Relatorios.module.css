@@ -97,13 +97,22 @@
   font-size: 0.75rem;
   font-style: italic;
   font-weight: 300;
-  color: var(--columbia-blue);
+  color: var(--cor-texto-secundario);
 }
 
 .areaGraficos {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* Remove o outline ao clicar/focar no gráfico */
+.areaGraficos :focus,
+.areaGraficos :focus-visible,
+.areaGraficos svg:focus,
+.areaGraficos .recharts-wrapper:focus,
+.areaGraficos .recharts-surface:focus {
+    outline: none !important;
 }
 
 @media (max-width: 900px) {
@@ -125,6 +134,20 @@
   justify-content: center;
   gap: 10px;
 }
+
+/* Remove outline e box-shadow do grafico de linha (grafico de tendendia) */
+.cardGraficoUnico,
+.cardGraficoUnico *,
+.cardGraficoUnico :focus,
+.cardGraficoUnico :focus-visible,
+.cardGraficoUnico :focus-within,
+.cardGraficoUnico .recharts-wrapper,
+.cardGraficoUnico .recharts-wrapper *,
+.cardGraficoUnico .recharts-surface {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 
 .placeholderGrafico {
   font-family: var(--fonte-base);

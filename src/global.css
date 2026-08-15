@@ -91,6 +91,9 @@
     --fundo-formulario-campo: #1F2937;
     --borda-formulario-campo: #374151;
 
+    /* Graficos*/
+    --cor-legenda-grafico-simulador: #649bf4;
+
     /* Componentes: Menu e Navegação */
     --cor-fundo-menu: var(--fundo-surface);
     --cor-borda-menu: var(--borda-divider);

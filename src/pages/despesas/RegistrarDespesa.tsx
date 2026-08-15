@@ -73,8 +73,8 @@ export function RegistrarDespesa() {
         setDropdownCategoriaAberto(false)
     }
 
-    const registrarDespesa = (data: FormValues) => {
-        adicionarDespesa({
+    const registrarDespesa = async (data: FormValues) => {
+        await adicionarDespesa({
             nome: data.nome,
             data: data.data,
             valor: data.valor,

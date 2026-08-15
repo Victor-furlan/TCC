@@ -56,6 +56,15 @@
   padding: 24px;
 }
 
+/* Remove o outline ao clicar/focar no gráfico */
+.cardGrafico :focus,
+.cardGrafico :focus-visible,
+.cardGrafico svg:focus,
+.cardGrafico .recharts-wrapper:focus,
+.cardGrafico .recharts-surface:focus {
+    outline: none !important;
+}
+
 .listaInsights {
   display: flex;
   flex-direction: column;

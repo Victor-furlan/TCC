@@ -26,24 +26,29 @@ export const UsuarioProvider = ({children}: UsuarioProviderProps) => {
   const [emailUsuarioContexto, setEmailUsuarioContexto] = useState('')
 
   useEffect(() => {
-    const carregarPerfil = async () => {
-      const {data: {user}} = await supabase.auth.getUser()
+      const carregarPerfil = async (userId: string) => {
+          const { data } = await supabase
+              .from('usuarios')
+              .select('*')
+              .eq('id', userId)
+              .single()
 
-      if(!user) return null
-
-      const {data} = await supabase
-      .from('usuarios')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-      if (data) {
-        setNomeUsuarioContexto(data.nome)
-        setEmailUsuarioContexto(data.email)
+          if (data) {
+              setNomeUsuarioContexto(data.nome)
+              setEmailUsuarioContexto(data.email)
+          }
       }
-    }
 
-    carregarPerfil()
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (session?.user) {
+              carregarPerfil(session.user.id)
+          } else {
+              setNomeUsuarioContexto('')
+              setEmailUsuarioContexto('')
+          }
+      })
+
+      return () => subscription.unsubscribe()
   }, [])
 
   return (

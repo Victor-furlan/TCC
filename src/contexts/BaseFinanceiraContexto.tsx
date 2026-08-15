@@ -29,24 +29,31 @@ export const BaseFinanceiraProvider = ({children}: BaseFinanceiraProviderProps) 
   const [carregando, setCarregando] = useState(true)
 
     useEffect(() => {
-      const buscarBaseFinanceira = async() => {
-        const {data: {user}} = await supabase.auth.getUser()
-        
-        if(!user) return
+        const buscarBaseFinanceira = async (userId: string) => {
+            const { data } = await supabase
+                .from('usuarios')
+                .select('renda_mensal, horas_trabalhadas')
+                .eq('id', userId)
+                .single()
 
-        const {data} = await supabase
-        .from('usuarios')
-        .select('renda_mensal, horas_trabalhadas')
-        .eq('id', user.id)
-        .single()
-
-        if(data){
-          setRendaMensal(data.renda_mensal ?? 0)
-          setCargaHoraria(data.horas_trabalhadas ?? 0)
+            if (data) {
+                setRendaMensal(data.renda_mensal ?? 0)
+                setCargaHoraria(data.horas_trabalhadas ?? 0)
+            }
+            setCarregando(false)
         }
-        setCarregando(false)
-      }
-      buscarBaseFinanceira()
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            if (session?.user) {
+                buscarBaseFinanceira(session.user.id)
+            } else {
+                setRendaMensal(0)
+                setCargaHoraria(0)
+                setCarregando(false)
+            }
+        })
+
+        return () => subscription.unsubscribe()
     }, [])
 
     const setRendaMensalContexto = async(renda: number) => {

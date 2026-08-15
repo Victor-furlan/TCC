@@ -24,6 +24,15 @@
       <script>
           new VLibras.Widget('https://vlibras.gov.br/app');
       </script>
+      <script>
+        if (localStorage.getItem('vlibras') !== 'true') {
+            document.addEventListener('DOMContentLoaded', () => {
+                const widget = document.getElementById('vlibras-widget')
+                if (widget) widget.style.display = 'none'
+            })
+        }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
       <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

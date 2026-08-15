@@ -28,7 +28,12 @@ const registrarAssinaturaSchema = z.object({
     motivo: z.string().optional(),
 })
 
-const opcoesPeriodicidade = ['Mensal', 'Anual', 'Semanal']
+const opcoesPeriodicidade = [
+    {valor: 'mensal', rotulo: 'Mensal'},
+    {valor: 'anual', rotulo: 'Anual'},
+    {valor: 'semanal', rotulo: 'Semanal'},
+
+]
 const opcoesCategoria = ['Entretenimento', 'Software', 'Compras', 'Utilidades', 'Alimentação', 'Saúde', 'Educação']
 
 const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
@@ -74,13 +79,14 @@ export function RegistrarAssinatura() {
         setDropdownCategoriaAberto(false)
     }
 
-    const registrarAssinatura = (data: FormValues) => {
-        adicionarAssinatura({
+    const registrarAssinatura = async (data: FormValues) => {
+        await adicionarAssinatura({
             nome: data.nomeAssinatura,
             valor: data.valor,
             periodicidade: data.periodicidade,
             categoria: data.categoria,
             proximaCobranca: data.proximaCobranca,
+            ativa: true,
             motivo: data.motivo,
             humor: humorSelecionado || undefined,
             nivelArrependimento: nivelArrependimento || undefined,
@@ -144,7 +150,7 @@ export function RegistrarAssinatura() {
                                     className={styles.selectFalso}
                                     onClick={() => setDropdownPeriodicidadeAberto(!dropdownPeriodicidadeAberto)}
                                 >
-                                    {periodicidadeSelecionada || 'Selecione'}
+                                    {opcoesPeriodicidade.find(o => o.valor === periodicidadeSelecionada)?.rotulo || 'Selecione'}
                                     <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
 
@@ -153,13 +159,13 @@ export function RegistrarAssinatura() {
                                         <p className={styles.tituloDropdownCategoria}>Periodicidade</p>
                                         {opcoesPeriodicidade.map((opcao) => (
                                             <button
-                                                key={opcao}
+                                                key={opcao.valor}
                                                 type='button'
                                                 className={styles.itemDropdown}
-                                                onClick={() => escolherPeriodicidade(opcao)}
+                                                onClick={() => escolherPeriodicidade(opcao.valor)}
                                             >
-                                                {opcao}
-                                                {periodicidadeSelecionada === opcao && <MdCheck size={16} className={styles.iconeCheck} />}
+                                                {opcao.rotulo}
+                                                {periodicidadeSelecionada === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
                                             </button>
                                         ))}
                                     </div>

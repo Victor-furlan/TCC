@@ -382,6 +382,15 @@
   margin-bottom: 16px;
 }
 
+/* Remove o outline ao clicar/focar no gráfico */
+.areaGrafico :focus,
+.areaGrafico :focus-visible,
+.areaGrafico svg:focus,
+.areaGrafico .recharts-wrapper:focus,
+.areaGrafico .recharts-surface:focus {
+    outline: none !important;
+}
+
 .rodapeGrafico {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

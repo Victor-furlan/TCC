@@ -50,9 +50,18 @@ export function useAuth() {
         let retorno = 'sucesso'
 
         try {
-            const {error} = await supabase.auth.signOut()
-
+            const { error } = await supabase.auth.signOut()
             if (error) return error.message
+
+            const tema = localStorage.getItem('tema')
+            const vlibras = localStorage.getItem('vlibras')
+            
+            localStorage.clear()
+            
+            if (tema) localStorage.setItem('tema', tema)
+            if (vlibras) localStorage.setItem('vlibras', vlibras)
+            
+            window.location.href = '/'
         } catch (error) {
             retorno = `${error}`
         }

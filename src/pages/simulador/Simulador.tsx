@@ -251,12 +251,20 @@ export function Simulador() {
                                 tickFormatter={(valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
                             />
                             <Tooltip
+                                
+                                cursor={{ fill: 'var(--fundo-formulario-campo)' }}
                                 formatter={(valor) => [formatarMoeda(valor as number), 'Total']}
                                 contentStyle={{
                                     backgroundColor: 'var(--white)',
                                     border: '1px solid var(--columbia-blue)',
                                     borderRadius: '12px',
                                     fontStyle: 'italic',
+                                }}
+                                itemStyle={{
+                                    color: 'var(--cor-texto-primaria)',
+                                }}
+                                labelStyle={{
+                                    color: 'var(--cor-legenda-grafico-simulador)',
                                 }}
                             />
                             <Bar dataKey="valor" radius={[8, 8, 0, 0]} minPointSize={6} label={<LabelBarra />}>
