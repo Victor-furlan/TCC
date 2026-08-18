@@ -72,8 +72,8 @@ export function GraficoPizzaCategorias({ dados, textoVazio, rendaMensal = 0, car
                         nameKey="categoria"
                         cx="50%"
                         cy="50%"
-                        outerRadius={85}
-                        paddingAngle={2}
+                        outerRadius={95}
+                        paddingAngle={0.5}
                     >
                         {dados.map((entrada) => (
                             <Cell
@@ -81,6 +81,7 @@ export function GraficoPizzaCategorias({ dados, textoVazio, rendaMensal = 0, car
                                 fill={coresCategorias[entrada.categoria] || '#E9F6FF'}
                                 stroke="var(--cor-fundo-card)"
                                 strokeWidth={2}
+                                
                             />
                         ))}
                     </Pie>

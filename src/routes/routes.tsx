@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from '../pages/login/Login';
 import { CriarConta } from '../pages/criarConta/CriarConta';
 import { RedefinirSenha } from '../pages/redefinirSenha/RedefinirSenha';
+import { NovaSenha } from '../pages/redefinirSenha/NovaSenha';
 import { Onboarding } from '../pages/onboarding/Onboarding';
 import { Principal } from '../components/layout/Principal';
 import { DashBoard } from '../pages/dashBoard/DashBoard';
@@ -36,6 +37,7 @@ export function AppRoutes() {
                   <Route path="/" element={<Login />} />
                   <Route path="criarConta" element={<CriarConta/>}/>
                   <Route path="redefinirSenha" element={<RedefinirSenha/>}/>
+                  <Route path="novaSenha" element={<NovaSenha/>}/>
 
                   <Route element={<RotaProtegida />}>
                     <Route path="onboarding" element={<Onboarding />}/>

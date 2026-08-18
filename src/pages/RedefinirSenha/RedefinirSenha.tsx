@@ -9,86 +9,98 @@ import { useState, useContext } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { ModalMensagem } from '../../components/ModalMensagem';
 import { TemaContexto } from '../../contexts/TemaContexto';
+import { useAuth } from '../../hooks/useAuth';
 
 type FormValues = {
-  email: string;
+    email: string;
 };
 
 const redefinirSenhaSchema = z.object({
-  email: z.string().email({ message: 'Informe um e-mail válido.' }),
+    email: z.string().email({ message: 'Informe um e-mail válido.' }),
 });
 
 export function RedefinirSenha() {
 
-  const { tema } = useContext(TemaContexto)
+    const { tema } = useContext(TemaContexto)
+    const { enviarRedefinicaoSenha } = useAuth()
 
-  const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
-  const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
-  const [modalMensagemTexto, setModalMensagemTexto] = useState('')
+    const [modalVisivel, setModalVisivel] = useState(false)
+    const [modalTitulo, setModalTitulo] = useState('')
+    const [modalTexto, setModalTexto] = useState('')
+    const [modalStatus, setModalStatus] = useState<'sucesso' | 'erro'>('sucesso')
+    const [carregando, setCarregando] = useState(false)
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(redefinirSenhaSchema),
-  });
+    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+        resolver: zodResolver(redefinirSenhaSchema),
+    });
 
-  const navegacao = useNavigate();
+    const navegacao = useNavigate();
 
-  const enviarRedefinicao = (data: FormValues) => {
-    setModalMensagemTexto(`Enviamos um link de redefinição para ${data.email}!`)
-    exibirModal()
-  };
+    const enviarRedefinicao = async (data: FormValues) => {
+        setCarregando(true)
+        const resultado = await enviarRedefinicaoSenha(data.email)
+        setCarregando(false)
 
-  const exibirModal = () => {
-    setModalMensagemTitulo('Redefinir Senha')
-    setModalMensagemVisivel(true)
-  }
+        if (resultado !== 'sucesso') {
+            setModalTitulo('Erro')
+            setModalTexto('Não foi possível enviar o e-mail. Tente novamente.')
+            setModalStatus('erro')
+        } else {
+            setModalTitulo('E-mail enviado!')
+            setModalTexto(`Enviamos um link de redefinição para ${data.email}. Verifique sua caixa de entrada.`)
+            setModalStatus('sucesso')
+        }
 
-  const ocultarModal = () => {
-    setModalMensagemVisivel(false)
-    navegacao('/')
-  }
+        setModalVisivel(true)
+    };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.formConteiner}>
+    const fecharModal = () => {
+        setModalVisivel(false)
+        if (modalStatus === 'sucesso') navegacao('/')
+    }
 
-        <img src={tema === 'escuro' ? logoEscura : logoClara} className={styles.logo} />
-        <h1 className={styles.titulo}>Esqueceu sua senha?</h1>
-        <p className={styles.subtitulo}>Digite seu e-mail e enviaremos um link para redefinir sua senha</p>
+    return (
+        <div className={styles.container}>
+            <div className={styles.formConteiner}>
 
-        <form className={styles.formulario} onSubmit={handleSubmit(enviarRedefinicao)}>
+                <img src={tema === 'escuro' ? logoEscura : logoClara} className={styles.logo} />
+                <h1 className={styles.titulo}>Esqueceu sua senha?</h1>
+                <p className={styles.subtitulo}>Digite seu e-mail e enviaremos um link para redefinir sua senha</p>
 
-          <div className={styles.conteinerCampo}>
-            <p className={styles.tituloCampo}>E-mail</p>
-            <div className={styles.campoComIcone}>
-              <MdEmail size={17} className={styles.iconeCampo} />
-              <input
-                {...register('email')}
-                className={styles.campo}
-                placeholder='E-mail'
-              />
+                <form className={styles.formulario} onSubmit={handleSubmit(enviarRedefinicao)}>
+
+                    <div className={styles.conteinerCampo}>
+                        <p className={styles.tituloCampo}>E-mail</p>
+                        <div className={styles.campoComIcone}>
+                            <MdEmail size={17} className={styles.iconeCampo} />
+                            <input
+                                {...register('email')}
+                                className={styles.campo}
+                                placeholder='E-mail'
+                            />
+                        </div>
+                        {errors.email && <p className={styles.erro}>{errors.email.message}</p>}
+                    </div>
+
+                    <button className={styles.redefinir} type='submit' disabled={carregando}>
+                        {carregando ? 'Enviando...' : 'Redefinir Senha'}
+                    </button>
+
+                </form>
+
+                <div className={styles.conteinerVoltar}>
+                    <Link className={styles.logar} to={'/'}>
+                        Voltar para o login
+                    </Link>
+                </div>
             </div>
-            {errors.email && <p className={styles.erro}>{errors.email.message}</p>}
-          </div>
 
-          <button className={styles.redefinir} type='submit'>
-            Redefinir Senha
-          </button>
-
-        </form>
-
-        <div className={styles.conteinerVoltar}>
-          <Link className={styles.logar} to={'/'}>
-            Voltar para o login
-          </Link>
+            <ModalMensagem
+                exibir={modalVisivel}
+                ocultar={fecharModal}
+                titulo={modalTitulo}
+                texto={modalTexto}
+            />
         </div>
-      </div>
-
-      <ModalMensagem 
-        exibir={modalMensagemVisivel}
-        ocultar={() => ocultarModal()}
-        titulo={modalMensagemTitulo}
-        texto={modalMensagemTexto}
-      />
-    </div>
-  );
+    );
 }

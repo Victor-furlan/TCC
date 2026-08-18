@@ -17,6 +17,7 @@ type PessoalFormValues = {
 }
 
 type SegurancaFormValues = {
+    senhaAtual: string
     novaSenha: string
     confirmarNovaSenha: string
 }
@@ -31,11 +32,15 @@ const pessoalSchema = z.object({
 })
 
 const segurancaSchema = z.object({
+    senhaAtual: z.string().min(1, { message: 'Informe a senha atual.' }),
     novaSenha: z.string().min(6, { message: 'A senha deve ter no mínimo 6 caracteres.' }),
     confirmarNovaSenha: z.string().min(6, { message: 'Confirme sua nova senha.' }),
 }).refine((data) => data.novaSenha === data.confirmarNovaSenha, {
     message: 'As senhas não coincidem.',
     path: ['confirmarNovaSenha'],
+}).refine((data) => data.senhaAtual !== data.novaSenha, {
+    message: 'A nova senha não pode ser igual à senha atual.',
+    path: ['novaSenha'],
 })
 
 export function EditarPerfil() {
@@ -43,17 +48,17 @@ export function EditarPerfil() {
     const [abaAtiva, setAbaAtiva] = useState<AbaEditar>('pessoal')
     const [modalVisivel, setModalVisivel] = useState(false)
     const [modalTitulo, setModalTitulo] = useState('')
+    const [modalTexto, setModalTexto] = useState('')
 
     const { nomeUsuarioContexto, emailUsuarioContexto } = useContext(UsuarioContexto)
-    const nomeAtual = nomeUsuarioContexto
-
-    const {atualizarPerfilAuth, atualizarSenhaAuth} = useAuth()
+    const { atualizarPerfilAuth, atualizarSenhaComConfirmacao } = useAuth()
 
     const formPessoal = useForm<PessoalFormValues>({ resolver: zodResolver(pessoalSchema) })
     const formSeguranca = useForm<SegurancaFormValues>({ resolver: zodResolver(segurancaSchema) })
 
-    const exibirModal = (titulo: string) => {
+    const exibirModal = (titulo: string, texto: string) => {
         setModalTitulo(titulo)
+        setModalTexto(texto)
         setModalVisivel(true)
     }
 
@@ -61,22 +66,22 @@ export function EditarPerfil() {
         const resultado = await atualizarPerfilAuth(data.novoNome, data.email)
 
         if (resultado !== 'sucesso') {
-            exibirModal('Erro')
+            exibirModal('Erro', resultado)
             return
         }
 
-        exibirModal('Dados Pessoais')
+        exibirModal('Dados Pessoais', 'Alterações salvas com sucesso!')
     }
 
     const salvarSeguranca = async (data: SegurancaFormValues) => {
-        const resultado = await atualizarSenhaAuth(data.novaSenha)
+        const resultado = await atualizarSenhaComConfirmacao(emailUsuarioContexto, data.senhaAtual, data.novaSenha)
 
         if (resultado !== 'sucesso') {
-            exibirModal('Erro')
+            exibirModal('Erro', resultado)
             return
         }
 
-        exibirModal('Segurança')
+        exibirModal('Segurança', 'Senha atualizada com sucesso!')
     }
 
     return(
@@ -113,7 +118,7 @@ export function EditarPerfil() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Seu nome atual:</p>
-                            <p className={styles.nomeAtual}>{nomeAtual}</p>
+                            <p className={styles.nomeAtual}>{nomeUsuarioContexto}</p>
                         </div>
 
                         <div className={styles.campo}>
@@ -154,6 +159,19 @@ export function EditarPerfil() {
                     <form className={styles.cardConteudo} onSubmit={formSeguranca.handleSubmit(salvarSeguranca)}>
 
                         <div className={styles.campo}>
+                            <p className={styles.rotuloCampo}>Senha atual:</p>
+                            <input
+                                {...formSeguranca.register('senhaAtual')}
+                                className={styles.input}
+                                placeholder='Digite sua senha atual'
+                                type='password'
+                            />
+                            {formSeguranca.formState.errors.senhaAtual && (
+                                <p className={styles.erro}>{formSeguranca.formState.errors.senhaAtual.message}</p>
+                            )}
+                        </div>
+
+                        <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Nova senha:</p>
                             <input
                                 {...formSeguranca.register('novaSenha')}
@@ -190,7 +208,7 @@ export function EditarPerfil() {
                 exibir={modalVisivel}
                 ocultar={() => setModalVisivel(false)}
                 titulo={modalTitulo}
-                texto='Alterações salvas com sucesso!'
+                texto={modalTexto}
             />
         </div>
     )
