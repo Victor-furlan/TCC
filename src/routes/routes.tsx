@@ -12,6 +12,7 @@ import { AssinaturasProvider } from '../contexts/AssinaturasContexto';
 import { Despesas } from '../pages/despesas/Despesas';
 import { RegistrarDespesa } from '../pages/despesas/RegistrarDespesa'
 import { EditarDespesa } from '../pages/despesas/EditarDespesa';
+import { VisualizarDespesa } from '../pages/despesas/VisualizarDespesa';
 import { DespesasProvider } from '../contexts/DespesasContexto';
 import { Relatorios } from '../pages/relatorios/Relatorios';
 import { Simulador } from '../pages/simulador/Simulador';
@@ -46,6 +47,7 @@ export function AppRoutes() {
                       <Route path="despesas" element={<Despesas/>}/>
                       <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
                       <Route path="despesas/editar/:id" element={<EditarDespesa/>}/>
+                      <Route path="despesas/visualizar/:id" element={<VisualizarDespesa/>}/>
                       <Route path="relatorios" element={<Relatorios/>}/>
                       <Route path="simulador" element={<Simulador/>}/>
                       <Route path="configuracoes" element={<Configuracoes/>}/>

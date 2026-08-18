@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
-import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
+import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck, MdCalendarMonth } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
 import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -29,11 +31,11 @@ const registrarAssinaturaSchema = z.object({
 })
 
 const opcoesPeriodicidade = [
-    {valor: 'mensal', rotulo: 'Mensal'},
-    {valor: 'anual', rotulo: 'Anual'},
-    {valor: 'semanal', rotulo: 'Semanal'},
-
+    { valor: 'mensal', rotulo: 'Mensal' },
+    { valor: 'anual', rotulo: 'Anual' },
+    { valor: 'semanal', rotulo: 'Semanal' },
 ]
+
 const opcoesCategoria = ['Entretenimento', 'Software', 'Compras', 'Utilidades', 'Alimentação', 'Saúde', 'Educação']
 
 const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
@@ -44,11 +46,28 @@ const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
     { valor: 'neutro', rotulo: 'Neutro', emoji: '😐' },
 ]
 
+const dataParaString = (data: Date) => {
+    const ano = data.getFullYear()
+    const mes = String(data.getMonth() + 1).padStart(2, '0')
+    const dia = String(data.getDate()).padStart(2, '0')
+    return `${ano}-${mes}-${dia}`
+}
+
+const formatarDataExibicao = (dataStr: string) => {
+    if (!dataStr) return 'Selecione uma data'
+    const [ano, mes, dia] = dataStr.split('-')
+    return `${dia}/${mes}/${ano}`
+}
+
 export function RegistrarAssinatura() {
 
     const { adicionarAssinatura } = useContext(AssinaturasContexto)
-
     const navegacao = useNavigate()
+
+    const hoje = new Date()
+
+    const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null)
+    const [calendarioAberto, setCalendarioAberto] = useState(false)
 
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>(null)
     const [nivelArrependimento, setNivelArrependimento] = useState(0)
@@ -66,6 +85,12 @@ export function RegistrarAssinatura() {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(registrarAssinaturaSchema),
     })
+
+    const aoSelecionarData = (data: Date) => {
+        setDataSelecionada(data)
+        setValue('proximaCobranca', dataParaString(data), { shouldValidate: true })
+        setCalendarioAberto(false)
+    }
 
     const escolherPeriodicidade = (periodicidade: string) => {
         setPeriodicidadeSelecionada(periodicidade)
@@ -153,7 +178,6 @@ export function RegistrarAssinatura() {
                                     {opcoesPeriodicidade.find(o => o.valor === periodicidadeSelecionada)?.rotulo || 'Selecione'}
                                     <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
-
                                 {dropdownPeriodicidadeAberto && (
                                     <div className={styles.listaDropdown}>
                                         <p className={styles.tituloDropdownCategoria}>Periodicidade</p>
@@ -187,7 +211,6 @@ export function RegistrarAssinatura() {
                                     {categoriaSelecionada || 'Selecione a Categoria'}
                                     <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
-
                                 {dropdownCategoriaAberto && (
                                     <div className={styles.listaDropdown}>
                                         <p className={styles.tituloDropdownCategoria}>Categorias</p>
@@ -210,11 +233,27 @@ export function RegistrarAssinatura() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Próxima Cobrança:</p>
-                            <input
-                                {...register('proximaCobranca')}
-                                className={styles.input}
-                                type='date'
-                            />
+                            <div className={styles.dropdownConteiner}>
+                                <input type='hidden' {...register('proximaCobranca')} />
+                                <button
+                                    type='button'
+                                    className={styles.selectFalso}
+                                    onClick={() => setCalendarioAberto(!calendarioAberto)}
+                                >
+                                    <MdCalendarMonth size={16} />
+                                    {dataSelecionada ? formatarDataExibicao(dataParaString(dataSelecionada)) : 'Selecione uma data'}
+                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                </button>
+                                {calendarioAberto && (
+                                    <div className={styles.dropdownCalendario}>
+                                        <Calendar
+                                            onChange={(value) => aoSelecionarData(value as Date)}
+                                            value={dataSelecionada || hoje}
+                                            locale='pt-BR'
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             {errors.proximaCobranca && <p className={styles.erro}>{errors.proximaCobranca.message}</p>}
                         </div>
                     </div>
@@ -246,7 +285,6 @@ export function RegistrarAssinatura() {
 
                         <div className={styles.linhaArrependimento}>
                             <p className={styles.rotuloCampo}>Nível de arrependimento</p>
-
                             <div className={styles.estrelas}>
                                 {[1, 2, 3, 4, 5].map((numero) => (
                                     <button
@@ -259,7 +297,6 @@ export function RegistrarAssinatura() {
                                     </button>
                                 ))}
                             </div>
-
                             <button
                                 type='button'
                                 className={styles.botaoLimpar}
@@ -295,7 +332,7 @@ export function RegistrarAssinatura() {
 
             </div>
 
-            <ModalMensagem 
+            <ModalMensagem
                 exibir={modalMensagemVisivel}
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}

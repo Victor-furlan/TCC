@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
-import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
+import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck, MdCalendarMonth } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
 import { DespesasContexto } from '../../contexts/DespesasContexto'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -36,19 +38,28 @@ const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
     { valor: 'neutro', rotulo: 'Neutro', emoji: '😐' },
 ]
 
-const obterDataAtual = () => {
-    const hoje = new Date()
-    const ano = hoje.getFullYear()
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0')
-    const dia = String(hoje.getDate()).padStart(2, '0')
+const dataParaString = (data: Date) => {
+    const ano = data.getFullYear()
+    const mes = String(data.getMonth() + 1).padStart(2, '0')
+    const dia = String(data.getDate()).padStart(2, '0')
     return `${ano}-${mes}-${dia}`
+}
+
+const formatarDataExibicao = (dataStr: string) => {
+    if (!dataStr) return ''
+    const [ano, mes, dia] = dataStr.split('-')
+    return `${dia}/${mes}/${ano}`
 }
 
 export function RegistrarDespesa() {
 
     const navegacao = useNavigate()
-
     const { adicionarDespesa } = useContext(DespesasContexto)
+
+    const hoje = new Date()
+
+    const [dataSelecionada, setDataSelecionada] = useState<Date>(hoje)
+    const [calendarioAberto, setCalendarioAberto] = useState(false)
 
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>(null)
     const [nivelArrependimento, setNivelArrependimento] = useState(0)
@@ -63,9 +74,15 @@ export function RegistrarDespesa() {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(registrarDespesaSchema),
         defaultValues: {
-            data: obterDataAtual(),
+            data: dataParaString(hoje),
         },
     })
+
+    const aoSelecionarData = (data: Date) => {
+        setDataSelecionada(data)
+        setValue('data', dataParaString(data), { shouldValidate: true })
+        setCalendarioAberto(false)
+    }
 
     const escolherCategoria = (categoria: string) => {
         setCategoriaSelecionada(categoria)
@@ -124,11 +141,28 @@ export function RegistrarDespesa() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Data:</p>
-                            <input
-                                {...register('data')}
-                                className={styles.input}
-                                type='date'
-                            />
+                            <div className={styles.dropdownConteiner}>
+                                <input type='hidden' {...register('data')} />
+                                <button
+                                    type='button'
+                                    className={styles.selectFalso}
+                                    onClick={() => setCalendarioAberto(!calendarioAberto)}
+                                >
+                                    <MdCalendarMonth size={16} />
+                                    {formatarDataExibicao(dataParaString(dataSelecionada))}
+                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                </button>
+                                {calendarioAberto && (
+                                    <div className={styles.dropdownCalendario}>
+                                        <Calendar
+                                            onChange={(value) => aoSelecionarData(value as Date)}
+                                            value={dataSelecionada}
+                                            maxDate={hoje}
+                                            locale='pt-BR'
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             {errors.data && <p className={styles.erro}>{errors.data.message}</p>}
                         </div>
 
@@ -156,7 +190,6 @@ export function RegistrarDespesa() {
                                 {categoriaSelecionada || 'Selecione a Categoria'}
                                 <MdExpandMore size={18} className={styles.iconeExpandir} />
                             </button>
-
                             {dropdownCategoriaAberto && (
                                 <div className={styles.listaDropdown}>
                                     <p className={styles.tituloDropdownCategoria}>Categorias</p>
@@ -204,7 +237,6 @@ export function RegistrarDespesa() {
 
                         <div className={styles.linhaArrependimento}>
                             <p className={styles.rotuloCampo}>Nível de arrependimento</p>
-
                             <div className={styles.estrelas}>
                                 {[1, 2, 3, 4, 5].map((numero) => (
                                     <button
@@ -217,7 +249,6 @@ export function RegistrarDespesa() {
                                     </button>
                                 ))}
                             </div>
-
                             <button
                                 type='button'
                                 className={styles.botaoLimpar}
@@ -253,7 +284,7 @@ export function RegistrarDespesa() {
 
             </div>
 
-            <ModalMensagem 
+            <ModalMensagem
                 exibir={modalMensagemVisivel}
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}

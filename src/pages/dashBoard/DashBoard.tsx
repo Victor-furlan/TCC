@@ -48,6 +48,8 @@ export function DashBoard(){
     }
 
     const diasAteRenovacao = (data: string) => {
+        if (!data) return Infinity
+
         const hoje = new Date()
         hoje.setHours(0, 0, 0, 0)
 
@@ -67,8 +69,8 @@ export function DashBoard(){
         .sort((a, b) => diasAteRenovacao(a.proximaCobranca) - diasAteRenovacao(b.proximaCobranca))
 
     const totalAssinaturasMensalizado = assinaturas.reduce((soma, assinatura) => {
-        if (assinatura.periodicidade === 'Anual') return soma + (assinatura.valor / 12)
-        if (assinatura.periodicidade === 'Semanal') return soma + (assinatura.valor * 4)
+        if (assinatura.periodicidade === 'anual') return soma + (assinatura.valor / 12)
+        if (assinatura.periodicidade === 'semanal') return soma + (assinatura.valor * 4)
         return soma + assinatura.valor
     }, 0)
 
@@ -155,8 +157,7 @@ export function DashBoard(){
             <section className={styles.cardRenovacoes}>
                 <div className={styles.cabecalhoRenovacoes}>
                     <p className={styles.tituloSecao}>Próximas Renovações de Assinatura</p>
-                    <Link className={styles.botaoAdicionar}
-                    to={'/assinaturas/nova'}>
+                    <Link className={styles.botaoAdicionar} to={'/assinaturas/nova'}>
                         <MdAdd size={20} />
                         Adicionar Nova
                     </Link>
@@ -204,9 +205,7 @@ export function DashBoard(){
 
             <section className={styles.cardAssinaturas}>
                 <p className={styles.tituloSecao}>Todas as Assinaturas</p>
-
-                <Link className={styles.botaoVerTodas}
-                to={'/assinaturas'}>
+                <Link className={styles.botaoVerTodas} to={'/assinaturas'}>
                     Ver Todas as Assinaturas
                 </Link>
             </section>

@@ -40,8 +40,8 @@ export function Simulador() {
     const [visualizacao, setVisualizacao] = useState<VisualizacaoGrafico>('annual')
 
     const valorMensalizado = (valor: number, periodicidade: string) => {
-        if (periodicidade === 'Anual') return valor / 12
-        if (periodicidade === 'Semanal') return valor * 4
+        if (periodicidade === 'anual') return valor / 12
+        if (periodicidade === 'semanal') return valor * 4
         return valor
     }
 

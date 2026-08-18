@@ -169,3 +169,99 @@ input:-webkit-autofill:active {
 [vw] {
     display: none;
 }
+
+/* React Calendar override */
+.react-calendar {
+    border: none !important;
+    background: transparent !important;
+    font-family: var(--fonte-base) !important;
+    width: 280px !important;
+}
+
+.react-calendar__navigation {
+    margin-bottom: 8px;
+}
+
+.react-calendar__navigation button {
+    background: none !important;
+    border: none !important;
+    color: var(--cor-texto-principal) !important;
+    font-family: var(--fonte-base) !important;
+    font-style: italic !important;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    border-radius: 10px !important;
+    transition: opacity 0.2s !important;
+}
+
+.react-calendar__navigation button:hover {
+    opacity: 0.7 !important;
+    background: var(--fundo-formulario-campo) !important;
+}
+
+.react-calendar__navigation button:disabled {
+    opacity: 0.3 !important;
+}
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    color: var(--cor-texto-secundario) !important;
+    font-family: var(--fonte-base) !important;
+    font-style: italic !important;
+    font-weight: 300 !important;
+    font-size: 0.75rem !important;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none !important;
+}
+
+.react-calendar__tile {
+    background: none !important;
+    border: none !important;
+    border-radius: 10px !important;
+    color: var(--cor-texto-principal) !important;
+    font-family: var(--fonte-base) !important;
+    font-style: italic !important;
+    font-size: 0.82rem !important;
+    padding: 8px 4px !important;
+    transition: background 0.15s !important;
+}
+
+.react-calendar__tile:hover {
+    background: var(--fundo-formulario-campo) !important;
+}
+
+.react-calendar__tile--now {
+    background: var(--fundo-formulario-campo) !important;
+    font-weight: 700 !important;
+}
+
+.react-calendar__tile--active {
+    background: var(--cor-primaria) !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.react-calendar__tile--active:hover {
+    background: var(--cor-primaria) !important;
+    opacity: 0.85 !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+    color: var(--cor-texto-secundario) !important;
+    opacity: 0.4 !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+    color: var(--cor-texto-principal) !important;
+}
+
+.react-calendar__tile:disabled {
+    background: var(--fundo-formulario-campo) !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}

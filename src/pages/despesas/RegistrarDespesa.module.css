@@ -365,3 +365,15 @@
 .iconeCheck {
   color: var(--cor-primaria);
 }
+
+.dropdownCalendario {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 100;
+    background-color: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda-card);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}

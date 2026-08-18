@@ -1,12 +1,14 @@
 import styles from './EditarDespesa.module.css'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
+import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck, MdCalendarMonth } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
 import { DespesasContexto } from '../../contexts/DespesasContexto'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -36,14 +38,38 @@ const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
     { valor: 'neutro', rotulo: 'Neutro', emoji: '😐' },
 ]
 
+const dataParaString = (data: Date) => {
+    const ano = data.getFullYear()
+    const mes = String(data.getMonth() + 1).padStart(2, '0')
+    const dia = String(data.getDate()).padStart(2, '0')
+    return `${ano}-${mes}-${dia}`
+}
+
+const stringParaData = (dataStr: string) => {
+    const [ano, mes, dia] = dataStr.split('-').map(Number)
+    return new Date(ano, mes - 1, dia)
+}
+
+const formatarDataExibicao = (dataStr: string) => {
+    if (!dataStr) return ''
+    const [ano, mes, dia] = dataStr.split('-')
+    return `${dia}/${mes}/${ano}`
+}
+
 export function EditarDespesa() {
 
     const { id } = useParams<{ id: string }>()
     const navegacao = useNavigate()
 
     const { despesas, editarDespesa } = useContext(DespesasContexto)
-
     const despesaAtual = despesas.find((despesa) => despesa.id === id)
+
+    const hoje = new Date()
+
+    const [dataSelecionada, setDataSelecionada] = useState<Date>(
+        despesaAtual?.data ? stringParaData(despesaAtual.data) : hoje
+    )
+    const [calendarioAberto, setCalendarioAberto] = useState(false)
 
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>((despesaAtual?.humor as Humor) || null)
     const [nivelArrependimento, setNivelArrependimento] = useState(despesaAtual?.nivelArrependimento || 0)
@@ -66,20 +92,11 @@ export function EditarDespesa() {
         },
     })
 
-    useEffect(() => {
-        if (despesaAtual) {
-            setValue('nome', despesaAtual.nome)
-            setValue('data', despesaAtual.data)
-            setValue('valor', despesaAtual.valor)
-            setValue('categoria', despesaAtual.categoria)
-            setValue('motivo', despesaAtual.motivo || '')
-
-            setCategoriaSelecionada(despesaAtual.categoria)
-            setHumorSelecionado((despesaAtual.humor as Humor) || null)
-            setNivelArrependimento(despesaAtual.nivelArrependimento || 0)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [despesaAtual?.id])
+    const aoSelecionarData = (data: Date) => {
+        setDataSelecionada(data)
+        setValue('data', dataParaString(data), { shouldValidate: true })
+        setCalendarioAberto(false)
+    }
 
     const escolherCategoria = (categoria: string) => {
         setCategoriaSelecionada(categoria)
@@ -122,14 +139,8 @@ export function EditarDespesa() {
                         <MdArrowBack size={18} />
                         Voltar para Gastos Variáveis
                     </Link>
-
                     <div className={styles.cardFormulario}>
                         <p className={styles.tituloSecao}>Despesa não encontrada</p>
-                        <p className={styles.textoDica}>
-                            Não conseguimos encontrar essa despesa. Como os dados ainda são salvos
-                            apenas em memória (sem Firebase configurado), atualizar a página limpa a lista.
-                            Volte para Gastos Variáveis e tente de novo.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -162,11 +173,28 @@ export function EditarDespesa() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Data:</p>
-                            <input
-                                {...register('data')}
-                                className={styles.input}
-                                type='date'
-                            />
+                            <div className={styles.dropdownConteiner}>
+                                <input type='hidden' {...register('data')} />
+                                <button
+                                    type='button'
+                                    className={styles.selectFalso}
+                                    onClick={() => setCalendarioAberto(!calendarioAberto)}
+                                >
+                                    <MdCalendarMonth size={16} />
+                                    {formatarDataExibicao(dataParaString(dataSelecionada))}
+                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                </button>
+                                {calendarioAberto && (
+                                    <div className={styles.dropdownCalendario}>
+                                        <Calendar
+                                            onChange={(value) => aoSelecionarData(value as Date)}
+                                            value={dataSelecionada}
+                                            maxDate={hoje}
+                                            locale='pt-BR'
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             {errors.data && <p className={styles.erro}>{errors.data.message}</p>}
                         </div>
 
@@ -194,7 +222,6 @@ export function EditarDespesa() {
                                 {categoriaSelecionada || 'Selecione a Categoria'}
                                 <MdExpandMore size={18} className={styles.iconeExpandir} />
                             </button>
-
                             {dropdownCategoriaAberto && (
                                 <div className={styles.listaDropdown}>
                                     <p className={styles.tituloDropdownCategoria}>Categorias</p>
@@ -242,7 +269,6 @@ export function EditarDespesa() {
 
                         <div className={styles.linhaArrependimento}>
                             <p className={styles.rotuloCampo}>Nível de arrependimento</p>
-
                             <div className={styles.estrelas}>
                                 {[1, 2, 3, 4, 5].map((numero) => (
                                     <button
@@ -255,7 +281,6 @@ export function EditarDespesa() {
                                     </button>
                                 ))}
                             </div>
-
                             <button
                                 type='button'
                                 className={styles.botaoLimpar}
@@ -290,7 +315,7 @@ export function EditarDespesa() {
 
             </div>
 
-            <ModalMensagem 
+            <ModalMensagem
                 exibir={modalMensagemVisivel}
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}

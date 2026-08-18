@@ -25,8 +25,6 @@ export function Relatorios() {
     const { assinaturas } = useContext(AssinaturasContexto)
     const { despesas } = useContext(DespesasContexto)
     const { rendaMensalContexto, cargaHorariaContexto } = useContext(BaseFinanceiraContexto)
-    
-    
 
     const formatarMoeda = (valor: number) =>
         valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -37,13 +35,12 @@ export function Relatorios() {
     const dadosPizzaAssinaturas = agregarAssinaturasPorCategoria(assinaturas)
     const dadosBarrasDespesas = agregarDespesasPorCategoria(despesas)
     const dadosTodasCategorias = agregarTodasPorCategoria(despesas, assinaturas)
-    
 
     const totalMensalAssinaturas = assinaturas.reduce((soma, assinatura) => {
-        if (assinatura.periodicidade === 'Anual') return soma + (assinatura.valor / 12)
-        if (assinatura.periodicidade === 'Semanal') return soma + (assinatura.valor * 4)
+        if (assinatura.periodicidade === 'anual') return soma + (assinatura.valor / 12)
+        if (assinatura.periodicidade === 'semanal') return soma + (assinatura.valor * 4)
         return soma + assinatura.valor
-    }, 0)  
+    }, 0)
 
     const projecaoAnual = totalMensalAssinaturas * 12
     const mediaAssinatura = assinaturas.length > 0 ? totalMensalAssinaturas / assinaturas.length : 0
@@ -114,23 +111,23 @@ export function Relatorios() {
 
             <section className={styles.cardsMetricas}>
 
-            <div className={styles.cardMetrica}>
-                <p className={styles.tituloMetrica}>Total Mensal</p>
-                <p className={styles.valorMetrica}>{formatarMoeda(totalMensalAssinaturas)}</p>
-                <p className={styles.descricaoMetrica}>Assinaturas atuais</p>
-            </div>
+                <div className={styles.cardMetrica}>
+                    <p className={styles.tituloMetrica}>Total Mensal</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(totalMensalAssinaturas)}</p>
+                    <p className={styles.descricaoMetrica}>Assinaturas atuais</p>
+                </div>
 
-            <div className={styles.cardMetrica}>
-                <p className={styles.tituloMetrica}>Projeção Anual</p>
-                <p className={styles.valorMetrica}>{formatarMoeda(projecaoAnual)}</p>
-                <p className={styles.descricaoMetrica}>Custo anual estimado</p>
-            </div>
+                <div className={styles.cardMetrica}>
+                    <p className={styles.tituloMetrica}>Projeção Anual</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(projecaoAnual)}</p>
+                    <p className={styles.descricaoMetrica}>Custo anual estimado</p>
+                </div>
 
-            <div className={styles.cardMetrica}>
-                <p className={styles.tituloMetrica}>Média por Assinatura</p>
-                <p className={styles.valorMetrica}>{formatarMoeda(mediaAssinatura)}</p>
-                <p className={styles.descricaoMetrica}>Custo médio de assinatura</p>
-            </div>
+                <div className={styles.cardMetrica}>
+                    <p className={styles.tituloMetrica}>Média por Assinatura</p>
+                    <p className={styles.valorMetrica}>{formatarMoeda(mediaAssinatura)}</p>
+                    <p className={styles.descricaoMetrica}>Custo médio de assinatura</p>
+                </div>
 
             </section>
 

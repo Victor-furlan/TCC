@@ -1,12 +1,14 @@
 import styles from './EditarAssinatura.module.css'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck } from 'react-icons/md'
+import { MdArrowBack, MdStar, MdStarBorder, MdLightbulb, MdExpandMore, MdCheck, MdCalendarMonth } from 'react-icons/md'
 import { ModalMensagem } from '../../components/ModalMensagem'
 import { AssinaturasContexto } from '../../contexts/AssinaturasContexto'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
 
 type Humor = 'feliz' | 'ansioso' | 'estressado' | 'cansado' | 'neutro'
 
@@ -28,7 +30,12 @@ const editarAssinaturaSchema = z.object({
     motivo: z.string().optional(),
 })
 
-const opcoesPeriodicidade = ['Mensal', 'Anual', 'Semanal']
+const opcoesPeriodicidade = [
+    { valor: 'mensal', rotulo: 'Mensal' },
+    { valor: 'anual', rotulo: 'Anual' },
+    { valor: 'semanal', rotulo: 'Semanal' },
+]
+
 const opcoesCategoria = ['Entretenimento', 'Software', 'Compras', 'Utilidades', 'Alimentação', 'Saúde', 'Educação']
 
 const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
@@ -39,14 +46,38 @@ const opcoesHumor: { valor: Humor, rotulo: string, emoji: string }[] = [
     { valor: 'neutro', rotulo: 'Neutro', emoji: '😐' },
 ]
 
+const dataParaString = (data: Date) => {
+    const ano = data.getFullYear()
+    const mes = String(data.getMonth() + 1).padStart(2, '0')
+    const dia = String(data.getDate()).padStart(2, '0')
+    return `${ano}-${mes}-${dia}`
+}
+
+const stringParaData = (dataStr: string) => {
+    const [ano, mes, dia] = dataStr.split('-').map(Number)
+    return new Date(ano, mes - 1, dia)
+}
+
+const formatarDataExibicao = (dataStr: string) => {
+    if (!dataStr) return 'Selecione uma data'
+    const [ano, mes, dia] = dataStr.split('-')
+    return `${dia}/${mes}/${ano}`
+}
+
 export function EditarAssinatura() {
 
     const { id } = useParams<{ id: string }>()
     const navegacao = useNavigate()
 
     const { assinaturas, editarAssinatura } = useContext(AssinaturasContexto)
-
     const assinaturaAtual = assinaturas.find((assinatura) => assinatura.id === id)
+
+    const hoje = new Date()
+
+    const [dataSelecionada, setDataSelecionada] = useState<Date>(
+        assinaturaAtual?.proximaCobranca ? stringParaData(assinaturaAtual.proximaCobranca) : hoje
+    )
+    const [calendarioAberto, setCalendarioAberto] = useState(false)
 
     const [humorSelecionado, setHumorSelecionado] = useState<Humor | null>((assinaturaAtual?.humor as Humor) || null)
     const [nivelArrependimento, setNivelArrependimento] = useState(assinaturaAtual?.nivelArrependimento || 0)
@@ -73,22 +104,11 @@ export function EditarAssinatura() {
         },
     })
 
-    useEffect(() => {
-        if (assinaturaAtual) {
-            setValue('nomeAssinatura', assinaturaAtual.nome)
-            setValue('valor', assinaturaAtual.valor)
-            setValue('periodicidade', assinaturaAtual.periodicidade)
-            setValue('categoria', assinaturaAtual.categoria)
-            setValue('proximaCobranca', assinaturaAtual.proximaCobranca)
-            setValue('motivo', assinaturaAtual.motivo || '')
-
-            setPeriodicidadeSelecionada(assinaturaAtual.periodicidade)
-            setCategoriaSelecionada(assinaturaAtual.categoria)
-            setHumorSelecionado((assinaturaAtual.humor as Humor) || null)
-            setNivelArrependimento(assinaturaAtual.nivelArrependimento || 0)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [assinaturaAtual?.id])
+    const aoSelecionarData = (data: Date) => {
+        setDataSelecionada(data)
+        setValue('proximaCobranca', dataParaString(data), { shouldValidate: true })
+        setCalendarioAberto(false)
+    }
 
     const escolherPeriodicidade = (periodicidade: string) => {
         setPeriodicidadeSelecionada(periodicidade)
@@ -111,6 +131,7 @@ export function EditarAssinatura() {
             periodicidade: data.periodicidade,
             categoria: data.categoria,
             proximaCobranca: data.proximaCobranca,
+            ativa: assinaturaAtual?.ativa ?? true,
             motivo: data.motivo,
             humor: humorSelecionado || undefined,
             nivelArrependimento: nivelArrependimento || undefined,
@@ -138,14 +159,8 @@ export function EditarAssinatura() {
                         <MdArrowBack size={18} />
                         Voltar para Assinaturas
                     </Link>
-
                     <div className={styles.cardFormulario}>
                         <p className={styles.tituloSecao}>Assinatura não encontrada</p>
-                        <p className={styles.textoDica}>
-                            Não conseguimos encontrar essa assinatura. Como os dados ainda são salvos
-                            apenas em memória (sem Firebase configurado), atualizar a página limpa a lista.
-                            Volte para Assinaturas e tente de novo.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -196,22 +211,21 @@ export function EditarAssinatura() {
                                     className={styles.selectFalso}
                                     onClick={() => setDropdownPeriodicidadeAberto(!dropdownPeriodicidadeAberto)}
                                 >
-                                    {periodicidadeSelecionada || 'Selecione'}
+                                    {opcoesPeriodicidade.find(o => o.valor === periodicidadeSelecionada)?.rotulo || 'Selecione'}
                                     <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
-
                                 {dropdownPeriodicidadeAberto && (
                                     <div className={styles.listaDropdown}>
                                         <p className={styles.tituloDropdownCategoria}>Periodicidade</p>
                                         {opcoesPeriodicidade.map((opcao) => (
                                             <button
-                                                key={opcao}
+                                                key={opcao.valor}
                                                 type='button'
                                                 className={styles.itemDropdown}
-                                                onClick={() => escolherPeriodicidade(opcao)}
+                                                onClick={() => escolherPeriodicidade(opcao.valor)}
                                             >
-                                                {opcao}
-                                                {periodicidadeSelecionada === opcao && <MdCheck size={16} className={styles.iconeCheck} />}
+                                                {opcao.rotulo}
+                                                {periodicidadeSelecionada === opcao.valor && <MdCheck size={16} className={styles.iconeCheck} />}
                                             </button>
                                         ))}
                                     </div>
@@ -233,7 +247,6 @@ export function EditarAssinatura() {
                                     {categoriaSelecionada || 'Selecione a Categoria'}
                                     <MdExpandMore size={18} className={styles.iconeExpandir} />
                                 </button>
-
                                 {dropdownCategoriaAberto && (
                                     <div className={styles.listaDropdown}>
                                         <p className={styles.tituloDropdownCategoria}>Categorias</p>
@@ -256,11 +269,27 @@ export function EditarAssinatura() {
 
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Próxima Cobrança:</p>
-                            <input
-                                {...register('proximaCobranca')}
-                                className={styles.input}
-                                type='date'
-                            />
+                            <div className={styles.dropdownConteiner}>
+                                <input type='hidden' {...register('proximaCobranca')} />
+                                <button
+                                    type='button'
+                                    className={styles.selectFalso}
+                                    onClick={() => setCalendarioAberto(!calendarioAberto)}
+                                >
+                                    <MdCalendarMonth size={16} />
+                                    {formatarDataExibicao(dataParaString(dataSelecionada))}
+                                    <MdExpandMore size={18} className={styles.iconeExpandir} />
+                                </button>
+                                {calendarioAberto && (
+                                    <div className={styles.dropdownCalendario}>
+                                        <Calendar
+                                            onChange={(value) => aoSelecionarData(value as Date)}
+                                            value={dataSelecionada}
+                                            locale='pt-BR'
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             {errors.proximaCobranca && <p className={styles.erro}>{errors.proximaCobranca.message}</p>}
                         </div>
                     </div>
@@ -292,7 +321,6 @@ export function EditarAssinatura() {
 
                         <div className={styles.linhaArrependimento}>
                             <p className={styles.rotuloCampo}>Nível de arrependimento</p>
-
                             <div className={styles.estrelas}>
                                 {[1, 2, 3, 4, 5].map((numero) => (
                                     <button
@@ -305,7 +333,6 @@ export function EditarAssinatura() {
                                     </button>
                                 ))}
                             </div>
-
                             <button
                                 type='button'
                                 className={styles.botaoLimpar}
@@ -340,7 +367,7 @@ export function EditarAssinatura() {
 
             </div>
 
-            <ModalMensagem 
+            <ModalMensagem
                 exibir={modalMensagemVisivel}
                 ocultar={() => ocultarModal()}
                 titulo={modalMensagemTitulo}

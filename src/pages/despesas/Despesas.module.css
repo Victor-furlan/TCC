@@ -58,13 +58,56 @@
   padding: 24px;
 }
 
+.cabecalhoResumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
 .tituloResumo {
   font-family: var(--fonte-base);
   font-size: 1rem;
   font-style: italic;
   font-weight: 400;
   color: var(--cor-texto-principal);
-  margin-bottom: 20px;
+}
+
+.navegacaoMes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botaoMes {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cor-texto-secundario);
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.botaoMes:hover {
+  opacity: 0.7;
+}
+
+.botaoMes:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.labelMes {
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  min-width: 140px;
+  text-align: center;
 }
 
 .itensResumo {
@@ -282,4 +325,96 @@
   display: flex;
   gap: 8px;
   flex-shrink: 0;
+}
+
+.cabecalhoResumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.navegacaoMes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botaoMes {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cor-texto-secundario);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 8px;
+  transition: opacity 0.2s;
+}
+
+.botaoMes:hover {
+  opacity: 0.7;
+}
+
+.botaoMes:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.conteinerCalendario {
+  position: relative;
+}
+
+.labelMes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--fonte-base);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  min-width: 160px;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: opacity 0.2s;
+}
+
+.labelMes:hover {
+  opacity: 0.7;
+}
+
+.dropdownCalendario {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 100;
+  background-color: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda-card);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.botaoLimparDia {
+  width: 100%;
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--cor-borda-card);
+  border-radius: 10px;
+  padding: 8px;
+  font-family: var(--fonte-base);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.botaoLimparDia:hover {
+  opacity: 0.7;
 }

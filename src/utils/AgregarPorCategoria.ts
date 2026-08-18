@@ -8,8 +8,8 @@ export interface DadoCategoria {
 }
 
 function valorMensalizado(assinatura: AssinaturaTipo) {
-    if (assinatura.periodicidade === 'Anual') return assinatura.valor / 12
-    if (assinatura.periodicidade === 'Semanal') return assinatura.valor * 4
+    if (assinatura.periodicidade === 'anual') return assinatura.valor / 12
+    if (assinatura.periodicidade === 'semanal') return assinatura.valor * 4
     return assinatura.valor
 }
 
