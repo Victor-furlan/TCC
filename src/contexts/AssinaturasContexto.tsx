@@ -12,6 +12,7 @@ export interface AssinaturaTipo {
     motivo?: string
     humor?: string
     nivelArrependimento?: number
+    pastaId?: string | null
 }
 
 interface AssinaturasContextoTipo {
@@ -20,6 +21,8 @@ interface AssinaturasContextoTipo {
     adicionarAssinatura: (assinatura: Omit<AssinaturaTipo, 'id'>) => Promise<void>
     removerAssinatura: (id: string) => Promise<void>
     editarAssinatura: (id: string, dadosAtualizados: Omit<AssinaturaTipo, 'id'>) => Promise<void>
+    moverParaPasta: (id: string, pastaId: string | null) => Promise<void>
+    liberarAssinaturasDaPasta: (pastaId: string) => void
 }
 
 export const AssinaturasContexto = createContext({} as AssinaturasContextoTipo)
@@ -35,14 +38,14 @@ export function AssinaturasProvider({ children }: AssinaturasProviderProps) {
 
     useEffect(() => {
         const buscarAssinaturas = async (userId: string) => {
-            const {data} = await supabase
+            const { data } = await supabase
                 .from('assinaturas')
                 .select('*')
                 .eq('user_id', userId)
-                .order('criado_em', {ascending: false})
+                .order('criado_em', { ascending: false })
 
-                if (data) {
-                    setAssinaturas(data.map((a) => ({
+            if (data) {
+                setAssinaturas(data.map((a) => ({
                     id: a.id,
                     nome: a.nome,
                     valor: a.valor,
@@ -53,31 +56,32 @@ export function AssinaturasProvider({ children }: AssinaturasProviderProps) {
                     motivo: a.motivo,
                     humor: a.humor,
                     nivelArrependimento: a.nivel_arrependimento,
-                    })))
-                }
-                setCarregando(false)
+                    pastaId: a.pasta_id ?? null,
+                })))
+            }
+            setCarregando(false)
         }
 
-        const {data: {subscription}} = supabase.auth.onAuthStateChange((_event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             if (session?.user) {
                 buscarAssinaturas(session.user.id)
-            }else{
+            } else {
                 setAssinaturas([])
                 setCarregando(false)
             }
         })
 
         return () => subscription.unsubscribe()
-    },[])
+    }, [])
 
     const adicionarAssinatura = async (assinatura: Omit<AssinaturaTipo, 'id'>) => {
-        const {data: {user}} = await supabase.auth.getUser()
-        if(!user) return
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
 
-        const {data, error} = await supabase
+        const { data, error } = await supabase
             .from('assinaturas')
             .insert({
-                                user_id: user.id,
+                user_id: user.id,
                 nome: assinatura.nome,
                 valor: assinatura.valor,
                 periodicidade: assinatura.periodicidade,
@@ -87,39 +91,41 @@ export function AssinaturasProvider({ children }: AssinaturasProviderProps) {
                 motivo: assinatura.motivo,
                 humor: assinatura.humor,
                 nivel_arrependimento: assinatura.nivelArrependimento,
+                pasta_id: assinatura.pastaId ?? null,
             })
             .select()
             .single()
 
-            if(!error && data) {
-                setAssinaturas((atual) => [{
-                    id: data.id,
-                    nome: data.nome,
-                    valor: data.valor,
-                    periodicidade: data.periodicidade,
-                    categoria: data.categoria,
-                    proximaCobranca: data.proxima_cobranca,
-                    ativa: data.ativa,
-                    motivo: data.motivo,
-                    humor: data.humor,
-                    nivelArrependimento: data.nivel_arrependimento,
-                }, ...atual])
-            }
+        if (!error && data) {
+            setAssinaturas((atual) => [{
+                id: data.id,
+                nome: data.nome,
+                valor: data.valor,
+                periodicidade: data.periodicidade,
+                categoria: data.categoria,
+                proximaCobranca: data.proxima_cobranca,
+                ativa: data.ativa,
+                motivo: data.motivo,
+                humor: data.humor,
+                nivelArrependimento: data.nivel_arrependimento,
+                pastaId: data.pasta_id ?? null,
+            }, ...atual])
+        }
     }
 
     const removerAssinatura = async (id: string) => {
-        const {error} = await supabase
+        const { error } = await supabase
             .from('assinaturas')
             .delete()
             .eq('id', id)
 
-            if (!error) {
-                setAssinaturas((atual) => atual.filter((a) => a.id !== id))
-            }
+        if (!error) {
+            setAssinaturas((atual) => atual.filter((a) => a.id !== id))
+        }
     }
 
     const editarAssinatura = async (id: string, dadosAtualizados: Omit<AssinaturaTipo, 'id'>) => {
-        const {error} = await supabase
+        const { error } = await supabase
             .from('assinaturas')
             .update({
                 nome: dadosAtualizados.nome,
@@ -134,15 +140,34 @@ export function AssinaturasProvider({ children }: AssinaturasProviderProps) {
             })
             .eq('id', id)
 
-            if (!error) {
-                setAssinaturas((atual) => atual.map((a) => 
-                    a.id === id ? { ...dadosAtualizados, id } : a
-                ))
-            }
+        if (!error) {
+            setAssinaturas((atual) => atual.map((a) =>
+                a.id === id ? { ...dadosAtualizados, id } : a
+            ))
+        }
+    }
+
+    const moverParaPasta = async (id: string, pastaId: string | null) => {
+        const { error } = await supabase
+            .from('assinaturas')
+            .update({ pasta_id: pastaId })
+            .eq('id', id)
+
+        if (!error) {
+            setAssinaturas((atual) => atual.map((a) =>
+                a.id === id ? { ...a, pastaId } : a
+            ))
+        }
+    }
+
+    const liberarAssinaturasDaPasta = (pastaId: string) => {
+        setAssinaturas((atual) => atual.map((a) =>
+            a.pastaId === pastaId ? { ...a, pastaId: null } : a
+        ))
     }
 
     return (
-        <AssinaturasContexto.Provider value={{ assinaturas, carregando, adicionarAssinatura, removerAssinatura, editarAssinatura }}>
+        <AssinaturasContexto.Provider value={{ assinaturas, carregando, adicionarAssinatura, removerAssinatura, editarAssinatura, moverParaPasta, liberarAssinaturasDaPasta }}>
             {children}
         </AssinaturasContexto.Provider>
     )

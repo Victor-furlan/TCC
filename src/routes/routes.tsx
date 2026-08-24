@@ -10,6 +10,7 @@ import { Assinaturas } from '../pages/assinaturas/Assinaturas';
 import { RegistrarAssinatura } from '../pages/assinaturas/RegistrarAssinatura';
 import { EditarAssinatura } from '../pages/assinaturas/EditarAssinatura';
 import { AssinaturasProvider } from '../contexts/AssinaturasContexto';
+import { PastasProvider } from '../contexts/PastasContexto';
 import { Despesas } from '../pages/despesas/Despesas';
 import { RegistrarDespesa } from '../pages/despesas/RegistrarDespesa'
 import { EditarDespesa } from '../pages/despesas/EditarDespesa';
@@ -30,37 +31,39 @@ export function AppRoutes() {
     <TemaProvider>
       <UsuarioProvider>
         <BaseFinanceiraProvider>
-          <AssinaturasProvider>
-            <DespesasProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="criarConta" element={<CriarConta/>}/>
-                  <Route path="redefinirSenha" element={<RedefinirSenha/>}/>
-                  <Route path="novaSenha" element={<NovaSenha/>}/>
+          <PastasProvider>
+            <AssinaturasProvider>
+              <DespesasProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="criarConta" element={<CriarConta/>}/>
+                    <Route path="redefinirSenha" element={<RedefinirSenha/>}/>
+                    <Route path="novaSenha" element={<NovaSenha/>}/>
 
-                  <Route element={<RotaProtegida />}>
-                    <Route path="onboarding" element={<Onboarding />}/>
-                    <Route element={<Principal />}>
-                      <Route path="dashboard" element={<DashBoard/>}/>
-                      <Route path="assinaturas" element={<Assinaturas/>}/>
-                      <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}/>
-                      <Route path='assinaturas/editar/:id' element={<EditarAssinatura />} />
-                      <Route path="despesas" element={<Despesas/>}/>
-                      <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
-                      <Route path="despesas/editar/:id" element={<EditarDespesa/>}/>
-                      <Route path="despesas/visualizar/:id" element={<VisualizarDespesa/>}/>
-                      <Route path="relatorios" element={<Relatorios/>}/>
-                      <Route path="simulador" element={<Simulador/>}/>
-                      <Route path="configuracoes" element={<Configuracoes/>}/>
-                      <Route path='perfil' element={<Perfil/>}/>
-                      <Route path='/perfil/editar' element={<EditarPerfil />} />
+                    <Route element={<RotaProtegida />}>
+                      <Route path="onboarding" element={<Onboarding />}/>
+                      <Route element={<Principal />}>
+                        <Route path="dashboard" element={<DashBoard/>}/>
+                        <Route path="assinaturas" element={<Assinaturas/>}/>
+                        <Route path='assinaturas/nova' element={<RegistrarAssinatura/>}/>
+                        <Route path='assinaturas/editar/:id' element={<EditarAssinatura />} />
+                        <Route path="despesas" element={<Despesas/>}/>
+                        <Route path="despesas/nova" element={<RegistrarDespesa/>}/>
+                        <Route path="despesas/editar/:id" element={<EditarDespesa/>}/>
+                        <Route path="despesas/visualizar/:id" element={<VisualizarDespesa/>}/>
+                        <Route path="relatorios" element={<Relatorios/>}/>
+                        <Route path="simulador" element={<Simulador/>}/>
+                        <Route path="configuracoes" element={<Configuracoes/>}/>
+                        <Route path='perfil' element={<Perfil/>}/>
+                        <Route path='/perfil/editar' element={<EditarPerfil />} />
+                      </Route>
                     </Route>
-                  </Route>
-                </Routes>
-              </BrowserRouter>
-            </DespesasProvider>
-          </AssinaturasProvider>
+                  </Routes>
+                </BrowserRouter>
+              </DespesasProvider>
+            </AssinaturasProvider>
+          </PastasProvider>
         </BaseFinanceiraProvider>
       </UsuarioProvider>
     </TemaProvider>
