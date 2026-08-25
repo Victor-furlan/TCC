@@ -4,12 +4,13 @@ import { supabase } from '../services/supabase'
 export interface PastaTipo {
     id: string
     nome: string
+    cor: string
 }
 
 interface PastasContextoTipo {
     pastas: PastaTipo[]
     carregando: boolean
-    adicionarPasta: (nome: string) => Promise<void>
+    adicionarPasta: (nome: string, cor: string) => Promise<void>
     removerPasta: (id: string, onRemovida?: (id: string) => void) => Promise<void>
 }
 
@@ -33,7 +34,7 @@ export function PastasProvider({ children }: PastasProviderProps) {
                 .order('criado_em', { ascending: true })
 
             if (data) {
-                setPastas(data.map((p) => ({ id: p.id, nome: p.nome })))
+                setPastas(data.map((p) => ({ id: p.id, nome: p.nome, cor: p.cor })))
             }
             setCarregando(false)
         }
@@ -50,18 +51,18 @@ export function PastasProvider({ children }: PastasProviderProps) {
         return () => subscription.unsubscribe()
     }, [])
 
-    const adicionarPasta = async (nome: string) => {
+    const adicionarPasta = async (nome: string, cor: string) => {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return
 
         const { data, error } = await supabase
             .from('pastas')
-            .insert({ user_id: user.id, nome })
+            .insert({ user_id: user.id, nome, cor })
             .select()
             .single()
 
         if (!error && data) {
-            setPastas((atual) => [...atual, { id: data.id, nome: data.nome }])
+            setPastas((atual) => [...atual, { id: data.id, nome: data.nome, cor: data.cor }])
         }
     }
 

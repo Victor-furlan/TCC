@@ -250,8 +250,8 @@ export function Assinaturas() {
                                     <div className={styles.cabecalhoPasta}>
                                         <button className={styles.botaoPasta} onClick={() => togglePasta(pasta.id)}>
                                             {aberta
-                                                ? <MdFolderOpen size={20} className={styles.iconePasta} />
-                                                : <MdFolder size={20} className={styles.iconePasta} />
+                                                ? <MdFolderOpen size={20} style={{ color: pasta.cor, flexShrink: 0 }} />
+                                                : <MdFolder size={20} style={{ color: pasta.cor, flexShrink: 0 }} />
                                             }
                                             <span className={styles.nomePasta}>{pasta.nome}</span>
                                             <span className={styles.contadorPasta}>{assinaturasDaPasta.length}</span>

@@ -359,10 +359,6 @@
   background-color: var(--fundo-formulario-campo);
 }
 
-.iconePasta {
-  color: var(--cor-primaria);
-}
-
 .nomePasta {
   font-family: var(--fonte-base);
   font-size: 0.95rem;

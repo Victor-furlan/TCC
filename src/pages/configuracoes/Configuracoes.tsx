@@ -87,13 +87,13 @@ export function Configuracoes() {
     const [modalMensagemTexto, setModalMensagemTexto] = useState('')
     const [modalMensagemTipo, setModalMensagemTipo] = useState<'sucesso' | 'erro'>('sucesso')
 
-useEffect(() => {
-    localStorage.setItem('vlibras', String(vlibrasAtivo))
-    const widget = document.getElementById('vlibras-widget')
-    if (widget) {
-        widget.style.display = vlibrasAtivo ? 'block' : 'none'
-    }
-}, [vlibrasAtivo])
+    useEffect(() => {
+        localStorage.setItem('vlibras', String(vlibrasAtivo))
+        const widget = document.getElementById('vlibras-widget')
+        if (widget) widget.style.display = vlibrasAtivo ? 'block' : 'none'
+        const wrapper = document.getElementById('vlibras-access-wrapper')
+        if (wrapper) wrapper.style.display = vlibrasAtivo ? 'block' : 'none'
+    }, [vlibrasAtivo])
 
     const formFinancial = useForm<FinancialFormValues>({
         resolver: zodResolver(financialSchema),

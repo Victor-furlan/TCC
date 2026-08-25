@@ -1,6 +1,9 @@
 import { useContext } from 'react'
 import { MdClose, MdFolder, MdAdd } from 'react-icons/md'
 import { PastasContexto } from '../../contexts/PastasContexto'
+import { TemaContexto } from '../../contexts/TemaContexto'
+import logoClara from '../../assets/imagens/logo.svg'
+import logoEscura from '../../assets/imagens/logo_dark_mode.svg'
 import styles from './ModalMoverPasta.module.css'
 
 interface ModalMoverPastaProps {
@@ -13,18 +16,22 @@ interface ModalMoverPastaProps {
 export function ModalMoverPasta({ idsSelecionados, onFechar, onMover, onAbrirCriarPasta }: ModalMoverPastaProps) {
 
     const { pastas } = useContext(PastasContexto)
+    const { tema } = useContext(TemaContexto)
 
     return (
         <div className={styles.overlay} onClick={onFechar}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 
-                <div className={styles.cabecalho}>
-                    <p className={styles.titulo}>Mover para pasta</p>
-                    <button className={styles.botaoFechar} onClick={onFechar}>
-                        <MdClose size={20} />
-                    </button>
-                </div>
+                <img
+                    src={tema === 'escuro' ? logoEscura : logoClara}
+                    className={styles.logo}
+                />
 
+                <button className={styles.botaoFechar} onClick={onFechar}>
+                    <MdClose size={20} />
+                </button>
+
+                <p className={styles.titulo}>Mover para pasta</p>
                 <p className={styles.subtitulo}>
                     {idsSelecionados.length} {idsSelecionados.length === 1 ? 'assinatura selecionada' : 'assinaturas selecionadas'}
                 </p>
@@ -40,7 +47,7 @@ export function ModalMoverPasta({ idsSelecionados, onFechar, onMover, onAbrirCri
                                     className={styles.itemPasta}
                                     onClick={() => onMover(pasta.id)}
                                 >
-                                    <MdFolder size={20} className={styles.icone} />
+                                    <MdFolder size={20} style={{ color: pasta.cor, flexShrink: 0 }} />
                                     {pasta.nome}
                                 </button>
                             ))}
