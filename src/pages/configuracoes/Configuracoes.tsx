@@ -8,6 +8,8 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TemaContexto } from '../../contexts/TemaContexto'
 import { BaseFinanceiraContexto } from '../../contexts/BaseFinanceiraContexto'
+import { UsuarioContexto, type CorHSL } from '../../contexts/UsuarioContexto'
+import { HslColorPicker } from 'react-colorful'
 import {
     MdLanguage,
     MdAccessibility,
@@ -40,15 +42,15 @@ const financialSchema = z.object({
     horasTrabalhadas: z.string().min(1, { message: 'Informe sua carga horária mensal.' }),
 })
 
-const categorias = [
-    { nome: 'Entretenimento', cor: 'var(--categoria-entretenimento)' },
-    { nome: 'Software', cor: 'var(--categoria-software)' },
-    { nome: 'Compras', cor: 'var(--categoria-compras)' },
-    { nome: 'Utilidades', cor: 'var(--categoria-utilidades)' },
-    { nome: 'Alimentação', cor: 'var(--categoria-alimentacao)' },
-    { nome: 'Saúde', cor: 'var(--categoria-saude)' },
-    { nome: 'Educação', cor: 'var(--categoria-educacao)' },
-]
+const variavelCSS: Record<string, string> = {
+    'Entretenimento': '--categoria-entretenimento',
+    'Software': '--categoria-software',
+    'Compras': '--categoria-compras',
+    'Utilidades': '--categoria-utilidades',
+    'Alimentação': '--categoria-alimentacao',
+    'Saúde': '--categoria-saude',
+    'Educação': '--categoria-educacao',
+}
 
 const integrantes = [
     { nome: 'Victor Canissaris Furlan', foto: fotoVictor },
@@ -70,22 +72,20 @@ export function Configuracoes() {
 
     const { tema, alterarTema } = useContext(TemaContexto)
     const { rendaMensalContexto, cargaHorariaContexto, setRendaMensalContexto, setCargaHorariaContexto } = useContext(BaseFinanceiraContexto)
+    const { coresCategorias, atualizarCorCategoria } = useContext(UsuarioContexto)
 
     const [abaAtiva, setAbaAtiva] = useState<AbaConfiguracao>('financial')
-    const [vlibrasAtivo, setVlibrasAtivo] = useState(() => {
-        return localStorage.getItem('vlibras') === 'true'
-    })
-
+    const [vlibrasAtivo, setVlibrasAtivo] = useState(() => localStorage.getItem('vlibras') === 'true')
     const [temaSelecionado, setTemaSelecionado] = useState(tema)
     const [dropdownTemaAberto, setDropdownTemaAberto] = useState(false)
-
     const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('pt')
     const [dropdownIdiomaAberto, setDropdownIdiomaAberto] = useState(false)
-
     const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
     const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
     const [modalMensagemTexto, setModalMensagemTexto] = useState('')
     const [modalMensagemTipo, setModalMensagemTipo] = useState<'sucesso' | 'erro'>('sucesso')
+    const [categoriaEditando, setCategoriaEditando] = useState<string | null>(null)
+    const [corTemp, setCorTemp] = useState<CorHSL>({ h: 0, s: 100, l: 88 })
 
     useEffect(() => {
         localStorage.setItem('vlibras', String(vlibrasAtivo))
@@ -103,9 +103,7 @@ export function Configuracoes() {
         },
     })
 
-    const ocultarModal = () => {
-        setModalMensagemVisivel(false)
-    }
+    const ocultarModal = () => setModalMensagemVisivel(false)
 
     const salvarFinancial = async (data: FinancialFormValues) => {
         try {
@@ -113,12 +111,25 @@ export function Configuracoes() {
             await setCargaHorariaContexto(Number(data.horasTrabalhadas))
             setModalMensagemTipo('sucesso')
             setModalMensagemTexto('Alterações salvas com sucesso!')
-        }catch {
+        } catch {
             setModalMensagemTipo('erro')
             setModalMensagemTexto('Erro ao salvar. Tente novamente.')
         }
         setModalMensagemTitulo('Financeiro')
         setModalMensagemVisivel(true)
+    }
+
+    const abrirEditor = (categoria: string) => {
+        setCategoriaEditando(categoria)
+        setCorTemp(coresCategorias[categoria])
+    }
+
+    const cancelarEdicao = () => setCategoriaEditando(null)
+
+    const salvarEdicao = async () => {
+        if (!categoriaEditando) return
+        await atualizarCorCategoria(categoriaEditando, corTemp)
+        setCategoriaEditando(null)
     }
 
     const tituloAba: Record<AbaConfiguracao, string> = {
@@ -127,7 +138,7 @@ export function Configuracoes() {
         about: 'Sobre',
     }
 
-    return(
+    return (
         <div className={styles.conteiner}>
             <div className={styles.areaConteudo}>
 
@@ -164,10 +175,31 @@ export function Configuracoes() {
                             <div className={styles.colunaCategorias}>
                                 <p className={styles.rotuloCampo}>Cores das categorias:</p>
                                 <div className={styles.listaCategorias}>
-                                    {categorias.map((categoria) => (
-                                        <div key={categoria.nome} className={styles.itemCategoria}>
-                                            <span className={styles.amostraCor} style={{ backgroundColor: categoria.cor }} />
-                                            <p className={styles.nomeCategoria}>{categoria.nome}</p>
+                                    {Object.keys(variavelCSS).map((categoria) => (
+                                        <div key={categoria} className={styles.itemCategoria}>
+                                            <button
+                                                className={styles.amostraCor}
+                                                style={{ backgroundColor: `var(${variavelCSS[categoria]})` }}
+                                                onClick={() => abrirEditor(categoria)}
+                                            />
+                                            <p className={styles.nomeCategoria}>{categoria}</p>
+
+                                            {categoriaEditando === categoria && (
+                                                <div className={styles.popoverCor}>
+                                                    <HslColorPicker
+                                                        color={corTemp}
+                                                        onChange={setCorTemp}
+                                                    />
+                                                    <div className={styles.botoesPopover}>
+                                                        <button className={styles.botaoCancelarCor} onClick={cancelarEdicao}>
+                                                            Cancelar
+                                                        </button>
+                                                        <button className={styles.botaoSalvarCor} onClick={salvarEdicao}>
+                                                            Salvar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -184,10 +216,9 @@ export function Configuracoes() {
                                             onClick={() => setDropdownIdiomaAberto(!dropdownIdiomaAberto)}
                                         >
                                             <MdLanguage size={18} />
-                                            {opcoesIdioma.find((opcao) => opcao.valor === idiomaSelecionado)?.rotulo}
+                                            {opcoesIdioma.find((o) => o.valor === idiomaSelecionado)?.rotulo}
                                             <MdExpandMore size={18} className={styles.iconeExpandir} />
                                         </button>
-
                                         {dropdownIdiomaAberto && (
                                             <div className={styles.listaDropdown}>
                                                 {opcoesIdioma.map((opcao) => (
@@ -230,11 +261,10 @@ export function Configuracoes() {
                                             className={styles.selectFalso}
                                             onClick={() => setDropdownTemaAberto(!dropdownTemaAberto)}
                                         >
-                                            {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.icone}
-                                            {opcoesTema.find((opcao) => opcao.valor === temaSelecionado)?.rotulo}
+                                            {opcoesTema.find((o) => o.valor === temaSelecionado)?.icone}
+                                            {opcoesTema.find((o) => o.valor === temaSelecionado)?.rotulo}
                                             <MdExpandMore size={18} className={styles.iconeExpandir} />
                                         </button>
-
                                         {dropdownTemaAberto && (
                                             <div className={styles.listaDropdown}>
                                                 {opcoesTema.map((opcao) => (
@@ -245,9 +275,7 @@ export function Configuracoes() {
                                                         onClick={() => {
                                                             setTemaSelecionado(opcao.valor)
                                                             setDropdownTemaAberto(false)
-                                                            if (opcao.valor !== tema) {
-                                                                alterarTema()
-                                                            }
+                                                            if (opcao.valor !== tema) alterarTema()
                                                         }}
                                                     >
                                                         {opcao.icone}
@@ -261,14 +289,12 @@ export function Configuracoes() {
                                 </div>
 
                             </div>
-
                         </div>
                     </div>
                 )}
 
                 {abaAtiva === 'financial' && (
                     <form className={styles.cardConteudo} onSubmit={formFinancial.handleSubmit(salvarFinancial)}>
-
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Renda Mensal:</p>
                             <input
@@ -280,7 +306,6 @@ export function Configuracoes() {
                                 <p className={styles.erro}>{formFinancial.formState.errors.rendaMensal.message}</p>
                             )}
                         </div>
-
                         <div className={styles.campo}>
                             <p className={styles.rotuloCampo}>Horas de Trabalho por Mês:</p>
                             <input
@@ -292,21 +317,17 @@ export function Configuracoes() {
                                 <p className={styles.erro}>{formFinancial.formState.errors.horasTrabalhadas.message}</p>
                             )}
                         </div>
-
                         <button type='submit' className={styles.botaoSalvar}>Salvar Alterações</button>
-
                     </form>
                 )}
 
                 {abaAtiva === 'about' && (
                     <div className={styles.cardConteudo}>
-
                         <p className={styles.descricaoSobre}>
                             MindCash é um aplicativo de controle financeiro pessoal que integra análise emocional
                             e a percepção do dinheiro como tempo de vida, desenvolvido como Trabalho de Conclusão
                             de Curso (TCC) do Técnico em Desenvolvimento de Sistemas da Etec de Hortolândia.
                         </p>
-
                         <div className={styles.listaIntegrantes}>
                             {integrantes.map((integrante) => (
                                 <div key={integrante.nome} className={styles.itemIntegrante}>
@@ -320,12 +341,10 @@ export function Configuracoes() {
                                 </div>
                             ))}
                         </div>
-
                         <div className={styles.infoVersao}>
                             <p className={styles.rotuloVersao}>Versão:</p>
                             <p className={styles.valorVersao}>{versao}</p>
                         </div>
-
                     </div>
                 )}
 
@@ -333,7 +352,7 @@ export function Configuracoes() {
 
             <ModalMensagem
                 exibir={modalMensagemVisivel}
-                ocultar={() => ocultarModal()}
+                ocultar={ocultarModal}
                 titulo={modalMensagemTitulo}
                 texto={modalMensagemTexto}
                 tipo={modalMensagemTipo}
