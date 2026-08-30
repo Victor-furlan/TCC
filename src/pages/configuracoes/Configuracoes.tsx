@@ -78,7 +78,7 @@ export function Configuracoes() {
     const [vlibrasAtivo, setVlibrasAtivo] = useState(() => localStorage.getItem('vlibras') === 'true')
     const [temaSelecionado, setTemaSelecionado] = useState(tema)
     const [dropdownTemaAberto, setDropdownTemaAberto] = useState(false)
-    const [idiomaSelecionado, setIdiomaSelecionado] = useState<'pt' | 'en'>('pt')
+    const [idiomaSelecionado] = useState<'pt' | 'en'>('pt')
     const [dropdownIdiomaAberto, setDropdownIdiomaAberto] = useState(false)
     const [modalMensagemVisivel, setModalMensagemVisivel] = useState(false)
     const [modalMensagemTitulo, setModalMensagemTitulo] = useState('')
