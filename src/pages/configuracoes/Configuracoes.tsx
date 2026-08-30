@@ -138,6 +138,14 @@ export function Configuracoes() {
         about: 'Sobre',
     }
 
+    //função criada apenas para avisar pro usuario que a função de idiomas ainda não funciona, depois que estiver funcionando ela será apagada
+    const modalNaoFunciona = () => {
+        setModalMensagemTexto("Desculpe\n Esta funcionalidade ainda está em desenvolvimento")
+        setModalMensagemTitulo("Ainda em desenvolvimento")
+        setModalMensagemTipo('erro')
+        setModalMensagemVisivel(true)
+    }
+
     return (
         <div className={styles.conteiner}>
             <div className={styles.areaConteudo}>
@@ -227,7 +235,9 @@ export function Configuracoes() {
                                                         type='button'
                                                         className={styles.itemDropdown}
                                                         onClick={() => {
-                                                            setIdiomaSelecionado(opcao.valor)
+                                                            //a linha de baixo volta quando a opção de idiomas estiver funcionando
+                                                            //setIdiomaSelecionado(opcao.valor)
+                                                            modalNaoFunciona()
                                                             setDropdownIdiomaAberto(false)
                                                         }}
                                                     >
